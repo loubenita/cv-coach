@@ -1,0 +1,16 @@
+# Generated CV output — per-candidate working files and renders.
+# Personal data / large binaries; do not commit or push.
+generation/
+
+# Reference CVs used for style/quality calibration (real people's examples).
+# Not candidate output, but still personal data; do not commit or push.
+cv-examples/
+
+# Scratch / working directory — brag docs, LinkedIn scrapes, experiments.
+# Personal data; do not commit or push.
+workspace/
+
+# macOS / editor cruft
+.DS_Store
+*.pyc
+__pycache__/

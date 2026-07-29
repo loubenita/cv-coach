@@ -1,0 +1,570 @@
+<!doctype html>
+<!--
+  ============================================================================
+  CANONICAL DASHBOARD TEMPLATE  -  cv-generator  (skills/dashboard/SKILL.md)
+  ============================================================================
+  This file defines the FIXED structure of the CV dashboard. The pipeline's
+  `dashboard` step MUST start from this file and fill it in. It must NOT invent
+  its own layout, CSS, nav, or section set each run - that drift is the reason
+  this template exists.
+
+  DO NOT CHANGE, per run:
+    - the inline <style> block (the visual system is locked);
+    - the side-nav: 4 collapsible groups, in THIS order -
+        (1) Overview & scores   (2) Findings
+        (3) Hiring manager       (4) Action plan
+      every nav sub-link href must match a <section> id in <main>;
+    - the set, order, ids and headings of the <section>s in <main>.
+
+  REPLACE, per run:
+    - the {{CANDIDATE_NAME}} and {{GENERATED_DATE}} tokens (title, brand, footer);
+    - the {{CV_PDF_FANCY}}, {{CV_PDF_ATS}}, {{CV_MD}} hrefs in the "Download CV" nav
+      block -> the three CV files for this identity (relative paths, same folder);
+    - the CONTENT inside each section with the current candidate's data. Every-
+      thing currently inside the sections is a WORKED EXAMPLE from a real run,
+      kept to show intended depth and formatting - swap it out, keep the shells,
+      repeat rows/cards as needed.
+    - if a pipeline step did not run, KEEP its section and render a one-line
+      "Not run for this session" note rather than deleting the section.
+
+  Output of a filled copy: versions/<timestamp>-<candidate-slug>-dashboard.html
+  ============================================================================
+-->
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>{{CANDIDATE_NAME}}: CV Dashboard</title>
+<style>
+:root{
+  --green:#16a34a; --green-soft:#dcfce7; --amber:#d97706; --amber-soft:#fef3c7;
+  --orange:#ea580c; --red:#dc2626; --red-soft:#fee2e2; --blue-soft:#dbeafe; --blue:#1d4ed8;
+  --text:#1a1a1a; --muted:#6b7280; --border:#e5e7eb; --bg-alt:#f9fafb; --bg:#ffffff;
+}
+*{box-sizing:border-box;}
+html,body{margin:0;padding:0;background:var(--bg-alt);color:var(--text);font-family:'Helvetica Neue',Arial,sans-serif;font-size:10.5pt;line-height:1.5;}
+a{color:var(--blue);}
+.layout{display:flex;min-height:100vh;}
+nav.rail{
+  width:200px;flex-shrink:0;position:sticky;top:0;height:100vh;overflow-y:auto;
+  background:#111827;color:#d1d5db;padding:20px 14px;font-size:9.5pt;
+}
+nav.rail .brand{color:#fff;font-weight:700;font-size:11pt;margin-bottom:2px;}
+nav.rail .brand-sub{color:#9ca3af;font-size:8.5pt;margin-bottom:18px;}
+nav.rail a{display:block;color:#d1d5db;text-decoration:none;padding:5px 8px;border-radius:4px;margin-bottom:1px;}
+nav.rail a:hover{background:#1f2937;color:#fff;}
+nav.rail details.navgroup{background:transparent;border:0;border-radius:0;margin:0 0 10px;padding:0;}
+nav.rail details.navgroup>summary{cursor:pointer;list-style:none;display:flex;justify-content:space-between;align-items:center;color:#f3f4f6;font-weight:700;font-size:8.3pt;text-transform:uppercase;letter-spacing:0.07em;padding:6px 8px 5px;margin-top:2px;border-bottom:1px solid #1f2937;}
+nav.rail details.navgroup>summary::-webkit-details-marker{display:none;}
+nav.rail details.navgroup>summary::after{content:"\2013";color:#6b7280;font-weight:400;}
+nav.rail details.navgroup:not([open])>summary::after{content:"+";}
+nav.rail details.navgroup>a{padding-left:16px;font-size:9.2pt;margin-top:1px;}
+nav.rail details.navgroup>a:first-of-type{margin-top:5px;}
+nav.rail .dlgroup{margin:2px 0 14px;padding-bottom:13px;border-bottom:1px solid #1f2937;}
+nav.rail .dl-label{color:#9ca3af;font-size:8pt;font-weight:700;text-transform:uppercase;letter-spacing:0.07em;margin:0 0 7px 2px;}
+nav.rail a.dl{display:flex;justify-content:space-between;align-items:center;gap:8px;background:#1f2937;color:#e5e7eb;border:1px solid #374151;border-radius:6px;padding:7px 10px;margin-bottom:6px;font-size:9pt;font-weight:600;}
+nav.rail a.dl:hover{background:#374151;color:#fff;border-color:#4b5563;}
+nav.rail a.dl .dl-name{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+nav.rail a.dl .dl-tag{flex-shrink:0;font-size:7.5pt;font-weight:700;color:#9ca3af;background:#111827;border-radius:4px;padding:1px 6px;}
+nav.rail a.dl.dl-primary{border-color:#16a34a;}
+nav.rail a.dl.dl-primary .dl-tag{color:#22c55e;}
+main.content{flex:1;max-width:1760px;padding:28px 40px 80px;}
+h2.section-heading{font-size:10.5pt;font-weight:700;text-transform:uppercase;letter-spacing:0.07em;border-bottom:1px solid var(--border);padding-bottom:5px;margin:34px 0 14px;color:#111827;}
+h2.section-heading:first-of-type{margin-top:0;}
+.hero{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;align-items:stretch;}
+.hero-card{background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:18px 20px;display:flex;flex-direction:column;}
+.verdict-label{font-size:20pt;font-weight:800;padding:4px 0;}
+.verdict-ready{color:var(--green);} .verdict-almost{color:var(--amber);} .verdict-needs{color:var(--orange);} .verdict-early{color:var(--red);}
+.verdict-sub{color:var(--muted);font-size:9.5pt;margin-top:4px;}
+.score-big{font-size:34pt;font-weight:800;line-height:1;}
+.score-def{color:var(--muted);font-size:8.8pt;margin-top:8px;line-height:1.4;}
+.tier-row{display:flex;justify-content:space-between;font-size:9pt;margin-bottom:6px;padding-bottom:6px;border-bottom:1px dashed var(--border);}
+.tier-row:last-child{border-bottom:0;margin-bottom:0;}
+.next-actions{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:16px;align-items:stretch;}
+.action-card{background:var(--bg);border:1px solid var(--border);border-left:3px solid var(--green);border-radius:6px;padding:12px 14px;font-size:9pt;display:flex;flex-direction:column;}
+.action-card .loc{color:var(--muted);font-size:8.3pt;margin-top:4px;}
+.jd-callout{margin-top:18px;padding:12px 16px;border:1px dashed var(--border);border-radius:8px;background:var(--bg-alt);color:var(--muted);font-size:9.3pt;}
+.scores-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:12px;align-items:stretch;}
+.score-card{background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:14px 14px;display:flex;flex-direction:column;}
+.score-card .label{font-size:8.3pt;text-transform:uppercase;letter-spacing:0.05em;color:var(--muted);}
+.score-card .value{font-size:22pt;font-weight:800;margin:4px 0;}
+.score-card .proj{font-size:8.5pt;color:var(--muted);}
+.score-card .note{font-size:8.2pt;color:var(--orange);margin-top:6px;}
+.band-green{color:var(--green);} .band-lgreen{color:#4d9a3a;} .band-amber{color:var(--amber);} .band-orange{color:var(--orange);} .band-red{color:var(--red);} .band-grey{color:var(--muted);}
+.sim-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;align-items:stretch;}
+.sim-panel{background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:14px 16px;display:flex;flex-direction:column;}
+.sim-panel h4{margin:0 0 8px;font-size:10pt;}
+.badge{display:inline-block;font-size:8pt;font-weight:700;text-transform:uppercase;letter-spacing:0.04em;padding:2px 8px;border-radius:99px;}
+.badge-pass{background:var(--green-soft);color:var(--green);}
+.badge-maybe{background:var(--amber-soft);color:var(--amber);}
+.badge-reject{background:var(--red-soft);color:var(--red);}
+.sim-panel ul{margin:8px 0;padding-left:16px;font-size:9pt;}
+.sim-quote{margin-top:auto;padding-top:10px;font-style:italic;color:var(--muted);font-size:8.8pt;border-top:1px dashed var(--border);}
+table{width:100%;border-collapse:collapse;font-size:9pt;}
+th{text-align:left;text-transform:uppercase;font-size:8pt;letter-spacing:0.05em;color:var(--muted);padding:6px 8px;border-bottom:1px solid var(--border);}
+td{padding:8px;border-bottom:1px solid var(--border);vertical-align:top;}
+tr.low{border-left:3px solid var(--red);} tr.medium{border-left:3px solid var(--amber);} tr.high{border-left:3px solid var(--green);}
+.rating{font-size:8pt;font-weight:700;padding:2px 8px;border-radius:99px;}
+.rating-high{background:var(--green-soft);color:var(--green);} .rating-medium{background:var(--amber-soft);color:var(--amber);} .rating-low{background:var(--red-soft);color:var(--red);}
+.rewrite{margin-top:6px;padding:6px 8px;background:var(--bg-alt);border-radius:5px;font-size:8.6pt;color:#374151;}
+.rewrite b{color:var(--blue);}
+details{background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:0;margin-bottom:14px;}
+details>summary{cursor:pointer;padding:12px 16px;font-weight:700;font-size:10pt;list-style:none;display:flex;justify-content:space-between;align-items:center;}
+details>summary::-webkit-details-marker{display:none;}
+.pill{font-size:8pt;font-weight:600;color:var(--muted);background:var(--bg-alt);border:1px solid var(--border);border-radius:99px;padding:2px 10px;}
+.dash-details-body{padding:4px 16px 16px;}
+.cols4{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;align-items:stretch;}
+.skill-col{background:var(--bg-alt);border-radius:8px;padding:12px 14px;font-size:8.8pt;}
+.skill-col h5{margin:0 0 8px;font-size:9pt;}
+.skill-col ul{margin:0;padding-left:16px;}
+.kw-strip{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px;}
+.kw{font-size:8.3pt;padding:3px 10px;border-radius:99px;border:1px solid var(--border);}
+.kw-yes{background:var(--green-soft);color:var(--green);border-color:transparent;}
+.kw-no{background:var(--red-soft);color:var(--red);border-color:transparent;}
+.peer-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;align-items:stretch;margin-bottom:18px;}
+.peer-card{background:var(--bg-alt);border:1px solid var(--border);border-radius:8px;padding:14px;display:flex;flex-direction:column;}
+.peer-card .name{font-weight:700;font-size:10pt;}
+.peer-card .role{color:var(--muted);font-size:8.7pt;margin-bottom:6px;}
+.tag-domain{background:var(--green-soft);color:var(--green);} .tag-prestige{background:var(--blue-soft);color:var(--blue);} .tag-above{background:var(--amber-soft);color:var(--amber);}
+.tier-pill{font-size:7.6pt;border:1px solid var(--border);border-radius:99px;padding:1px 7px;color:var(--muted);margin-left:6px;}
+.peer-card ul{font-size:8.6pt;margin:8px 0;padding-left:16px;}
+.peer-card .lesson{margin-top:auto;padding-top:8px;font-size:8.6pt;border-top:1px dashed var(--border);color:#374151;}
+.matrix-wrap{overflow-x:auto;}
+.matrix td, .matrix th{white-space:nowrap;text-align:center;}
+.matrix td:first-child, .matrix th:first-child{text-align:left;white-space:normal;min-width:220px;}
+.cell-yes{color:var(--green);font-weight:700;} .cell-partial{color:var(--amber);font-weight:700;} .cell-no{color:var(--muted);}
+.you-col{background:var(--green-soft);}
+.pattern-row{margin-bottom:10px;font-size:9pt;}
+.pattern-row .lbl{font-weight:700;display:inline-block;min-width:110px;}
+.action-tiers{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;align-items:stretch;}
+.tier-panel{background:var(--bg-alt);border-radius:10px;padding:16px;display:flex;flex-direction:column;height:100%;}
+.tier-panel h4{margin:0 0 10px;font-size:10pt;}
+.action-item{background:var(--bg);border-left:3px solid var(--green);border-radius:6px;padding:10px 12px;margin-bottom:8px;font-size:8.8pt;}
+.action-item .delta{font-weight:700;color:var(--green);font-size:8pt;}
+.action-item.long{border-left-color:var(--muted);}
+.action-item.long .delta{color:var(--muted);}
+.action-item.confirm{border-left-color:var(--amber);}
+.action-item.confirm .delta{color:var(--amber);}
+.timeline{display:flex;height:44px;border-radius:6px;overflow:hidden;margin:14px 0;}
+.tseg{display:flex;align-items:center;justify-content:center;color:#fff;font-size:8pt;font-weight:600;padding:0 6px;text-align:center;}
+.tseg.green{background:var(--green);} .tseg.amber{background:var(--amber);}
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:20px;}
+.footer-note{color:var(--muted);font-size:8.5pt;margin-top:40px;padding-top:14px;border-top:1px solid var(--border);}
+.verdict-banner{display:flex;align-items:center;gap:14px;padding:14px 16px;border-radius:8px;margin-bottom:14px;}
+.verdict-banner.interview{background:var(--blue-soft);}
+.vb-badge{font-size:13pt;font-weight:800;text-transform:uppercase;letter-spacing:0.03em;color:var(--blue);white-space:nowrap;}
+.vb-liner{font-size:9.5pt;color:#1e3a8a;}
+.hm-quote{background:var(--bg-alt);border-left:3px solid var(--blue);padding:12px 14px;font-size:9.3pt;font-style:italic;border-radius:0 6px 6px 0;margin-bottom:14px;}
+.flip-card{background:#fff7ed;border:1px solid #fdba74;border-radius:8px;padding:12px 14px;margin-bottom:16px;font-size:9.3pt;}
+.flip-card b{color:var(--orange);}
+.severity{font-size:7.6pt;font-weight:700;text-transform:uppercase;padding:2px 7px;border-radius:99px;}
+.sev-major{background:var(--amber-soft);color:var(--amber);} .sev-minor{background:var(--bg-alt);color:var(--muted);border:1px solid var(--border);} .sev-dealbreaker{background:var(--red-soft);color:var(--red);}
+.cvq{font-family:ui-monospace,'SF Mono',Menlo,monospace;font-size:8.6pt;background:var(--bg-alt);padding:2px 5px;border-radius:4px;}
+@media (max-width:1100px){.hero,.scores-grid,.sim-grid,.cols4,.peer-grid,.action-tiers{grid-template-columns:1fr 1fr;}}
+@media print{
+  nav.rail{display:none;}
+  main.content{max-width:none;padding:0;}
+  .hero-card,.score-card,.sim-panel,.action-item,.peer-card,tr{page-break-inside:avoid;break-inside:avoid;}
+  h2{page-break-after:avoid;}
+  details{border:none;}
+  .page-break-before{page-break-before:always;}
+  @page{size:A4;margin:14mm 16mm;}
+}
+</style>
+</head>
+<body>
+<div class="layout">
+<nav class="rail">
+  <div class="brand">{{CANDIDATE_NAME}}</div>
+  <div class="brand-sub">CV Dashboard &middot; generated {{GENERATED_DATE}}</div>
+
+  <div class="dlgroup">
+    <div class="dl-label">Download CV</div>
+    <a class="dl dl-primary" href="{{CV_PDF_FANCY}}"><span class="dl-name">Designed PDF</span><span class="dl-tag">.pdf</span></a>
+    <a class="dl" href="{{CV_PDF_ATS}}"><span class="dl-name">ATS PDF (basic)</span><span class="dl-tag">.pdf</span></a>
+    <a class="dl" href="{{CV_MD}}"><span class="dl-name">Markdown source</span><span class="dl-tag">.md</span></a>
+  </div>
+
+  <details class="navgroup" open>
+    <summary>Overview &amp; scores</summary>
+    <a href="#verdict">Executive summary</a>
+    <a href="#scores">Score breakdown</a>
+    <a href="#recruiter">Recruiter simulation</a>
+  </details>
+
+  <details class="navgroup" open>
+    <summary>Findings</summary>
+    <a href="#rolefit">Role fit</a>
+    <a href="#jdmatch">JD match</a>
+    <a href="#bullets">Bullet audit</a>
+    <a href="#skills">Skills audit</a>
+    <a href="#peers">Peer benchmark</a>
+    <a href="#timeline">Timeline &amp; market</a>
+    <a href="#linkedin">LinkedIn check</a>
+  </details>
+
+  <details class="navgroup" open>
+    <summary>Hiring manager</summary>
+    <a href="#hmverdict">Hiring-manager verdict</a>
+    <a href="#interview">Interview prep</a>
+  </details>
+
+  <details class="navgroup" open>
+    <summary>Action plan</summary>
+    <a href="#actionplan">Action plan</a>
+    <a href="#strategy">Application strategy</a>
+  </details>
+</nav>
+<main class="content">
+
+<h2 class="section-heading" id="verdict">1. Executive summary</h2>
+<div class="hero">
+  <div class="hero-card">
+    <div class="verdict-label verdict-ready">READY</div>
+    <div class="verdict-sub">Borderline-ready. The underlying scope matches or beats a verified set of 5 real UK Senior/Staff iOS engineers on substance and quantified delivery. The gap that remains is visibility, not competence: apply now, work the write-up/quantification items in parallel.</div>
+  </div>
+  <div class="hero-card">
+    <div class="score-big band-lgreen">82<span style="font-size:14pt;color:var(--muted);">/100</span></div>
+    <div class="score-def">Overall readiness for <b>Senior iOS Engineer (IC)</b> at role level. Composite of ATS, recruiter, impact, clarity, confidence and peer-alignment signals per the documented formula. 80+ = READY, 65&ndash;79 = ALMOST THERE, 50&ndash;64 = NEEDS WORK, below 50 = EARLY STAGE.</div>
+  </div>
+  <div class="hero-card">
+    <div style="font-weight:700;font-size:10pt;margin-bottom:6px;">Time to ready</div>
+    <div class="tier-row"><span>Today (quick wins)</span><span>~1 hr</span></div>
+    <div class="tier-row"><span>This week (quantify + confirm)</span><span>~4&ndash;6 hrs</span></div>
+    <div class="tier-row"><span>This month (write &amp; publish)</span><span>~8&ndash;12 hrs</span></div>
+    <div class="score-def">Already READY at 82. Today + This week alone projects to ~85; publishing one write-up in This month is the highest-leverage single move available.</div>
+  </div>
+</div>
+
+<div class="next-actions">
+  <div class="action-card"><b>1. Publish one technical write-up under your own name</b><div class="loc">Peer benchmark &middot; universal signal, 5/5 verified comparators have this, you currently have zero. Highest leverage single action available.</div></div>
+  <div class="action-card"><b>2. Get a real before/after number for the Algolia&rarr;Shopify bullet</b><div class="loc">Experience &middot; Northwind Fitness bullet 2 &middot; needs your confirmation, see Action plan</div></div>
+  <div class="action-card"><b>3. Decide whether to swap in a quantified Cuckoo-toolchain bullet</b><div class="loc">Experience &middot; strong quantifiable story that didn't make the final 5-bullet cut, see Action plan</div></div>
+</div>
+
+<div class="jd-callout jd-callout-empty">
+  <b>No job description provided.</b> This dashboard shows role-level readiness for Senior iOS Engineer only, per your explicit instruction not to produce JD-tailored variants this run. Paste a JD later to unlock JD-specific match scoring in Section 5.
+</div>
+
+<h2 class="section-heading" id="scores">2. Score breakdown</h2>
+<div class="scores-grid">
+  <div class="score-card"><div class="label">ATS</div><div class="value band-lgreen">88</div><div class="proj">Projected: 89</div><div class="proj">Threshold for this level: 70+</div></div>
+  <div class="score-card"><div class="label">Recruiter</div><div class="value band-lgreen">80</div><div class="proj">Projected: 82</div><div class="proj">Threshold for this level: 70+</div></div>
+  <div class="score-card"><div class="label">Impact</div><div class="value band-amber">74</div><div class="proj">Projected: 80</div><div class="note">Two current-role bullets (Algolia migration, AI-tooling) are strong on narrative but carry no hard number yet.</div></div>
+  <div class="score-card"><div class="label">Clarity</div><div class="value band-lgreen">89</div><div class="proj">Projected: 89</div><div class="proj">Threshold for this level: 70+</div></div>
+  <div class="score-card"><div class="label">Confidence</div><div class="value band-lgreen">78</div><div class="proj">Projected: 81</div><div class="proj">Threshold for this level: 70+</div></div>
+  <div class="score-card"><div class="label">Match</div><div class="value band-grey">N/A</div><div class="proj">Not run for this session.</div><div class="proj">Provide a JD to unlock.</div></div>
+</div>
+
+<h2 class="section-heading" id="recruiter">3. Recruiter simulation</h2>
+<div class="sim-grid">
+  <div class="sim-panel">
+    <h4>6-second scan <span class="badge badge-pass">PASS</span></h4>
+    <div><b>Caught:</b> Swift, SwiftUI, Clean Architecture, GraphQL, Northwind Fitness (recognisable UK employer)</div>
+    <ul><li>Seniority signal: <b>mixed</b>. Years and bullet content argue Senior; the title line reads "iOS Engineer", not "Senior", because that is the candidate's actual held title. No inflation applied.</li><li>No unexplained gaps visible in the first section.</li></ul>
+    <div class="sim-quote">"Solid stack match, known employer. Is this Senior? The title alone doesn't tell me, I'll need to read the bullets."</div>
+  </div>
+  <div class="sim-panel">
+    <h4>30-second skim <span class="badge badge-pass">PASS</span></h4>
+    <ul><li>Northwind Fitness bullet 1: strong ownership opener (named modules, hard PR/commit numbers).</li><li>Skills section covers nearly every load-bearing keyword for the role.</li><li>Narrative coherence: <b>strong</b>. Full-stack &rarr; mobile &rarr; iOS specialist, one linear story, no gaps.</li></ul>
+    <div class="sim-quote">"Reads like someone who owns things, not just tickets."</div>
+  </div>
+  <div class="sim-panel">
+    <h4>Hiring-manager deep read <span class="badge badge-pass">SHORTLIST</span></h4>
+    <ul>
+      <li>Impact specificity: medium-strong. 3 of 5 current-role bullets carry a hard, checkable number.</li>
+      <li>Technical depth: strong. Named modules, named migration, real architectural reasoning.</li>
+      <li><b>Red flags:</b> title/scope framing gap (soft, explained by internal-band timing); one bullet leans on PR-review volume as a stand-alone signal.</li>
+    </ul>
+    <div class="sim-quote">"Nothing here is disqualifying. I'd spend the interview on the AI-tooling story, that's the differentiated one."</div>
+  </div>
+</div>
+
+<h2 class="section-heading" id="hmverdict">3b. The hiring manager's verdict</h2>
+<div class="verdict-banner interview">
+  <div class="vb-badge">INTERVIEW</div>
+  <div class="vb-liner">Clears the screen on scope alone, but I'd spend the whole interview probing why Northwind Fitness hasn't called this Senior yet.</div>
+</div>
+<div class="hm-quote">
+"This is a genuinely strong mid-market CV: named modules, an incident-triggered migration, a real cross-platform data-quality find, and an AI-tooling build that's actually corroborated by a public repo rather than just asserted. What stops this at 'interview' instead of 'strong yes' is that every senior-scope claim here is still unfolding at a company that, as far as this page tells me, still calls you 'iOS Engineer' after two and a half years. I don't doubt the work happened. I doubt that I'm the first person who should be asking why the title hasn't caught up, and I want that answered directly, not around. Separately: two of your best stories, the Shopify migration and the AI tooling, are told entirely in scope terms with no outcome number attached. Scope tells me what you did. It doesn't tell me what got better because you did it."
+</div>
+<div class="flip-card">
+  <b>What would flip the verdict:</b> One hard, specific outcome number tied to a shipped piece of work, conversion lift, checkout completion rate, crash-free percentage, or CI/build time recovered, would move this from "prove it in the room" to "this is already senior, full stop."
+</div>
+<table>
+<tr><th>Sev</th><th>CV quote</th><th>Location</th><th>Objection</th><th>Do differently</th><th>Evidence needed</th></tr>
+<tr><td><span class="severity sev-major">Major</span></td><td><span class="cvq">iOS Engineer</span></td><td>Header / title line</td><td>Every bullet under this argues Senior scope, but the title says otherwise, two and a half years in. Either Northwind Fitness disagrees internally, or the promotion conversation hasn't happened yet, both are worth understanding before the loop.</td><td>Nothing further to add on the page without inflating the title; that would create the exact mismatch this page is being checked for. This gap closes at interview, not on the CV.</td><td>None from the pipeline. Needs the candidate's own framing at interview, and ideally a live promotion-cycle conversation with Northwind Fitness running alongside the external search.</td></tr>
+<tr><td><span class="severity sev-major">Major</span></td><td><span class="cvq">Owned end-to-end delivery of 5+ Swift Package modules built from scratch&hellip; covering 263+ merged PRs and ~2,200 commits as primary author since Jan 2024</span></td><td>Northwind Fitness, bullet 1</td><td>PR and commit counts describe effort, not outcome. I don't yet know what got better for the business or the user because these modules exist.</td><td>Pair the module-ownership claim with a downstream outcome for at least one module, for example a conversion, retention, or performance number tied to the Address Book or PDP v2 rebuild.</td><td>App Store Connect / analytics data on the specific features shipped in these modules. The performance review confirms A/B testing was used to validate business impact, but the actual lift numbers were never captured in this pipeline run.</td></tr>
+<tr><td><span class="severity sev-minor">Minor</span></td><td><span class="cvq">while reviewing 280+ pull requests over 18 months to catch issues before they shipped</span></td><td>Northwind Fitness, bullet 5</td><td>PR-review volume is activity, not impact. What actually got caught, and what would have shipped broken otherwise?</td><td>Replace the raw count with one specific save: a production bug the review process caught before release.</td><td>A specific example from code-review history or an incident retrospective.</td></tr>
+<tr><td><span class="severity sev-minor">Minor</span></td><td><span class="cvq">APIs &amp; Data: GraphQL, REST, Algolia, Shopify, Contentful</span></td><td>Skills section</td><td>Contentful is listed but never shows up in a bullet. Either it mattered enough to demonstrate, or it shouldn't be here.</td><td>Fold a one-clause Contentful reference into the PDP v2 bullet (it powered the Feature Facts component per your own evidence), or drop it from Skills.</td><td>None, this is a same-CV consistency fix using evidence already gathered this run.</td></tr>
+<tr><td><span class="severity sev-minor">Minor</span></td><td><span class="cvq">live on the App Store, v2.2</span></td><td>Projects, RentLoop</td><td>A side project with a single rating doesn't carry much weight on its own, and if I looked it up I'd see that. Honest, but thin evidence of anything beyond "can ship end to end."</td><td>Keep it, it's genuine and relevant, but don't lean on it as a headline achievement; it's a credibility floor, not a differentiator.</td><td>None, this is a framing note rather than a fix.</td></tr>
+</table>
+<p style="font-size:9pt;margin-top:14px;"><b>Interview kill questions:</b></p>
+<ul style="font-size:9pt;">
+<li>Walk me through why your title is still "iOS Engineer" after 2.5 years if the scope here is genuinely Senior.</li>
+<li>Pick one of the 5+ modules you built from scratch. What changed for the business or the user because it exists?</li>
+<li>You mention reviewing 280+ PRs. Tell me about one you rejected or sent back, and why.</li>
+<li>Your AI-assisted PR-review agents catch architecture, correctness, DRY, quality, and test-coverage issues automatically. Walk me through one real violation one of them caught and what happened next.</li>
+<li>The Address Book investigation found 22 country mismatches that had been silently breaking checkout for three years. How did nobody catch that sooner, and what changed in your own process because of it?</li>
+</ul>
+<p style="font-size:9pt;"><b>What survived the adversarial read:</b></p>
+<ul style="font-size:9pt;">
+<li>The Algolia-to-Shopify migration bullet is genuinely strong: incident-triggered, cross-platform, with a hard number attached (22 mismatches). A real senior story, not an inflated one.</li>
+<li>The AI-tooling claim is unusually well-corroborated for a CV bullet, there's a live, public hooks-demo repo demonstrating the same hook-based guardrail pattern, which is rare, durable evidence most candidates can't offer.</li>
+<li>The career trajectory is clean and linear: no gaps, no inflated jumps, a believable generalist-to-mobile-specialist arc.</li>
+</ul>
+
+<h2 class="section-heading" id="rolefit">4. Role fit analysis</h2>
+<div class="two-col">
+  <div>
+    <p><b>Seniority alignment:</b> appropriate-to-strong for Senior. The CV title stays "iOS Engineer" because that's the candidate's actual held title, no title inflation applied. Resolve the gap at cover-letter/interview level, not by editing the CV.</p>
+    <p><b>Industry fit:</b> strong. Northwind Fitness is UK e-commerce / D2C fitness apparel, a direct match for the domain peers in Section 8 (ASOS, Depop).</p>
+  </div>
+  <div>
+    <p><b>Career trajectory coherence:</b> linear. Full-stack (2018&ndash;2020) &rarr; mobile/iOS (2020&ndash;2023) &rarr; iOS specialist with escalating ownership at one employer (2024&ndash;present). No unexplained pivots, no gaps.</p>
+    <p><b>Likely hiring-manager red flags:</b></p>
+    <ul style="font-size:9pt;">
+      <li>Title ("iOS Engineer") trails the seniority the bullets demonstrate, worth a one-line pre-empt in a cover letter rather than a CV edit.</li>
+      <li>Two of the five current-role bullets (Shopify migration, AI tooling) are scope-strong but number-light, see Section 3b.</li>
+    </ul>
+  </div>
+</div>
+
+<h2 class="section-heading" id="jdmatch">5. JD match</h2>
+<p style="color:var(--muted);font-size:9.5pt;">Not run for this session. No job description was supplied; you explicitly declined JD-tailored variants for this run. This produced a general canonical CV and role-level score only. Provide a job description to see match analysis, must-have/nice-to-have coverage, and a gap-to-rewrite table here.</p>
+
+<details open id="bullets">
+<summary>6. Bullet-by-bullet quality audit <span class="pill">9 bullets &middot; 3 rewrites &middot; 0 tense fixes</span></summary>
+<div class="dash-details-body">
+<table>
+<tr><th>Role</th><th>Bullet</th><th>Rating</th><th>Notes</th></tr>
+<tr class="high"><td>Northwind Fitness<br/>iOS Engineer</td><td>Owned end-to-end delivery of 5+ Swift Package modules built from scratch (Address Book, Retail &amp; Events Booking, PDP v2, Contextual Search)&hellip; 263+ merged PRs and ~2,200 commits as primary author since Jan 2024&hellip;</td><td><span class="rating rating-high">High</span></td><td>Strong ownership opener with named artefacts and verifiable scale numbers. This is the anchor bullet for the whole CV and needs no rewrite, though see Section 3b for the "effort vs outcome" caveat a skeptical reader will raise.</td></tr>
+<tr class="medium"><td></td><td>Led the iOS migration of Product Detail Page data-fetching from Algolia to Shopify after a production outage took the page down for all users&hellip; aligned iOS, Android and Web on one canonical data-mapping approach&hellip;</td><td><span class="rating rating-medium">Medium</span></td><td>Strong incident-response story, specific mechanism, but no quantified scope or duration yet.
+<div class="rewrite"><b>Suggested rewrite (needs your confirmation):</b> "&hellip;after an outage took the page down for all users for [N hours], shipping a [N-region] staged rollout&hellip;"</div></td></tr>
+<tr class="medium"><td></td><td>Designed and built the team's AI-assisted development infrastructure from scratch: an instruction-routing system&hellip; plus five automated PR-review agents&hellip; now the team-wide standard.</td><td><span class="rating rating-medium">Medium</span></td><td>The single most differentiated bullet on the CV (peer benchmark found no comparable signal in any of 5 verified comparators, see Section 8) but has no measurable outcome yet.
+<div class="rewrite"><b>Suggested rewrite (needs your confirmation):</b> "&hellip;cutting an estimated [X hours/week] of manual review time and catching [Y%] of standards violations before human review&hellip;"</div></td></tr>
+<tr class="high"><td></td><td>Audited stale country/address reference data across iOS, Android and Web, uncovering 22 country-name mismatches that had been silently breaking checkout for 3+ years&hellip;</td><td><span class="rating rating-high">High</span></td><td>Concrete number, clear scope, clear business consequence (checkout breakage). No rewrite needed.</td></tr>
+<tr class="high"><td></td><td>Mentored an engineer through 15+ structured sessions on Clean Architecture, TDD and PR hygiene&hellip; while reviewing 280+ pull requests over 18 months to catch issues before they shipped.</td><td><span class="rating rating-high">High</span></td><td>Two solid numbers (15+ sessions, 280+ PRs). The closing PR-review clause reads slightly activity-metric-heavy under an adversarial read, see Section 3b, but the bullet overall clears the bar.</td></tr>
+<tr class="medium"><td>Harbour Property<br/>Mobile Developer</td><td>Led development of an in-house Swift/SwiftUI messaging app for secure customer-to-agent communication&hellip; maintained through Unit, UI and Snapshot tests.</td><td><span class="rating rating-medium">Medium</span></td><td>Specific and concrete, no scale indicator, acceptable for a role this far back.
+<div class="rewrite"><b>Suggested rewrite:</b> "&hellip;for secure communication between [N agents / a customer base of N] and buyers/sellers on the property platform&hellip;"</div></td></tr>
+<tr class="medium"><td></td><td>Drove team adoption of GraphQL alongside REST to streamline data delivery and broaden feature scope, and built CI/CD pipelines&hellip;</td><td><span class="rating rating-medium">Medium</span></td><td>Combines two real claims cleanly; neither carries a number. Acceptable density for an older role, no rewrite forced.</td></tr>
+<tr class="medium"><td></td><td>Led extensive A/B testing through a UIKit rebuild/migration from Xamarin, and mentored junior developers through the School of Code bootcamp programme.</td><td><span class="rating rating-medium">Medium</span></td><td>Good breadth signal (testing rigour + mentoring), vague on scale. Fine as the closing bullet for this role.</td></tr>
+<tr class="medium"><td>Vantage XR<br/>Full Stack Developer</td><td>Led a mobile-first rebuild of internal systems to improve employee workflow, including projects for a medical company shown at CES Las Vegas under tight deadlines.</td><td><span class="rating rating-medium">Medium</span></td><td>Appropriately brief for a role this old (2018&ndash;2020). CES Las Vegas is a nice specific detail that survives scrutiny. No further investment warranted here.</td></tr>
+</table>
+</div>
+</details>
+
+<details id="skills">
+<summary>7. Skills audit</summary>
+<div class="dash-details-body">
+<div class="cols4">
+  <div class="skill-col"><h5>Validated</h5><ul>
+    <li>Swift / SwiftUI: every bullet</li>
+    <li>Clean Architecture / SOLID: bullets 1, 5</li>
+    <li>SPM / modularisation: bullet 1 (named modules)</li>
+    <li>Algolia, Shopify: bullet 2</li>
+    <li>TDD: bullet 5</li>
+    <li>GraphQL, REST: Harbour Property bullet 2</li>
+  </ul></div>
+  <div class="skill-col"><h5>Listed but not demonstrated</h5><ul>
+    <li>Contentful: not referenced in any bullet, flagged in Section 3b</li>
+    <li>SwiftData: shipped per the source PDF but not named in a bullet</li>
+    <li>BrowserStack, XCUITest, Cuckoo: real work exists (see Section 11) but didn't make the final 5-bullet cut</li>
+    <li>TypeScript, Python, APNs, Universal Links, Localisation, Firebase, Datadog, Structurizr/C4</li>
+  </ul><p style="font-size:8.2pt;color:var(--muted);">Normal tail for a skills section at this density cap; not a defect on its own. Prioritise surfacing one only if a specific JD calls it out as a must-have.</p></div>
+  <div class="skill-col"><h5>Missing / worth watching</h5><ul>
+    <li>Explicit build-tooling evaluation language (SPM vs Tuist vs Bazel): a majority signal among verified peers (3/5), see Section 8</li>
+    <li>Public-facing technical writing or a talk: universal among verified peers (5/5), completely absent here</li>
+  </ul></div>
+  <div class="skill-col"><h5>Rename opportunities</h5><p style="font-size:8.6pt;">None surfaced this run. The peer gaps found were about public visibility of existing work, not mislabelled skills, see Section 8.</p></div>
+</div>
+<div class="kw-strip">
+  <span class="kw kw-yes">Swift 6 strict concurrency &#10003;</span>
+  <span class="kw kw-yes">SwiftUI &#10003;</span>
+  <span class="kw kw-yes">async/await &#10003;</span>
+  <span class="kw kw-yes">Clean Architecture &#10003;</span>
+  <span class="kw kw-yes">SOLID &#10003;</span>
+  <span class="kw kw-yes">MVVM &#10003;</span>
+  <span class="kw kw-yes">SPM modularisation &#10003;</span>
+  <span class="kw kw-yes">Dependency Injection &#10003;</span>
+  <span class="kw kw-yes">XCTest &#10003;</span>
+  <span class="kw kw-yes">AI-assisted dev tooling ownership &#10003;</span>
+</div>
+</div>
+</details>
+
+<details open id="peers">
+<summary>8. Peer benchmark <span class="pill">5 real, independently-verified comparators &middot; deep depth</span></summary>
+<div class="dash-details-body">
+<p style="font-size:9pt;color:var(--muted);">LinkedIn was not used for any comparator (blocked, no browser tool available this run). Every comparator below is instead independently verified via 2+ live, fetched primary artefacts: personal blogs, GitHub profiles, conference-talk pages, or named company engineering-blog bylines. One initial candidate (a Revolut iOS engineer) was dropped after his own GitHub profile contradicted a location claim, excluded rather than guessed at. Set is domain-weighted (2 UK e-commerce/marketplace peers) and brand-weighted (2 prestige peers + 1 one-rung-above), per your requested bias.</p>
+
+<div class="peer-grid">
+  <div class="peer-card">
+    <div class="name">Riley C. <span class="tier-pill">tier_2</span></div>
+    <div class="role">Senior/Staff iOS Engineer &middot; ASOS &middot; <a href="#" target="_blank">GitHub</a></div>
+    <span class="badge tag-domain">domain peer</span>
+    <div style="font-size:8.6pt;margin-top:6px;">Direct UK fashion e-commerce peer at the candidate's target seniority (title verified as "Senior II iOS Engineer" as of his 2022 byline; public signals suggest he may have since progressed to Staff, exact current title not independently confirmed since LinkedIn couldn't be read this run).</div>
+    <ul><li>Maintains AsyncImageKit, a real SwiftUI async-image-loading OSS package on GitHub, independently re-verified this run (200 stars, 16 forks)</li><li>Byline article on ASOS's official Medium engineering blog, "Embracing an Experiment-Oriented Mindset at ASOS" (3 May 2022), independently re-verified this run</li></ul>
+    <div class="lesson">Pattern to copy: a maintained OSS package plus a company-blog byline, both under his own name.</div>
+  </div>
+  <div class="peer-card">
+    <div class="name">Jordan O. <span class="tier-pill">tier_3</span></div>
+    <div class="role">App Engineer (iOS/Apple platforms) &middot; Depop &middot; <a href="#" target="_blank">site</a> &middot; <a href="#" target="_blank">Substack</a></div>
+    <span class="badge tag-domain">domain peer</span>
+    <div style="font-size:8.6pt;margin-top:6px;">Second UK consumer-marketplace peer, unusually deep public footprint for the role.</div>
+    <ul><li>50+ independently shipped Apple-platform apps under his own name since 2009, per his own site, independently re-verified this run</li><li>Active Substack on Apple-platform internals (framework quirks, low-level debugging)</li><li>Public speaker at iOSDevUK (2019) and CocoaHeads Berlin, per his own site</li></ul>
+    <div class="lesson">Pattern to copy: systems-level debugging write-ups, not just app-architecture posts.</div>
+  </div>
+  <div class="peer-card">
+    <div class="name">Priya N. <span class="tier-pill">tier_2</span></div>
+    <div class="role">Senior Software Engineer (iOS) &middot; Bumble &middot; <a href="#" target="_blank">Bumble Tech blog</a></div>
+    <span class="badge tag-prestige">prestige peer</span>
+    <div style="font-size:8.6pt;margin-top:6px;">Tier-2 global-brand dating app; domain mismatch acceptable, brand and rigour are the signal.</div>
+    <ul><li>3-part named byline series on Bumble's official engineering blog evaluating SPM vs Tuist vs Bazel (part 1, published 31 Jan 2024, author Priya N., independently re-verified this run)</li><li>Part 1 frames the build-speed problem and commits publicly to reporting real before/after numbers once measured; specific figures were not present in the instalment checked and are not quoted here to avoid overstating what's verified</li><li>Recorded conference talk, "Scaling iOS at Bumble," at NSLondon</li></ul>
+    <div class="lesson">Pattern to copy: names the exact tooling trade-off being evaluated and commits publicly to reporting real numbers, rather than a vague scope statement.</div>
+  </div>
+  <div class="peer-card">
+    <div class="name">Marcus L. <span class="tier-pill">tier_2</span></div>
+    <div class="role">Associate Director, iOS &middot; Deloitte Digital &middot; <a href="#" target="_blank">blog</a> &middot; <a href="#" target="_blank">talks</a></div>
+    <span class="badge tag-above">one rung above</span>
+    <div style="font-size:8.6pt;margin-top:6px;">Big-4 consultancy brand; one rung above target seniority, included for the richest visibility footprint in the set.</div>
+    <ul><li>Personal blog running Jul 2020&ndash;May 2025, re-verified this run (Xcode Cloud, Terraform for Google Play, Apple platform deep-dives)</li><li>Four distinct conference talks in 2025 alone, independently re-verified via his own blog's talk list: Leeds Mobile (Jun), SwiftCraft (May), iOSKonf (May), SwiftHeroes (Apr)</li><li>WWDC Scholar (2015 &amp; 2016, confirmed on his blog)</li></ul>
+    <div class="lesson">Pattern to copy: sustained multi-year cadence beats one big post, a blog kept up for 5 years compounds.</div>
+  </div>
+</div>
+<div class="peer-grid" style="grid-template-columns:1fr;max-width:49%;">
+  <div class="peer-card">
+    <div class="name">Devon P. <span class="tier-pill">tier_3-below*</span></div>
+    <div class="role">Principal iOS Engineer &middot; Waypoint &middot; <a href="#" target="_blank">GitHub</a> &middot; <a href="#" target="_blank">SwiftNorth</a></div>
+    <span class="badge tag-above">one rung above</span>
+    <div style="font-size:8.6pt;margin-top:6px;">*Waypoint itself is a small UK SaaS company, genuinely smaller than Northwind Fitness on headcount. Included for his Principal title and exceptional individual footprint, flagged transparently rather than silently upgrading the company's tier.</div>
+    <ul><li>Founded (2019) and still runs SwiftNorth, a real, currently-active national UK Swift conference</li><li>Built SwiftAIKit, a Swift/OpenAI API wrapper with 1.7k GitHub stars (ahead of the current AI-tooling wave, though not recently updated)</li><li>Published tutorial author on Kodeco (formerly raywenderlich.com)</li></ul>
+    <div class="lesson">Pattern to copy: founding/organising a public community event is the single strongest visibility signal in this entire peer set.</div>
+  </div>
+</div>
+
+<div class="matrix-wrap">
+<table class="matrix">
+<tr><th>Signal</th><th>Riley C.</th><th>Jordan O.</th><th>Priya N.</th><th>Marcus L.</th><th>Devon P.</th><th class="you-col">You</th></tr>
+<tr><td>Public technical writing under own name</td><td class="cell-yes">yes</td><td class="cell-yes">yes</td><td class="cell-yes">yes</td><td class="cell-yes">yes</td><td class="cell-yes">yes</td><td class="you-col cell-no">no</td></tr>
+<tr><td>Conference talk (video/slides/confirmed schedule)</td><td class="cell-no">no</td><td class="cell-yes">yes</td><td class="cell-yes">yes</td><td class="cell-yes">yes &middot; 4 in 2025</td><td class="cell-no">no</td><td class="you-col cell-no">no</td></tr>
+<tr><td>Rigorous before/after numbers in public writing</td><td class="cell-partial">partial</td><td class="cell-no">no</td><td class="cell-yes">yes</td><td class="cell-yes">yes</td><td class="cell-no">no</td><td class="you-col cell-no">no &middot; in bullets, but no public post</td></tr>
+<tr><td>Original OSS package with real external adoption</td><td class="cell-yes">yes &middot; 200&#9733;</td><td class="cell-no">no</td><td class="cell-no">no</td><td class="cell-no">no</td><td class="cell-yes">yes &middot; 1.7k&#9733;</td><td class="you-col cell-partial">partial &middot; 0&#9733;, but linked on CV</td></tr>
+<tr><td>Founded/organises a public tech community event</td><td class="cell-no">no</td><td class="cell-no">no</td><td class="cell-no">no</td><td class="cell-no">no</td><td class="cell-yes">yes &middot; SwiftNorth</td><td class="you-col cell-no">no</td></tr>
+<tr><td>Production-incident-triggered architecture decision, personally led</td><td class="cell-no">no</td><td class="cell-no">no</td><td class="cell-no">no</td><td class="cell-no">no</td><td class="cell-no">no</td><td class="you-col cell-yes">yes</td></tr>
+<tr><td>Structured, sustained 1:1 mentoring (documented cadence)</td><td class="cell-no">no</td><td class="cell-no">no</td><td class="cell-no">no</td><td class="cell-no">no</td><td class="cell-no">no</td><td class="you-col cell-yes">yes &middot; 15+ sessions</td></tr>
+<tr><td>Built internal AI-assisted / agentic dev tooling (not just an outward-facing AI API wrapper)</td><td class="cell-no">no</td><td class="cell-no">no</td><td class="cell-no">no</td><td class="cell-no">no</td><td class="cell-no">no</td><td class="you-col cell-yes">yes</td></tr>
+</table>
+</div>
+
+<div style="margin-top:18px;">
+  <div class="pattern-row"><span class="lbl">Universal (5/5):</span> Public technical writing tied to a live URL, under their own name.</div>
+  <div class="pattern-row"><span class="lbl">Majority (3-4/5):</span> Conference speaking (4/5); rigorous before/after quantification in public writing (3/5).</div>
+  <div class="pattern-row"><span class="lbl">Divergent (1-2/5):</span> OSS package with real adoption (2/5); founding a community event (1/5); large personal indie-app portfolio (1/5); deep low-level framework-internals writing (1/5).</div>
+  <div class="pattern-row"><span class="lbl">Your strengths:</span> internal AI-assisted dev tooling ownership, incident-triggered architecture leadership, and sustained structured mentoring, zero of 5 verified comparators show any of these publicly.</div>
+  <div class="pattern-row"><span class="lbl">Also true of all 5:</span> none of them cite a hard business/revenue metric either, every number they use is an engineering metric (build time, stars, test counts). This is an industry-wide gap, not a competitive disadvantage specific to you.</div>
+</div>
+
+<table style="margin-top:14px;">
+<tr><th>Gap</th><th>Seen in</th><th>Type</th><th>Effort</th><th>Priority</th><th>Suggestion</th><th>Addable now</th></tr>
+<tr style="border-left:3px solid var(--green);"><td>No public technical writing under your own name</td><td>5/5</td><td>addable</td><td>medium</td><td>high</td><td>Publish 1-2 posts on already-real work: the AI-assisted dev-tooling build or the Algolia&rarr;Shopify PDP migration are both technically meaty and need no confidential detail.</td><td>Yes</td></tr>
+<tr style="border-left:3px solid var(--green);"><td>Process/tooling bullets don't lead with a before/after number the way peers' writing does</td><td>3/5</td><td>surface_not_demonstrated</td><td>quick_win</td><td>high</td><td>See Section 11: get a real number for the Algolia migration and AI-tooling bullets, and consider whether the (currently off-CV) Cuckoo toolchain fix deserves its own quantified bullet.</td><td>Needs your confirmation</td></tr>
+<tr><td>No conference/public-speaking presence</td><td>4/5</td><td>long_term</td><td>long_term</td><td>medium</td><td>Pitch a talk to NSLondon or a SwiftNorth/iOSDevUK CFP based on the agentic PR-review subagent system, a topic nobody in this peer set currently covers.</td><td>No</td></tr>
+<tr><td>OSS package exists but wasn't linked/quantified</td><td>2/5</td><td>rename</td><td>quick_win</td><td>low</td><td>Already resolved: AutoMock is linked with a description in the current CV. No further action needed here.</td><td>Already done</td></tr>
+</table>
+</div>
+</details>
+
+<h2 class="section-heading page-break-before" id="timeline">9. Experience timeline &amp; market context</h2>
+<div class="two-col">
+<div id="timeline-block">
+<div class="timeline">
+  <div class="tseg amber" style="flex:1.5;">Vantage XR &middot; 2018&ndash;2020</div>
+  <div class="tseg amber" style="flex:3.8;">Harbour Property &middot; 2020&ndash;2023</div>
+  <div class="tseg green" style="flex:2.5;">Northwind Fitness &middot; 2024&ndash;present</div>
+</div>
+<p style="font-size:9pt;"><b>Trajectory:</b> linear progression, full-stack &rarr; mobile &rarr; iOS specialist with escalating ownership at one employer.<br/>
+<b>Promotion velocity:</b> scope has grown ahead of title at Northwind Fitness. Worth naming directly rather than leaving unaddressed, see Section 3b.<br/>
+<b>Strongest role:</b> Northwind Fitness: module ownership, incident response, AI tooling, cross-platform data-quality leadership.<br/>
+<b>Weakest role:</b> Vantage XR: single bullet, no metric, correctly de-emphasised as the oldest role.</p>
+</div>
+<div id="market">
+<p style="font-size:9pt;"><b>In demand (has):</b> Swift 6 strict concurrency, SwiftUI, async/await, Clean Architecture, SOLID, SPM modularisation, AI-assisted dev-tooling ownership, cross-team influence.</p>
+<p style="font-size:9pt;"><b>Emerging signal from verified peer research:</b> build-tooling trade-off literacy (SPM vs Tuist vs Bazel) shows up as a majority pattern among strong Senior/Staff UK iOS engineers; this CV doesn't currently name a build-tooling opinion.</p>
+<p style="font-size:9pt;"><b>Declining:</b> Combine-first framing, UIKit-only roles, Objective-C. None are leaned on in this CV; correctly de-emphasised.</p>
+<p style="font-size:9pt;"><b>Seniority expectations:</b> Swift 6, SwiftUI, and Clean Architecture/SOLID/SPM read as baseline for UK Senior iOS roles now, not differentiators. Cross-team influence, incident ownership, and public engineering visibility are what separate strong Senior from Staff-track candidates in the verified peer set above.</p>
+<p style="font-size:9pt;"><b>Salary signal:</b> not asserted. A dedicated market-rate search did not complete with verifiable, dated sources this run; not fabricated rather than guessed.</p>
+</div>
+</div>
+
+<h2 class="section-heading page-break-before" id="actionplan">11. Action plan</h2>
+<div class="action-tiers">
+  <div class="tier-panel">
+    <h4>Today &middot; under 1 hour</h4>
+    <div class="action-item"><b>Pin RentLoop and AutoMock on the GitHub profile</b><div class="delta">+1 recruiter &middot; 10 min</div></div>
+    <div class="action-item"><b>Fold one Contentful reference into the PDP v2 bullet, or drop it from Skills</b><div class="delta">closes a Section 3b consistency gap &middot; 10 min</div></div>
+    <div class="action-item"><b>Decide whether to keep the rentloop.example.com link off the CV</b> (it's currently a bare placeholder page, already dropped from this version, confirm you're happy leaving it out)<div class="delta">avoids a weak click-through &middot; 5 min</div></div>
+  </div>
+  <div class="tier-panel">
+    <h4>This week &middot; under 6 hours</h4>
+    <div class="action-item confirm"><b>Confirm a real number for the Algolia&rarr;Shopify bullet</b> (outage duration, rollout scope, or a conversion/checkout metric)<div class="delta">+4 impact &middot; needs your confirmation &middot; 1 hr</div></div>
+    <div class="action-item confirm"><b>Confirm a real number for the AI-tooling bullet</b> (review time saved, violations caught before human review)<div class="delta">+3 impact &middot; needs your confirmation &middot; 1 hr</div></div>
+    <div class="action-item confirm"><b>Decide whether to swap in a quantified Cuckoo-toolchain bullet</b> (didn't make this cut, but has a strong before/after story if you can attach CI time or developer-hours saved)<div class="delta">optional swap for bullet 5 &middot; needs your input &middot; 1 hr</div></div>
+    <div class="action-item"><b>Draft the public write-up outline</b> from the Algolia&rarr;Shopify or AI-tooling internal work</div>
+  </div>
+  <div class="tier-panel">
+    <h4>This month &middot; under 12 hours</h4>
+    <div class="action-item"><b>Publish the technical write-up</b> (personal site, dev.to, or Medium)<div class="delta">+10 peer, +3 recruiter &middot; 6&ndash;10 hrs</div></div>
+    <div class="action-item long"><b>Pitch a talk</b> to NSLondon or a SwiftNorth/iOSDevUK CFP on the agentic PR-review system<div class="delta">long-term bet &middot; low weekly effort</div></div>
+  </div>
+</div>
+<p style="font-size:9pt;color:var(--muted);margin-top:16px;">Projected score after Today + This Week (assuming confirmed numbers land): <b>~85/100</b>. After This Month (publish the write-up): peer-alignment rises further as the universal 5/5 visibility gap starts to close.</p>
+
+<details id="interview">
+<summary>12. Interview defence prep</summary>
+<div class="dash-details-body">
+<p style="font-size:9pt;"><b>Claims that need evidence ready:</b></p>
+<ul style="font-size:9pt;">
+<li><b>"263+ merged PRs, ~2,200 commits"</b>: an interviewer may ask how this is tracked. Have GitHub/internal tooling stats ready to walk through.</li>
+<li><b>"22 country-data mismatches"</b>: have the QA comparison method ready to describe, this is a strong, specific story, use it.</li>
+<li><b>"280+ PRs reviewed in 18 months"</b>: be ready with one specific example of a PR you sent back and why, per Section 3b's kill question.</li>
+</ul>
+<p style="font-size:9pt;"><b>Stretch answers for bullets not yet quantified:</b></p>
+<ul style="font-size:9pt;">
+<li><b>AI-tooling bullet:</b> verbally describe the 5 specific PR-review agents (architecture, correctness, DRY, quality, test coverage) and the pre-commit enforcement mechanism, and point to the public <code>hooks-demo</code> repo as corroborating evidence, even without a hard percentage on the page.</li>
+<li><b>Algolia migration:</b> verbally describe the outage timeline, the staged rollout, and how the cross-platform mapping divergence was discovered.</li>
+<li><b>Mentoring bullet:</b> go deeper verbally on the specific domains covered and how the mentee's ownership grew over the period.</li>
+</ul>
+<p style="font-size:9pt;"><b>Kill questions from the hiring-manager verdict (Section 3b), have answers ready for all 5 before you apply:</b></p>
+<ul style="font-size:9pt;">
+<li>Why is your title still "iOS Engineer" after 2.5 years if the scope here is genuinely Senior?</li>
+<li>Pick one module you built from scratch. What changed for the business or the user because it exists?</li>
+<li>Tell me about a PR you rejected or sent back, and why.</li>
+<li>Walk me through one real violation your PR-review agents caught and what happened next.</li>
+<li>How did the 22 country-data mismatches go unnoticed for three years, and what changed in your process because of it?</li>
+</ul>
+</div>
+</details>
+
+<h2 class="section-heading" id="strategy">13. Application strategy</h2>
+<div class="two-col">
+<div>
+<p style="font-size:9pt;"><b>Apply now:</b> Senior iOS Engineer roles at UK e-commerce, retail, and marketplace companies (direct domain match to ASOS/Depop-tier employers in Section 8); current profile is competitive today.</p>
+<p style="font-size:9pt;"><b>Apply after quick wins:</b> companies with a visibly active engineering blog or conference presence (Bumble, Deloitte-Digital-style consultancies) will respond better once a write-up exists to point to.</p>
+</div>
+<div>
+<p style="font-size:9pt;"><b>Stretch applications:</b> Staff-track roles, or roles that explicitly list conference speaking or public visibility as a requirement; revisit after the This Month tier lands.</p>
+<p style="font-size:9pt;"><b>Volume:</b> 3&ndash;5 well-targeted applications/week. <b>Mix:</b> 70% safe (Senior IC, domain/brand match) / 30% stretch (Staff-adjacent or higher-prestige brand).</p>
+</div>
+</div>
+
+<h2 class="section-heading" id="linkedin">14. LinkedIn consistency check</h2>
+<p style="font-size:9pt;color:var(--muted);"><span class="badge" style="background:var(--bg-alt);color:var(--muted);border:1px solid var(--border);">NOT PROVIDED</span> No LinkedIn URL was supplied this run, and you asked not to be re-asked for one. A prior pipeline run had fabricated a LinkedIn URL with no source, that has been removed from your records this run (never invent a URL). If you have a real LinkedIn profile, provide it in a future session and run <code>linkedin-optimiser</code> to confirm it matches this CV; mismatched dates or titles read as a red flag to recruiters who cross-check.</p>
+
+<div class="footer-note">
+Generated {{GENERATED_DATE}} by the cv-generator pipeline. Composite readiness formula, verdict thresholds, and section structure per <code>skills/dashboard/SKILL.md</code>. Print to PDF: use your browser's print dialog (Cmd/Ctrl+P) with "Background graphics" enabled, or <code>chrome --headless --print-to-pdf</code>.
+</div>
+
+</main>
+</div>
+</body>
+</html>

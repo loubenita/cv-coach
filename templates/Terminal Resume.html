@@ -1,0 +1,647 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>Sam Rivera: Resume</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<style>
+/* ── inlined: shared.css ─────────────────────────────────────── */
+:root {
+  --accent: oklch(42% 0.10 230);
+  --accent-soft: oklch(92% 0.02 230);
+  --ink: oklch(20% 0.010 250);
+  --ink-soft: oklch(38% 0.010 250);
+  --ink-mute: oklch(55% 0.008 250);
+  --rule: oklch(88% 0.008 250);
+  --paper: oklch(98.8% 0.004 250);
+  --paper-cool: oklch(97% 0.008 250);
+}
+* { box-sizing: border-box; }
+html, body {
+  margin: 0;
+  padding: 0;
+  background: oklch(93% 0.010 250);
+  color: var(--ink);
+  -webkit-font-smoothing: antialiased;
+  font-family: 'Inter', system-ui, sans-serif;
+}
+.toggle-bar {
+  position: fixed; top: 16px; left: 50%; transform: translateX(-50%);
+  background: white; border-radius: 999px; padding: 6px;
+  display: flex; gap: 4px;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.12);
+  z-index: 100; font-family: 'JetBrains Mono', ui-monospace, monospace;
+}
+.toggle-bar button {
+  border: 0; background: transparent; padding: 8px 14px;
+  border-radius: 999px; font-size: 11px; font-weight: 500;
+  letter-spacing: 0.04em; color: var(--ink-soft); cursor: pointer;
+  font-family: inherit; text-transform: uppercase; transition: all 0.15s;
+}
+.toggle-bar button:hover { color: var(--ink); }
+.toggle-bar button.active { background: var(--ink); color: white; }
+.variant { display: none; }
+.variant.active { display: block; }
+.page {
+  width: 210mm; height: 297mm; background: var(--paper);
+  margin: 80px auto 32px;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.04), 0 20px 60px -20px rgba(40,40,60,0.18);
+  position: relative; overflow: hidden;
+}
+@page { size: A4; margin: 0; }
+@media print {
+  html, body { background: white; }
+  .toggle-bar { display: none !important; }
+  .page { margin: 0; box-shadow: none; page-break-after: always; }
+  .variant:not(.active) { display: none !important; }
+}
+
+/* ── inlined: v3-terminal.css ────────────────────────────────── */
+.v3 .page {
+  padding: 0;
+  font-family: 'SF Mono', 'JetBrains Mono', ui-monospace, 'Menlo', 'Consolas', monospace;
+  background: var(--term-bg); color: var(--term-fg);
+  font-size: 8.5pt; line-height: 1.45;
+  display: grid; grid-template-rows: auto 1fr;
+  --term-bg: #1b1d23; --term-fg: #e4e6ec;
+  --term-mute: #7a818f; --term-dim: #5a6070;
+  --term-rule: #2a2d36; --term-panel: #23262e; --term-panel-2: #262a33;
+  --c-keyword: #c792ea; --c-string: #c3e88d; --c-func: #82aaff;
+  --c-number: #f78c6c; --c-comment: #676e7d; --c-type: #ffcb6b;
+  --c-prompt: #89ddff; --c-accent: #ff5d7d;
+}
+.v3 .chrome {
+  background: linear-gradient(to bottom, #3a3e49, #2d3039);
+  padding: 3mm 5mm;
+  display: grid; grid-template-columns: auto 1fr auto;
+  align-items: center; gap: 4mm; border-bottom: 1px solid #13151a;
+}
+.v3 .lights { display: flex; gap: 2mm; }
+.v3 .lights span { width: 3.2mm; height: 3.2mm; border-radius: 50%; display: block; }
+.v3 .lights .red { background: #ff5f57; }
+.v3 .lights .yel { background: #febc2e; }
+.v3 .lights .grn { background: #28c840; }
+.v3 .chrome .title { text-align: center; font-size: 8pt; color: #b5b9c6; font-weight: 500; letter-spacing: 0.01em; }
+.v3 .chrome .title .pid { color: #7a818f; font-weight: 400; margin-left: 6px; }
+.v3 .chrome .tabs { font-size: 7.5pt; color: var(--term-mute); font-family: inherit; }
+.v3 .term { padding: 4mm 7mm 3mm 7mm; position: relative; }
+.v3 .ps1 { color: var(--term-mute); margin: 4mm 0 2mm 0; font-size: 8.5pt; letter-spacing: 0.01em; }
+.v3 .ps1:first-child { margin-top: 0; }
+.v3 .ps1 .user { color: var(--c-func); font-weight: 600; }
+.v3 .ps1 .at { color: var(--term-mute); }
+.v3 .ps1 .host { color: var(--c-type); font-weight: 600; }
+.v3 .ps1 .path { color: var(--c-string); }
+.v3 .ps1 .arrow { color: var(--c-prompt); font-weight: 700; margin: 0 4px; }
+.v3 .ps1 .cmd { color: var(--term-fg); }
+.v3 .ps1 .flag { color: var(--c-number); }
+.v3 .ps1 .arg { color: var(--c-string); }
+.v3 .out { padding: 0 0 2mm 0; }
+.v3 .name { font-family: inherit; font-size: 22pt; font-weight: 700; color: var(--term-fg); letter-spacing: -0.02em; margin: 0; line-height: 1; }
+.v3 .name .at { color: var(--c-accent); font-weight: 400; }
+.v3 .name .host { color: var(--c-type); }
+.v3 .role { margin-top: 2mm; font-size: 8.5pt; color: var(--term-mute); line-height: 1.5; }
+.v3 .role .tag { color: var(--c-keyword); }
+.v3 .role .val { color: var(--c-string); }
+.v3 .role .comment { color: var(--c-comment); font-style: italic; }
+.v3 .header-row {
+  display: grid; grid-template-columns: 1fr auto;
+  align-items: start; gap: 8mm;
+  padding-bottom: 5mm; border-bottom: 1px dashed var(--term-rule); margin-bottom: 2mm;
+}
+.v3 .contact { text-align: right; font-size: 7.75pt; line-height: 1.75; color: var(--term-mute); }
+.v3 .contact a { color: inherit; text-decoration: none; }
+.v3 .contact .lbl { color: var(--c-keyword); margin-right: 6px; }
+.v3 .contact a b { color: var(--c-string); font-weight: 400; }
+.v3 .cmd-head { margin: 4mm 0 2mm 0; font-size: 8.5pt; color: var(--term-mute); letter-spacing: 0.01em; }
+.v3 .cmd-head .sigil { color: var(--c-prompt); font-weight: 700; margin-right: 5px; }
+.v3 .cmd-head .bin { color: var(--c-func); font-weight: 600; }
+.v3 .cmd-head .arg { color: var(--c-string); }
+.v3 .cmd-head .flag { color: var(--c-number); }
+.v3 .body { display: grid; grid-template-columns: 1fr 64mm; gap: 8mm; align-items: start; }
+.v3 .profile {
+  font-size: 8.25pt; line-height: 1.45; color: var(--term-fg);
+  padding: 2.5mm 4mm; background: var(--term-panel);
+  border-left: 2px solid var(--c-comment); margin-top: 1.5mm;
+  text-wrap: pretty; border-radius: 1mm;
+}
+.v3 .profile::before { content: "/**"; display: block; color: var(--c-comment); font-size: 7.5pt; margin-bottom: 1.5mm; }
+.v3 .profile::after  { content: " */"; display: block; color: var(--c-comment); font-size: 7.5pt; margin-top: 1.5mm; }
+.v3 .job { margin-bottom: 2mm; padding-bottom: 2mm; border-bottom: 1px dashed var(--term-rule); }
+.v3 .job:last-child { border-bottom: 0; }
+.v3 .job-head { display: grid; grid-template-columns: 1fr auto; align-items: baseline; margin-bottom: 0.5mm; gap: 6mm; }
+.v3 .job-title { font-size: 10.5pt; font-weight: 700; color: var(--c-type); letter-spacing: -0.01em; }
+.v3 .job-title::before { content: "▸ "; color: var(--c-prompt); font-weight: 400; }
+.v3 .job-company { font-size: 8.5pt; color: var(--c-func); margin-bottom: 1.5mm; padding-left: 4mm; }
+.v3 .job-company .loc { color: var(--term-mute); }
+.v3 .job-dates { font-size: 7.75pt; color: var(--c-number); white-space: nowrap; }
+.v3 .bullets { margin: 0; padding: 0 0 0 4mm; list-style: none; }
+.v3 .bullets li {
+  font-size: 8pt; line-height: 1.45;
+  padding-left: 5mm; position: relative;
+  margin-bottom: 0.8mm; text-wrap: pretty; color: var(--term-fg);
+}
+.v3 .bullets li:last-child { margin-bottom: 0; }
+.v3 .bullets li::before { content: "─"; position: absolute; left: 0; top: 0; color: var(--c-prompt); }
+.v3 .bullets li b { font-weight: 600; color: var(--c-string); }
+.v3 .project {
+  padding: 2.5mm 4mm; background: var(--term-panel-2);
+  border: 1px solid var(--term-rule); border-radius: 1mm;
+  margin-bottom: 0; position: relative;
+}
+.v3 .project::before {
+  content: "// project.json"; position: absolute; top: -2.5mm; left: 3mm;
+  background: var(--term-bg); padding: 0 2mm;
+  font-size: 7pt; color: var(--c-comment);
+}
+.v3 .project .ptitle { font-size: 11pt; font-weight: 700; color: var(--c-type); }
+.v3 .project .ptitle::before { content: '"'; color: var(--c-accent); }
+.v3 .project .ptitle::after  { content: '"'; color: var(--c-accent); }
+.v3 .project .plinks { font-size: 7.75pt; color: var(--c-string); margin-top: 1.5mm; line-height: 1.6; }
+.v3 .project .plinks a { color: inherit; text-decoration: none; }
+.v3 .project .plinks .key { color: var(--c-keyword); margin-right: 4px; }
+.v3 .project .pdesc { font-size: 8pt; line-height: 1.45; margin-top: 1.2mm; color: var(--term-fg); text-wrap: pretty; }
+.v3 .side { display: flex; flex-direction: column; gap: 4mm; }
+.v3 .side h3 { font-size: 8pt; font-weight: 500; color: var(--term-mute); margin: 0 0 2mm 0; letter-spacing: 0.01em; }
+.v3 .side h3 .sigil { color: var(--c-prompt); margin-right: 4px; font-weight: 700; }
+.v3 .side h3 .bin { color: var(--c-func); }
+.v3 .side .block { background: var(--term-panel); border: 1px solid var(--term-rule); border-radius: 1mm; padding: 3mm 3.5mm; }
+.v3 .skills-grid { display: grid; grid-template-columns: 1fr 1fr; column-gap: 4mm; row-gap: 1.5mm; }
+.v3 .skill { font-size: 7.75pt; line-height: 1.35; }
+.v3 .skill .k { color: var(--c-keyword); display: block; font-size: 7pt; margin-bottom: 0.2mm; }
+.v3 .skill .v { color: var(--c-string); display: block; }
+.v3 .edu { margin-bottom: 2.5mm; font-size: 7.75pt; }
+.v3 .edu:last-child { margin-bottom: 0; }
+.v3 .edu .deg { font-weight: 500; line-height: 1.35; color: var(--term-fg); }
+.v3 .edu .meta { font-size: 7pt; color: var(--c-number); margin-top: 0.5mm; }
+.v3 .cursor-line { margin-top: 2mm; font-size: 8.5pt; color: var(--term-mute); }
+.v3 .cursor-line .user { color: var(--c-func); font-weight: 600; }
+.v3 .cursor-line .at { color: var(--term-mute); }
+.v3 .cursor-line .host { color: var(--c-type); font-weight: 600; }
+.v3 .cursor-line .path { color: var(--c-string); }
+.v3 .cursor-line .arrow { color: var(--c-prompt); font-weight: 700; margin: 0 4px; }
+.v3 .cursor {
+  display: inline-block; width: 2mm; height: 3mm; background: var(--term-fg);
+  vertical-align: text-bottom; margin-left: 2px;
+  animation: v3-blink 1.1s steps(2, end) infinite;
+}
+@keyframes v3-blink { to { visibility: hidden; } }
+@media print { .v3 .page { -webkit-print-color-adjust: exact; print-color-adjust: exact; } }
+
+/* ── page overrides ──────────────────────────────────────────── */
+  /* Override shared: single variant, always visible */
+  .variant { display: block !important; }
+  .toggle-bar { display: none !important; }
+  html, body { background: #0f1014; min-height: 100vh; }
+
+  /* Dynamic page height: grows with content instead of clipping at A4 */
+  .v3 .page {
+    height: auto;
+    min-height: 297mm;
+    overflow: visible;
+    box-shadow: 0 20px 60px -10px rgba(0,0,0,0.7), 0 2px 8px rgba(0,0,0,0.4);
+  }
+
+  @media print {
+    /* Zero margins so the dark background reaches the page edges on every page.
+       Breathing room for pages 2+ is handled by padding-top on .term-continuation. */
+    @page { size: A4; margin: 0; }
+    /* Chrome fixed at top so it repeats as a header on every printed page.
+       Term padding-top clears the chrome height (~10mm) on every page. */
+    .v3 .chrome {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      -webkit-print-color-adjust: exact !important;
+      print-color-adjust: exact !important;
+    }
+    .v3 .term { padding: 10mm 14mm 0; }
+
+    html, body {
+      background: #1b1d23 !important;
+      -webkit-print-color-adjust: exact !important;
+      print-color-adjust: exact !important;
+    }
+    /* Fixed layer repeats on every printed page, covering any gap below content */
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      background: #1b1d23;
+      z-index: -1;
+      -webkit-print-color-adjust: exact !important;
+      print-color-adjust: exact !important;
+    }
+    .v3 .page {
+      min-height: 0;
+      margin: 0;
+      box-shadow: none;
+      page-break-after: auto;
+    }
+    .v3 .job,
+    .v3 .project,
+    .v3 .side .block {
+      page-break-inside: avoid;
+      break-inside: avoid;
+    }
+    /* Push the first element on page 2 below the fixed chrome header */
+    .v3 .job--page2 { padding-top: 17mm; }
+    /* Decorative blinking-cursor prompt only makes sense on screen; in print it
+       was pushing a 3rd, near-empty page past the real 2-page content. */
+    .v3 .cursor-line { display: none; }
+  }
+
+  /* Roomier spacing: projects and a few surrounding sections */
+  .v3 .project {
+    padding: 4mm 5mm 4.5mm;
+  }
+  .v3 .project .plinks { margin-top: 2.5mm; }
+  .v3 .project .pdesc  { margin-top: 2.5mm; line-height: 1.55; }
+  .v3 .project + .project { margin-top: 8mm !important; }
+  .v3 .cmd-head + .project { margin-top: 5mm; }
+  .v3 .cmd-head { margin: 4mm 0 2.5mm 0; }
+  .v3 .out + .cmd-head { margin-top: 1.5mm; }
+  .v3 .profile + .cmd-head { margin-top: 6mm; }
+  .v3 .job + .cmd-head { margin-top: 7mm; }
+  .v3 .ps1 { margin: 5mm 0 4mm 0; }
+  .v3 .ps1:first-child { margin-top: 2mm; }
+  .v3 .cursor-line { margin-top: 9mm; }
+  .v3 .side .block { padding: 4mm 4mm; }
+  .v3 .side { gap: 5mm; }
+  .v3 .job { padding-bottom: 3.5mm; margin-bottom: 3.5mm; }
+  .v3 .bullets li { margin-bottom: 1.3mm; }
+
+  /* Visually hidden but extractable by ATS, PDF readers and screen readers */
+  .sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+  }
+
+  /* ── Theme toggle button ─────────────────────────────────── */
+  .theme-toggle {
+    position: fixed;
+    top: 18px;
+    right: 18px;
+    z-index: 100;
+    display: inline-flex;
+    align-items: center;
+    gap: 2px;
+    padding: 4px;
+    border-radius: 999px;
+    background: rgba(255,255,255,0.08);
+    border: 1px solid rgba(255,255,255,0.12);
+    backdrop-filter: blur(8px);
+    font-family: 'JetBrains Mono', ui-monospace, monospace;
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+  .theme-toggle button {
+    border: 0;
+    background: transparent;
+    color: #b5b9c6;
+    padding: 6px 12px;
+    border-radius: 999px;
+    cursor: pointer;
+    font: inherit;
+    transition: all 0.15s;
+  }
+  .theme-toggle button:hover { color: #fff; }
+  .theme-toggle button.active {
+    background: #e4e6ec;
+    color: #1b1d23;
+  }
+  .theme-toggle .sep {
+    width: 1px; height: 14px;
+    background: rgba(255,255,255,0.15);
+    margin: 0 2px;
+    flex-shrink: 0;
+  }
+  .theme-toggle #pdf-btn { color: #ff5d7d; }
+  .theme-toggle #pdf-btn:hover { background: #ff5d7d; color: #fff; }
+  html.light-theme .theme-toggle .sep { background: rgba(0,0,0,0.12); }
+  html.light-theme .theme-toggle #pdf-btn { color: #e0003c; }
+  html.light-theme .theme-toggle #pdf-btn:hover { background: #e0003c; color: #fff; }
+  @media print { .theme-toggle { display: none !important; } }
+
+  /* -- Light theme overrides: same card layout as dark, light colour palette -- */
+  html.light-theme,
+  html.light-theme body { background: #e4e6eb !important; }
+
+  html.light-theme .theme-toggle {
+    background: rgba(0,0,0,0.06);
+    border-color: rgba(0,0,0,0.1);
+  }
+  html.light-theme .theme-toggle button { color: #4b5563; }
+  html.light-theme .theme-toggle button:hover { color: #111; }
+  html.light-theme .theme-toggle button.active {
+    background: #1b1d23;
+    color: #fafafa;
+  }
+
+  html.light-theme .v3 .page {
+    box-shadow: 0 1px 3px rgba(0,0,0,0.06), 0 20px 60px -20px rgba(40,40,60,0.12);
+    --term-bg: #ffffff;
+    --term-fg: #1a1a1a;
+    --term-mute: #6b7280;
+    --term-dim: #9ca3af;
+    --term-rule: #e2e5ea;
+    --term-panel: #f5f6f8;
+    --term-panel-2: #eef0f4;
+    --c-keyword: #7c3aed;
+    --c-string: #15803d;
+    --c-func: #1d4ed8;
+    --c-number: #c2410c;
+    --c-comment: #6b7280;
+    --c-type: #b45309;
+    --c-prompt: #0e7490;
+    --c-accent: #be185d;
+  }
+
+  html.light-theme .v3 .chrome {
+    background: linear-gradient(to bottom, #e6e8ed, #d8dbe2);
+    border-bottom: 1px solid #c7cad1;
+  }
+  html.light-theme .v3 .chrome .title { color: #4b5563; }
+  html.light-theme .v3 .chrome .title .pid { color: #9ca3af; }
+  html.light-theme .v3 .project { background: var(--term-panel-2); }
+  html.light-theme .v3 .project::before { background: var(--term-bg); }
+  html.light-theme .v3 .bullets li b { color: #15803d; }
+  html.light-theme .v3 .profile { border-left-color: #9ca3af; }
+
+  /* -- PDF mode: edge-to-edge light layout, triggered by PDF button -- */
+  html.pdf-mode,
+  html.pdf-mode body { background: #fff !important; }
+
+  html.pdf-mode .theme-toggle { display: none !important; }
+
+  html.pdf-mode .v3 .page {
+    margin: 0 !important;
+    width: 100% !important;
+    max-width: none !important;
+    box-shadow: none !important;
+    min-height: auto;
+    --term-bg: #ffffff;
+    --term-fg: #1a1a1a;
+    --term-mute: #6b7280;
+    --term-dim: #9ca3af;
+    --term-rule: #e2e5ea;
+    --term-panel: #f5f6f8;
+    --term-panel-2: #eef0f4;
+    --c-keyword: #7c3aed;
+    --c-string: #15803d;
+    --c-func: #1d4ed8;
+    --c-number: #c2410c;
+    --c-comment: #6b7280;
+    --c-type: #b45309;
+    --c-prompt: #0e7490;
+    --c-accent: #be185d;
+  }
+
+  html.pdf-mode .v3 .chrome {
+    background: linear-gradient(to bottom, #e6e8ed, #d8dbe2);
+    border-bottom: 1px solid #c7cad1;
+  }
+  html.pdf-mode .v3 .chrome .title { color: #4b5563; }
+  html.pdf-mode .v3 .chrome .title .pid { color: #9ca3af; }
+  html.pdf-mode .v3 .project { background: var(--term-panel-2); }
+  html.pdf-mode .v3 .project::before { background: var(--term-bg); }
+  html.pdf-mode .v3 .bullets li b { color: #15803d; }
+  html.pdf-mode .v3 .profile { border-left-color: #9ca3af; }
+
+  @media print {
+    html.pdf-mode, html.pdf-mode body { background: #fff !important; }
+    html.pdf-mode body::before { background: #fff !important; }
+  }
+</style>
+</head>
+<body>
+
+<div class="theme-toggle" role="group" aria-label="Theme toggle">
+  <button type="button" data-theme="dark" class="active">Dark</button>
+  <button type="button" data-theme="light">Light</button>
+  <span class="sep" aria-hidden="true"></span>
+  <button type="button" id="pdf-btn">PDF</button>
+</div>
+
+<section class="variant v3 active" data-screen-label="Terminal Resume">
+<article class="page">
+
+  <!-- Window chrome -->
+  <header class="chrome">
+    <div class="lights">
+      <span class="red"></span><span class="yel"></span><span class="grn"></span>
+    </div>
+    <div class="title">sam · resume · zsh <span class="pid">· 80×24</span></div>
+    <div class="tabs"></div>
+  </header>
+
+  <!-- Terminal body -->
+  <div class="term">
+
+    <h1 class="sr-only">Sam Rivera: iOS Engineer CV</h1>
+    <h2 class="sr-only">Contact</h2>
+    <!-- $ whoami -->
+    <div class="ps1">
+      <span class="user">sam</span><span class="at">@</span><span class="host">macbook-pro</span>
+      <span class="path">~/resume</span>
+      <span class="arrow">❯</span>
+      <span class="cmd">whoami</span> <span class="flag">--verbose</span>
+    </div>
+
+    <div class="out">
+      <div class="header-row">
+        <div>
+          <h1 class="name">sam<span class="at">.</span><span class="host">rivera</span></h1>
+          <div class="role">
+            <span class="tag">role</span>=<span class="val">"Senior iOS Engineer"</span>&nbsp;&nbsp;
+            <span class="tag">stack</span>=<span class="val">"Swift, SwiftUI, async/await, Clean Architecture"</span>
+            <br/>
+            <span class="comment"># 14+ years of code, since 2012</span><br/>
+            <span class="comment"># 7+ years professional, since 2018</span><br/>
+            <span class="comment"># 6+ years on iOS, since 2020</span>
+          </div>
+        </div>
+        <div class="contact">
+          <div><span class="lbl">@loc</span>Solihull, UK · open to remote</div>
+          <div><span class="lbl">@phone</span>07700 900123</div>
+          <div><span class="lbl">@email</span><a href="mailto:sam.rivera@example.com">sam.rivera@example.com</a></div>
+          <div><span class="lbl">@github</span><a href="https://github.com/samrivera" target="_blank" rel="noopener">github.com/samrivera</a></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- $ cat profile.md -->
+    <h2 class="sr-only">Profile</h2>
+    <div class="cmd-head">
+      <span class="sigil">❯</span><span class="bin">cat</span> <span class="arg">profile.md</span>
+    </div>
+    <div class="profile">
+      iOS engineer with 6+ years building consumer Swift/SwiftUI apps, 2.5 of them owning end-to-end architecture on the Northwind Fitness app (4.9&#9733;, 53k+ ratings, 1M+ monthly users). Led an incident-driven Algolia-to-Shopify migration, delivered two feature epics for squads outside my own with zero ramp-up time, and built the team's AI-assisted development infrastructure from scratch. Specialise in Clean Architecture and Swift Package modularisation.
+    </div>
+
+    <!-- $ git log --since=2018 -->
+    <h2 class="sr-only">Work Experience</h2>
+    <div class="cmd-head">
+      <span class="sigil">❯</span><span class="bin">git log</span> <span class="flag">--author</span>=<span class="arg">sam</span> <span class="flag">--since</span>=<span class="arg">2018</span>
+    </div>
+
+    <div class="body">
+      <div>
+        <article class="job">
+          <div class="job-head">
+            <div class="job-title">iOS Engineer</div>
+            <div class="job-dates">2024.01 → present</div>
+          </div>
+          <div class="job-company">Northwind Fitness <span class="loc">· Solihull, UK · Northwind Fitness app, 4.9★ (53k+ ratings) on the App Store</span></div>
+          <ul class="bullets">
+            <li>Owned end-to-end delivery of 5+ Swift Package modules built from scratch (Product Detail Page rebuild, Address Book, Retail &amp; Events Booking, Contextual Search), serving 1M+ monthly users on the Northwind Fitness app, covering 263+ merged PRs and ~2,200 commits as primary author since Jan 2024.</li>
+            <li>Led the iOS migration of Product Detail Page data-fetching from Algolia to Shopify after a production outage took the page down for all users, shipping a dedicated module with store-scoped feature toggles for safe regional rollout, then aligned iOS, Android and Web on one canonical data-mapping approach after discovering all three had been independently mapping the same API response.</li>
+            <li>Designed and built a team-wide AI-assisted development infrastructure from scratch: an instruction-routing system enforced automatically via a pre-tool Git hook, five specialised PR-review agents (architecture, correctness, DRY, code quality, test coverage), and an AI agent that generates consistent C4 architecture diagrams, now adopted as the team standard.</li>
+            <li>Delivered two full feature epics for a squad outside my own with no ramp-up time: shipped the Contextual Search epic end-to-end in a single sprint, then led the full New Search Tab epic (navigation, state management, accessibility, QA handoff) solo, while maintaining full ownership of my home squad's commitments throughout.</li>
+            <li>Mentored a junior engineer through 15+ structured sessions on Clean Architecture, TDD and PR hygiene, coaching a shift to smaller, focused pull requests that cut review friction and regression risk across the squad.</li>
+          </ul>
+        </article>
+
+        <article class="job job--page2">
+          <div class="job-head">
+            <div class="job-title">Mobile Developer</div>
+            <div class="job-dates">2020.02 → 2023.12</div>
+          </div>
+          <div class="job-company">Harbour Property <span class="loc">· Birmingham, UK</span></div>
+          <ul class="bullets">
+            <li>Led development of an in-house Swift/SwiftUI messaging app for secure customer-to-agent communication on the property platform, maintained through Unit, UI and Snapshot tests.</li>
+            <li>Drove team adoption of GraphQL alongside REST to streamline data delivery and broaden feature scope, and built CI/CD pipelines (GitHub Actions, Azure Pipelines) automating build, signing, TestFlight and App Store release.</li>
+            <li>Led extensive A/B testing through a UIKit rebuild/migration from Xamarin, and mentored junior developers through the School of Code bootcamp programme.</li>
+          </ul>
+        </article>
+
+        <article class="job">
+          <div class="job-head">
+            <div class="job-title">Full Stack Developer</div>
+            <div class="job-dates">2018.09 → 2020.02</div>
+          </div>
+          <div class="job-company">Vantage XR <span class="loc">· Kineton, UK</span></div>
+          <ul class="bullets">
+            <li>Led a mobile-first rebuild of internal systems to improve employee workflow, including projects for a medical company shown at CES Las Vegas under tight deadlines.</li>
+          </ul>
+        </article>
+
+        <h2 class="sr-only">Projects</h2>
+        <div class="cmd-head">
+          <span class="sigil">❯</span><span class="bin">open</span> <span class="arg">./projects</span> <span class="flag">--org</span>=<span class="arg">samrivera</span>
+        </div>
+        <div class="project">
+          <div class="ptitle">RentLoop</div>
+          <div class="plinks">
+            <span class="key">web:</span><a href="https://rentloop.example.com" target="_blank" rel="noopener">rentloop.example.com</a>&nbsp;&nbsp;<span class="key">app:</span><a href="#" target="_blank" rel="noopener">apps.apple.com/gb/app/rentloop</a>
+          </div>
+          <div class="pdesc">Consumer iOS app for UK renters to search rental properties and read tenant reviews of landlords and letting agencies. Built in SwiftUI on MVVM with async/await networking, a hosted backend, Apple Sign-In, postcode search, favourites, history, and dark mode; live on the App Store, v2.2.</div>
+        </div>
+        <div class="project" style="margin-top: 3mm;">
+          <div class="ptitle">AutoMock</div>
+          <div class="plinks">
+            <span class="key">repo:</span><a href="#" target="_blank" rel="noopener">github.com/samrivera/automock</a>&nbsp;&nbsp;<span class="key">platform:</span>iOS, Swift 5.9+
+          </div>
+          <div class="pdesc">Open-source Swift package that writes XCTest protocol mocks for you. Cuts the time spent wiring up mocks, avoids the copy-paste bugs that usually creep in, and keeps tests safely in sync whenever a protocol changes. Built with SwiftSyntax and <b>@attached(peer)</b> macros.</div>
+        </div>
+        <div class="project" style="margin-top: 3mm;">
+          <div class="ptitle">claude-hooks-demo</div>
+          <div class="plinks">
+            <span class="key">repo:</span><a href="#" target="_blank" rel="noopener">github.com/samrivera/claude-hooks-demo</a>&nbsp;&nbsp;<span class="key">platform:</span>Python, no dependencies
+          </div>
+          <div class="pdesc">Minimal, tested demo of Claude Code's 5 hook lifecycle events (PreToolUse, PostToolUse, SessionStart, PreCompact, UserPromptSubmit): a bash-command guard, an auto-formatter, context injection, and a credential-leak prompt check. A public example of the same hook-enforced guardrail approach used to standardise AI-assisted development at Northwind Fitness.</div>
+        </div>
+      </div>
+
+      <aside class="side">
+        <div class="block">
+          <span class="sr-only">Skills</span>
+          <h3><span class="sigil">❯</span><span class="bin">ls</span> ./skills</h3>
+          <div class="skills-grid">
+            <div class="skill"><div class="k">Languages</div><div class="v">Swift, TypeScript, Python</div></div>
+            <div class="skill"><div class="k">iOS</div><div class="v">SwiftUI, UIKit, async/await, Swift 6 strict concurrency, Combine, SwiftData, APNs, Universal Links, Localisation</div></div>
+            <div class="skill"><div class="k">Architecture</div><div class="v">Clean Architecture, SOLID, MVVM, Swift Package Manager, Dependency Injection, TDD</div></div>
+            <div class="skill"><div class="k">APIs</div><div class="v">GraphQL, REST, Algolia, Shopify, Contentful</div></div>
+            <div class="skill"><div class="k">Testing &amp; CI/CD</div><div class="v">Swift Testing, XCTest, XCUITest, Snapshot, Cuckoo, BrowserStack, A/B Testing, Fastlane, GitHub Actions, Bitrise</div></div>
+            <div class="skill"><div class="k">Tooling</div><div class="v">Firebase, Datadog, Unleash, Structurizr/C4</div></div>
+          </div>
+        </div>
+
+        <div class="block">
+          <span class="sr-only">Education</span>
+          <h3><span class="sigil">❯</span><span class="bin">cat</span> ./education</h3>
+          <div class="edu">
+            <div class="deg">BSc Computer Games &amp; Programming</div>
+            <div class="meta">2015 → 2018</div>
+          </div>
+          <div class="edu">
+            <div class="deg">BTEC L3 · 3D Games &amp; Software Dev</div>
+            <div class="meta">2012 → 2014</div>
+          </div>
+        </div>
+
+      </aside>
+    </div>
+
+    <div class="cursor-line">
+      <span class="user">sam</span><span class="at">@</span><span class="host">macbook-pro</span>
+      <span class="path">~/resume</span>
+      <span class="arrow">❯</span><span class="cursor"></span>
+    </div>
+
+  </div>
+
+</article>
+</section>
+
+<script>
+  (function () {
+    var root = document.documentElement;
+    var toggle = document.querySelector('.theme-toggle');
+    if (!toggle) return;
+    var buttons = toggle.querySelectorAll('button[data-theme]');
+
+    function apply(theme) {
+      if (theme === 'light') root.classList.add('light-theme');
+      else root.classList.remove('light-theme');
+      buttons.forEach(function (b) {
+        b.classList.toggle('active', b.dataset.theme === theme);
+      });
+      try { localStorage.setItem('resume-theme', theme); } catch (e) {}
+    }
+
+    var saved = null;
+    try { saved = localStorage.getItem('resume-theme'); } catch (e) {}
+    apply(saved === 'light' ? 'light' : 'dark');
+
+    buttons.forEach(function (b) {
+      b.addEventListener('click', function () { apply(b.dataset.theme); });
+    });
+
+    var pdfBtn = document.getElementById('pdf-btn');
+    if (pdfBtn) {
+      pdfBtn.addEventListener('click', function () {
+        root.classList.add('pdf-mode');
+        var restore = function () {
+          root.classList.remove('pdf-mode');
+          window.removeEventListener('afterprint', restore);
+        };
+        window.addEventListener('afterprint', restore);
+        setTimeout(function () { window.print(); }, 60);
+      });
+    }
+  })();
+</script>
+</body>
+</html>

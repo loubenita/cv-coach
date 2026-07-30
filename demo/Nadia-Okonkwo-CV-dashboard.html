@@ -1,0 +1,551 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>Nadia Okonkwo: CV Dashboard</title>
+<style>
+:root{
+  --green:#16a34a; --green-soft:#dcfce7; --amber:#d97706; --amber-soft:#fef3c7;
+  --orange:#ea580c; --red:#dc2626; --red-soft:#fee2e2; --blue-soft:#dbeafe; --blue:#1d4ed8;
+  --text:#1a1a1a; --muted:#6b7280; --border:#e5e7eb; --bg-alt:#f9fafb; --bg:#ffffff;
+}
+*{box-sizing:border-box;}
+html,body{margin:0;padding:0;background:var(--bg-alt);color:var(--text);font-family:'Helvetica Neue',Arial,sans-serif;font-size:10.5pt;line-height:1.5;}
+a{color:var(--blue);}
+.layout{display:flex;min-height:100vh;}
+nav.rail{
+  width:200px;flex-shrink:0;position:sticky;top:0;height:100vh;overflow-y:auto;
+  background:#111827;color:#d1d5db;padding:20px 14px;font-size:9.5pt;
+}
+nav.rail .brand{color:#fff;font-weight:700;font-size:11pt;margin-bottom:2px;}
+nav.rail .brand-sub{color:#9ca3af;font-size:8.5pt;margin-bottom:18px;}
+nav.rail a{display:block;color:#d1d5db;text-decoration:none;padding:5px 8px;border-radius:4px;margin-bottom:1px;}
+nav.rail a:hover{background:#1f2937;color:#fff;}
+nav.rail details.navgroup{background:transparent;border:0;border-radius:0;margin:0 0 10px;padding:0;}
+nav.rail details.navgroup>summary{cursor:pointer;list-style:none;display:flex;justify-content:space-between;align-items:center;color:#f3f4f6;font-weight:700;font-size:8.3pt;text-transform:uppercase;letter-spacing:0.07em;padding:6px 8px 5px;margin-top:2px;border-bottom:1px solid #1f2937;}
+nav.rail details.navgroup>summary::-webkit-details-marker{display:none;}
+nav.rail details.navgroup>summary::after{content:"\2013";color:#6b7280;font-weight:400;}
+nav.rail details.navgroup:not([open])>summary::after{content:"+";}
+nav.rail details.navgroup>a{padding-left:16px;font-size:9.2pt;margin-top:1px;}
+nav.rail details.navgroup>a:first-of-type{margin-top:5px;}
+nav.rail .dlgroup{margin:2px 0 14px;padding-bottom:13px;border-bottom:1px solid #1f2937;}
+nav.rail .dl-label{color:#9ca3af;font-size:8pt;font-weight:700;text-transform:uppercase;letter-spacing:0.07em;margin:0 0 7px 2px;}
+nav.rail a.dl{display:flex;justify-content:space-between;align-items:center;gap:8px;background:#1f2937;color:#e5e7eb;border:1px solid #374151;border-radius:6px;padding:7px 10px;margin-bottom:6px;font-size:9pt;font-weight:600;}
+nav.rail a.dl:hover{background:#374151;color:#fff;border-color:#4b5563;}
+nav.rail a.dl .dl-name{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+nav.rail a.dl .dl-tag{flex-shrink:0;font-size:7.5pt;font-weight:700;color:#9ca3af;background:#111827;border-radius:4px;padding:1px 6px;}
+nav.rail a.dl.dl-primary{border-color:#16a34a;}
+nav.rail a.dl.dl-primary .dl-tag{color:#22c55e;}
+main.content{flex:1;max-width:1760px;padding:28px 40px 80px;}
+h2.section-heading{font-size:10.5pt;font-weight:700;text-transform:uppercase;letter-spacing:0.07em;border-bottom:1px solid var(--border);padding-bottom:5px;margin:34px 0 14px;color:#111827;}
+h2.section-heading:first-of-type{margin-top:0;}
+.hero{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;align-items:stretch;}
+.hero-card{background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:18px 20px;display:flex;flex-direction:column;}
+.verdict-label{font-size:20pt;font-weight:800;padding:4px 0;}
+.verdict-ready{color:var(--green);} .verdict-almost{color:var(--amber);} .verdict-needs{color:var(--orange);} .verdict-early{color:var(--red);}
+.verdict-sub{color:var(--muted);font-size:9.5pt;margin-top:4px;}
+.score-big{font-size:34pt;font-weight:800;line-height:1;}
+.score-def{color:var(--muted);font-size:8.8pt;margin-top:8px;line-height:1.4;}
+.tier-row{display:flex;justify-content:space-between;font-size:9pt;margin-bottom:6px;padding-bottom:6px;border-bottom:1px dashed var(--border);}
+.tier-row:last-child{border-bottom:0;margin-bottom:0;}
+.next-actions{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:16px;align-items:stretch;}
+.action-card{background:var(--bg);border:1px solid var(--border);border-left:3px solid var(--green);border-radius:6px;padding:12px 14px;font-size:9pt;display:flex;flex-direction:column;}
+.action-card .loc{color:var(--muted);font-size:8.3pt;margin-top:4px;}
+.jd-callout{margin-top:18px;padding:12px 16px;border:1px dashed var(--border);border-radius:8px;background:var(--bg-alt);color:var(--muted);font-size:9.3pt;}
+.scores-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:12px;align-items:stretch;}
+.score-card{background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:14px 14px;display:flex;flex-direction:column;}
+.score-card .label{font-size:8.3pt;text-transform:uppercase;letter-spacing:0.05em;color:var(--muted);}
+.score-card .value{font-size:22pt;font-weight:800;margin:4px 0;}
+.score-card .proj{font-size:8.5pt;color:var(--muted);}
+.score-card .note{font-size:8.2pt;color:var(--orange);margin-top:6px;}
+.band-green{color:var(--green);} .band-lgreen{color:#4d9a3a;} .band-amber{color:var(--amber);} .band-orange{color:var(--orange);} .band-red{color:var(--red);} .band-grey{color:var(--muted);}
+.sim-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;align-items:stretch;}
+.sim-panel{background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:14px 16px;display:flex;flex-direction:column;}
+.sim-panel h4{margin:0 0 8px;font-size:10pt;}
+.badge{display:inline-block;font-size:8pt;font-weight:700;text-transform:uppercase;letter-spacing:0.04em;padding:2px 8px;border-radius:99px;}
+.badge-pass{background:var(--green-soft);color:var(--green);}
+.badge-maybe{background:var(--amber-soft);color:var(--amber);}
+.badge-reject{background:var(--red-soft);color:var(--red);}
+.sim-panel ul{margin:8px 0;padding-left:16px;font-size:9pt;}
+.sim-quote{margin-top:auto;padding-top:10px;font-style:italic;color:var(--muted);font-size:8.8pt;border-top:1px dashed var(--border);}
+table{width:100%;border-collapse:collapse;font-size:9pt;}
+th{text-align:left;text-transform:uppercase;font-size:8pt;letter-spacing:0.05em;color:var(--muted);padding:6px 8px;border-bottom:1px solid var(--border);}
+td{padding:8px;border-bottom:1px solid var(--border);vertical-align:top;}
+tr.low{border-left:3px solid var(--red);} tr.medium{border-left:3px solid var(--amber);} tr.high{border-left:3px solid var(--green);}
+.rating{font-size:8pt;font-weight:700;padding:2px 8px;border-radius:99px;}
+.rating-high{background:var(--green-soft);color:var(--green);} .rating-medium{background:var(--amber-soft);color:var(--amber);} .rating-low{background:var(--red-soft);color:var(--red);}
+.rewrite{margin-top:6px;padding:6px 8px;background:var(--bg-alt);border-radius:5px;font-size:8.6pt;color:#374151;}
+.rewrite b{color:var(--blue);}
+details{background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:0;margin-bottom:14px;}
+details>summary{cursor:pointer;padding:12px 16px;font-weight:700;font-size:10pt;list-style:none;display:flex;justify-content:space-between;align-items:center;}
+details>summary::-webkit-details-marker{display:none;}
+.pill{font-size:8pt;font-weight:600;color:var(--muted);background:var(--bg-alt);border:1px solid var(--border);border-radius:99px;padding:2px 10px;}
+.dash-details-body{padding:4px 16px 16px;}
+.cols4{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;align-items:stretch;}
+.skill-col{background:var(--bg-alt);border-radius:8px;padding:12px 14px;font-size:8.8pt;}
+.skill-col h5{margin:0 0 8px;font-size:9pt;}
+.skill-col ul{margin:0;padding-left:16px;}
+.kw-strip{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px;}
+.kw{font-size:8.3pt;padding:3px 10px;border-radius:99px;border:1px solid var(--border);}
+.kw-yes{background:var(--green-soft);color:var(--green);border-color:transparent;}
+.kw-no{background:var(--red-soft);color:var(--red);border-color:transparent;}
+.peer-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;align-items:stretch;margin-bottom:18px;}
+.peer-card{background:var(--bg-alt);border:1px solid var(--border);border-radius:8px;padding:14px;display:flex;flex-direction:column;}
+.peer-card .name{font-weight:700;font-size:10pt;}
+.peer-card .role{color:var(--muted);font-size:8.7pt;margin-bottom:6px;}
+.tag-domain{background:var(--green-soft);color:var(--green);} .tag-prestige{background:var(--blue-soft);color:var(--blue);} .tag-above{background:var(--amber-soft);color:var(--amber);}
+.tier-pill{font-size:7.6pt;border:1px solid var(--border);border-radius:99px;padding:1px 7px;color:var(--muted);margin-left:6px;}
+.peer-card ul{font-size:8.6pt;margin:8px 0;padding-left:16px;}
+.peer-card .lesson{margin-top:auto;padding-top:8px;font-size:8.6pt;border-top:1px dashed var(--border);color:#374151;}
+.matrix-wrap{overflow-x:auto;}
+.matrix td, .matrix th{white-space:nowrap;text-align:center;}
+.matrix td:first-child, .matrix th:first-child{text-align:left;white-space:normal;min-width:220px;}
+.cell-yes{color:var(--green);font-weight:700;} .cell-partial{color:var(--amber);font-weight:700;} .cell-no{color:var(--muted);}
+.you-col{background:var(--green-soft);}
+.pattern-row{margin-bottom:10px;font-size:9pt;}
+.pattern-row .lbl{font-weight:700;display:inline-block;min-width:110px;}
+.action-tiers{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;align-items:stretch;}
+.tier-panel{background:var(--bg-alt);border-radius:10px;padding:16px;display:flex;flex-direction:column;height:100%;}
+.tier-panel h4{margin:0 0 10px;font-size:10pt;}
+.action-item{background:var(--bg);border-left:3px solid var(--green);border-radius:6px;padding:10px 12px;margin-bottom:8px;font-size:8.8pt;}
+.action-item .delta{font-weight:700;color:var(--green);font-size:8pt;}
+.action-item.long{border-left-color:var(--muted);}
+.action-item.long .delta{color:var(--muted);}
+.action-item.confirm{border-left-color:var(--amber);}
+.action-item.confirm .delta{color:var(--amber);}
+.timeline{display:flex;height:44px;border-radius:6px;overflow:hidden;margin:14px 0;}
+.tseg{display:flex;align-items:center;justify-content:center;color:#fff;font-size:8pt;font-weight:600;padding:0 6px;text-align:center;}
+.tseg.green{background:var(--green);} .tseg.amber{background:var(--amber);}
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:20px;}
+.footer-note{color:var(--muted);font-size:8.5pt;margin-top:40px;padding-top:14px;border-top:1px solid var(--border);}
+.verdict-banner{display:flex;align-items:center;gap:14px;padding:14px 16px;border-radius:8px;margin-bottom:14px;}
+.verdict-banner.weakmaybe{background:var(--amber-soft);}
+.vb-badge{font-size:13pt;font-weight:800;text-transform:uppercase;letter-spacing:0.03em;color:var(--amber);white-space:nowrap;}
+.vb-liner{font-size:9.5pt;color:#78350f;}
+.hm-quote{background:var(--bg-alt);border-left:3px solid var(--amber);padding:12px 14px;font-size:9.3pt;font-style:italic;border-radius:0 6px 6px 0;margin-bottom:14px;}
+.flip-card{background:#fff7ed;border:1px solid #fdba74;border-radius:8px;padding:12px 14px;margin-bottom:16px;font-size:9.3pt;}
+.flip-card b{color:var(--orange);}
+.severity{font-size:7.6pt;font-weight:700;text-transform:uppercase;padding:2px 7px;border-radius:99px;}
+.sev-major{background:var(--amber-soft);color:var(--amber);} .sev-minor{background:var(--bg-alt);color:var(--muted);border:1px solid var(--border);} .sev-dealbreaker{background:var(--red-soft);color:var(--red);}
+.cvq{font-family:ui-monospace,'SF Mono',Menlo,monospace;font-size:8.6pt;background:var(--bg-alt);padding:2px 5px;border-radius:4px;}
+.evidence-strip{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:14px;}
+.ev-chip{font-size:8.3pt;padding:4px 10px;border-radius:99px;border:1px solid var(--border);background:var(--bg-alt);color:var(--muted);}
+@media (max-width:1100px){.hero,.scores-grid,.sim-grid,.cols4,.peer-grid,.action-tiers{grid-template-columns:1fr 1fr;}}
+@media print{
+  nav.rail{display:none;}
+  main.content{max-width:none;padding:0;}
+  .hero-card,.score-card,.sim-panel,.action-item,.peer-card,tr{page-break-inside:avoid;break-inside:avoid;}
+  h2{page-break-after:avoid;}
+  details{border:none;}
+  .page-break-before{page-break-before:always;}
+  @page{size:A4;margin:14mm 16mm;}
+}
+</style>
+</head>
+<body>
+<div class="layout">
+<nav class="rail">
+  <div class="brand">Nadia Okonkwo</div>
+  <div class="brand-sub">CV Dashboard &middot; generated 2026-07-30</div>
+
+  <div class="dlgroup">
+    <div class="dl-label">Download CV</div>
+    <a class="dl dl-primary" href="Nadia-Okonkwo-CV.pdf"><span class="dl-name">Designed PDF</span><span class="dl-tag">.pdf</span></a>
+    <a class="dl" href="Nadia-Okonkwo-CV-ats.pdf"><span class="dl-name">ATS PDF (basic)</span><span class="dl-tag">.pdf</span></a>
+    <a class="dl" href="Nadia-Okonkwo-CV.md"><span class="dl-name">Markdown source</span><span class="dl-tag">.md</span></a>
+  </div>
+
+  <details class="navgroup" open>
+    <summary>Overview &amp; scores</summary>
+    <a href="#verdict">Executive summary</a>
+    <a href="#scores">Score breakdown</a>
+    <a href="#recruiter">Recruiter simulation</a>
+  </details>
+
+  <details class="navgroup" open>
+    <summary>Findings</summary>
+    <a href="#rolefit">Role fit</a>
+    <a href="#jdmatch">JD match</a>
+    <a href="#bullets">Bullet audit</a>
+    <a href="#skills">Skills audit</a>
+    <a href="#peers">Peer benchmark</a>
+    <a href="#timeline">Timeline &amp; market</a>
+    <a href="#linkedin">LinkedIn check</a>
+  </details>
+
+  <details class="navgroup" open>
+    <summary>Hiring manager</summary>
+    <a href="#hmverdict">Hiring-manager verdict</a>
+    <a href="#interview">Interview prep</a>
+  </details>
+
+  <details class="navgroup" open>
+    <summary>Action plan</summary>
+    <a href="#actionplan">Action plan</a>
+    <a href="#strategy">Application strategy</a>
+  </details>
+</nav>
+<main class="content">
+
+<h2 class="section-heading" id="verdict">1. Executive summary</h2>
+<div class="evidence-strip">
+  <span class="ev-chip">Source: your CV only, no performance review, metrics export, LinkedIn or GitHub capture supplied this run</span>
+  <span class="ev-chip">github.com/nadiaokonkwo linked but not fetched or verified this run</span>
+</div>
+<div class="hero">
+  <div class="hero-card">
+    <div class="verdict-label verdict-needs">NEEDS WORK</div>
+    <div class="verdict-sub">A genuinely honest, well-structured CV for a Mid-level backend engineer, but it is not yet a credible Senior application. No bullet shows a decision you made, no mentoring signal exists, and a nine-month gap sits unexplained.</div>
+  </div>
+  <div class="hero-card">
+    <div class="score-big band-orange">63<span style="font-size:14pt;color:var(--muted);">/100</span></div>
+    <div class="score-def">Overall readiness for <b>Senior Backend Engineer (IC)</b> at role level. Composite of ATS, recruiter, impact, clarity, confidence and peer-alignment signals per the documented formula. 80+ = READY, 65&ndash;79 = ALMOST THERE, 50&ndash;64 = NEEDS WORK, below 50 = EARLY STAGE.</div>
+  </div>
+  <div class="hero-card">
+    <div style="font-weight:700;font-size:10pt;margin-bottom:6px;">Time to ready</div>
+    <div class="tier-row"><span>Today (quick wins)</span><span>~1 hr</span></div>
+    <div class="tier-row"><span>This week (real numbers + decisions)</span><span>~5&ndash;7 hrs</span></div>
+    <div class="tier-row"><span>This month (build the missing evidence)</span><span>~10&ndash;15 hrs</span></div>
+    <div class="score-def">Today + This week alone projects to ~68 (ALMOST THERE). Genuine READY status needs the This Month tier too, this candidate is not yet Senior-ready on the evidence available.</div>
+  </div>
+</div>
+
+<div class="next-actions">
+  <div class="action-card"><b>1. Write one bullet naming a real technical decision you made</b><div class="loc">Hiring-manager verdict &middot; would_flip_verdict &middot; highest leverage single action available</div></div>
+  <div class="action-card"><b>2. Address the Sep 2021 to Jun 2022 gap with an honest one-line label</b><div class="loc">Experience &middot; between Finch Payments and Brightwave Logistics &middot; needs your input</div></div>
+  <div class="action-card"><b>3. Back up Kubernetes, GraphQL or Kafka with a real bullet, or drop the ones you can't defend</b><div class="loc">Skills &middot; three keywords currently unbacked by any bullet</div></div>
+</div>
+
+<div class="jd-callout jd-callout-empty">
+  <b>No job description provided.</b> This dashboard shows role-level readiness for Senior Backend Engineer only. Paste a JD later to unlock JD-specific match scoring in Section 5.
+</div>
+
+<h2 class="section-heading" id="scores">2. Score breakdown</h2>
+<div class="scores-grid">
+  <div class="score-card"><div class="label">ATS</div><div class="value band-lgreen">86</div><div class="proj">Projected: 88</div><div class="proj">Threshold for this level: 70+</div></div>
+  <div class="score-card"><div class="label">Recruiter</div><div class="value band-orange">58</div><div class="proj">Projected: 64</div><div class="note">Stack and years match on paper; no bullet shows Senior-level ownership.</div></div>
+  <div class="score-card"><div class="label">Impact</div><div class="value band-red">46</div><div class="proj">Projected: 58</div><div class="note">Almost every bullet lacks a number; none exist in the source to carry forward.</div></div>
+  <div class="score-card"><div class="label">Clarity</div><div class="value band-lgreen">76</div><div class="proj">Projected: 78</div><div class="proj">Threshold for this level: 70+</div></div>
+  <div class="score-card"><div class="label">Confidence</div><div class="value band-red">46</div><div class="proj">Projected: 55</div><div class="note">Most bullets would not survive a probing "walk me through it" follow-up.</div></div>
+  <div class="score-card"><div class="label">Match</div><div class="value band-grey">N/A</div><div class="proj">Not run for this session.</div><div class="proj">Provide a JD to unlock.</div></div>
+</div>
+
+<h2 class="section-heading" id="recruiter">3. Recruiter simulation</h2>
+<div class="sim-grid">
+  <div class="sim-panel">
+    <h4>6-second scan <span class="badge badge-pass">PASS</span></h4>
+    <div><b>Caught:</b> Java, Spring Boot, Python, Docker, AWS, "Backend Engineer" title, roughly 7 years across three roles.</div>
+    <ul><li>Seniority signal: <b>weak</b>. Title reads "Backend Engineer", no "Senior" anywhere, and nothing in the top third signals scope beyond individual-contributor tasks.</li><li>Gap visibility: the Sep 2021 to Jun 2022 gap between Finch Payments and Brightwave Logistics is visible in the date columns within the first screen.</li></ul>
+    <div class="sim-quote">"Right stack, right years, but nothing here says Senior, and there's a gap I'd want explained before I moved this forward."</div>
+  </div>
+  <div class="sim-panel">
+    <h4>30-second skim <span class="badge badge-pass">PASS</span></h4>
+    <ul><li>Brightwave bullet 1 and Finch bullet 1: both medium strength, specific tech and audience, no metric.</li><li>Skills coverage: roughly 55% of the current Senior Backend keyword set present, several of the strongest (Kubernetes, GraphQL, Kafka) are listed only, not backed by a bullet.</li><li>Narrative coherence: <b>strong</b>. Junior full-stack-leaning role, then two clean backend specialisations.</li></ul>
+    <div class="sim-quote">"Reads like a competent, honest engineer. Doesn't read like someone I'd screen straight through for a Senior req without more evidence."</div>
+  </div>
+  <div class="sim-panel">
+    <h4>Hiring-manager deep read <span class="badge badge-maybe">MAYBE</span></h4>
+    <ul>
+      <li>Impact specificity: low. No bullet across any role carries a hard, checkable number.</li>
+      <li>Technical depth: medium. Real systems and real tech named, but no bullet shows a decision, trade-off, or architecture opinion.</li>
+      <li><b>Red flags:</b> unexplained ~9-month gap; three headline skills (Kubernetes, GraphQL, Kafka) unbacked by any bullet; no mentoring or ownership signal despite 7 years.</li>
+    </ul>
+    <div class="sim-quote">"Nothing here is dishonest, which matters. But I'd need at least one of the gaps closed before I'd put this candidate in front of a panel for a Senior req."</div>
+  </div>
+</div>
+
+<h2 class="section-heading" id="hmverdict">3b. The hiring manager's verdict</h2>
+<div class="verdict-banner weakmaybe">
+  <div class="vb-badge">WEAK MAYBE</div>
+  <div class="vb-liner">Seven years of legitimate backend experience with clean, honest bullets, but not one line shows an architecture decision, a mentee, or a number, and there's a nine-month gap nobody's addressed.</div>
+</div>
+<div class="hm-quote">
+"You've got seven years in backend roles across two real domains, logistics and payments, and the CV is honest: nothing here overclaims. That's actually rare and I'll give you credit for it. But honesty isn't the same as readiness, and this reads as a solid Mid-level engineer applying for a Senior seat on hope rather than evidence. Every bullet under Brightwave Logistics describes work you did, not a decision you made: you built APIs someone else's design likely specified, you migrated 'a subset' of services (whose subset, and why only a subset), you fixed performance issues without saying what the baseline or the fix was, and you 'contributed technical input' in sprint planning, which tells me nothing about what that input was or whether anyone acted on it. Three skills sit in your Skills block, Kubernetes, GraphQL, Kafka, that never once show up in a sentence describing what you did with them. If I ask you in an interview to walk me through a Kafka consumer you built and you can't, that's a worse outcome than if you'd left it off the CV. Then there's the nine-month hole between Finch Payments ending in September 2021 and Brightwave starting in June 2022. I don't assume the worst about gaps, but I do assume the worst about candidates who leave them completely unaddressed on a CV that's asking for more trust, not less. Fix what you can fix honestly. The rest, ownership, mentoring, one real number, needs to come from your actual work, not from this pipeline."
+</div>
+<div class="flip-card">
+  <b>What would flip the verdict:</b> One bullet, anywhere, that names a technical decision you made and defended, even without a metric attached, would do more for this CV than every other fix combined.
+</div>
+<table>
+<tr><th>Sev</th><th>CV quote</th><th>Location</th><th>Objection</th><th>Do differently</th><th>Evidence needed</th></tr>
+<tr><td><span class="severity sev-major">Major</span></td><td><span class="cvq">Reviewed pull requests and contributed technical input during sprint planning for the order-management squad.</span></td><td>Brightwave, bullet 4</td><td>Reviewing PRs and "contributing input" is what every engineer on the team does. This needed to be the bullet that shows you making a call, not attending a meeting.</td><td>Replace with one specific technical decision you drove: an API contract you defined, a schema change you proposed, an incident you led.</td><td>A specific decision, disagreement, or proposal from the last 12 months that you personally drove.</td></tr>
+<tr><td><span class="severity sev-major">Major</span></td><td><span class="cvq">(no bullet anywhere in the CV)</span></td><td>Experience, all three roles</td><td>Seven years in and there's no mentee, no onboarding doc, no junior you unblocked. For a Senior title that's one of the first things checked.</td><td>Add a bullet describing any mentoring, onboarding, or knowledge-sharing you've actually done, even informally.</td><td>Any real instance of helping a junior or new-starter get productive.</td></tr>
+<tr><td><span class="severity sev-major">Major</span></td><td><span class="cvq">Cloud &amp; DevOps: AWS, Docker, Kubernetes, Jenkins / APIs &amp; Messaging: REST APIs, GraphQL, Kafka</span></td><td>Skills</td><td>Kubernetes, GraphQL and Kafka are exactly the three keywords a Senior Backend screen is built around in 2026, and none appear in a bullet.</td><td>Fold one real, specific use of each into a bullet, or remove the ones you can't back up.</td><td>A specific PR, ticket, or deployment where you personally used each tool.</td></tr>
+<tr><td><span class="severity sev-major">Major</span></td><td><span class="cvq">Jan 2020 &ndash; Sep 2021 / Jun 2022 &ndash; present</span></td><td>Between Finch Payments and Brightwave</td><td>Nine months between roles with nothing said. Silence here reads worse than almost any honest one-liner would.</td><td>Add a short, honest label if a legitimate one exists; otherwise be ready to explain it in under ten seconds at interview.</td><td>The real reason for the gap, only you have this.</td></tr>
+<tr><td><span class="severity sev-minor">Minor</span></td><td><span class="cvq">Diagnosed and resolved performance issues on order-management endpoints serving the web and mobile teams.</span></td><td>Brightwave, bullet 3</td><td>Resolved by how much, on what, measured how? A placeholder for a real bullet, not one yet.</td><td>Add the before/after number, or name the specific symptom if the number isn't known.</td><td>A before/after number, or the specific symptom (timeouts, N+1 queries, memory growth).</td></tr>
+<tr><td><span class="severity sev-minor">Minor</span></td><td><span class="cvq">(no Projects section; GitHub link with nothing cited)</span></td><td>Whole CV</td><td>A bare GitHub link with nothing behind it. Not damaging, but a missed, cheap opportunity.</td><td>Pin one or two real repos with a short README, or drop the link.</td><td>Any personal project, however small.</td></tr>
+</table>
+<p style="font-size:9pt;margin-top:14px;"><b>Interview kill questions:</b></p>
+<ul style="font-size:9pt;">
+<li>Walk me through the Kubernetes deployment you're most familiar with. What does the manifest look like?</li>
+<li>You list Kafka. Describe a producer or consumer you wrote, and what happens if a message fails to process.</li>
+<li>What's the one architectural decision at Brightwave you'd defend if I disagreed with it?</li>
+<li>What happened between September 2021 and June 2022?</li>
+<li>You migrated "a subset" of services to Docker. Which ones, and why not the rest?</li>
+<li>Name one engineer whose work got better because of something you specifically did.</li>
+</ul>
+<p style="font-size:9pt;"><b>What survived the adversarial read:</b></p>
+<ul style="font-size:9pt;">
+<li>Nothing here overclaims. Every bullet describes real, plausible IC-level work with no scope inflation, no invented ownership language, honest titles throughout.</li>
+<li>The career line is coherent: a junior full-stack-leaning role, then backend specialisation in payments, then backend specialisation in logistics. No unexplained title jumps.</li>
+<li>The Finch Payments on-call bullet is a real, if small, production-ownership signal that most CVs at this length don't even have.</li>
+</ul>
+
+<h2 class="section-heading" id="rolefit">4. Role fit analysis</h2>
+<div class="two-col">
+  <div>
+    <p><b>Seniority alignment:</b> under-positioned for Senior. The CV title correctly stays "Backend Engineer" (no title inflation), but the bullets themselves also read Mid: no ownership, decision, or leadership signal anywhere.</p>
+    <p><b>Industry fit:</b> adequate. Order-management/logistics SaaS plus prior payments-processing experience are both directly relevant backend domains for most Senior Backend openings.</p>
+  </div>
+  <div>
+    <p><b>Career trajectory coherence:</b> linear with one unexplained break. Junior (2017&ndash;2019) &rarr; Software Engineer, payments (2020&ndash;2021) &rarr; [9-month gap] &rarr; Backend Engineer, logistics (2022&ndash;present). No lateral confusion, but the gap needs a one-line label.</p>
+    <p><b>Likely hiring-manager red flags:</b></p>
+    <ul style="font-size:9pt;">
+      <li>Unexplained ~9-month employment gap, see Section 3b.</li>
+      <li>Three headline Skills keywords (Kubernetes, GraphQL, Kafka) with zero bullet-level backing, an easy interview gotcha.</li>
+      <li>No mentoring, onboarding, or team-leverage signal anywhere despite 7 years of experience.</li>
+    </ul>
+  </div>
+</div>
+
+<h2 class="section-heading" id="jdmatch">5. JD match</h2>
+<p style="color:var(--muted);font-size:9.5pt;">Not run for this session. No job description was supplied; this run produced a general canonical CV and role-level score only. Provide a job description to see match analysis, must-have/nice-to-have coverage, and a gap-to-rewrite table here.</p>
+
+<details open id="bullets">
+<summary>6. Bullet-by-bullet quality audit <span class="pill">7 bullets &middot; 7 rewrites &middot; 0 tense fixes</span></summary>
+<div class="dash-details-body">
+<table>
+<tr><th>Role</th><th>Bullet</th><th>Rating</th><th>Notes</th></tr>
+<tr class="medium"><td>Brightwave Logistics<br/>Backend Engineer</td><td>Built and maintained REST APIs for the order management platform (Java, Spring Boot), consumed by the web and mobile client teams.</td><td><span class="rating rating-medium">Medium</span></td><td>Specific tech and audience named, the strongest bullet on the CV, but still carries no scale or usage number.
+<div class="rewrite"><b>Suggested rewrite (needs your confirmation):</b> "&hellip;consumed by the web and mobile client teams, covering [N] endpoints handling [X requests/day]."</div></td></tr>
+<tr class="low"><td></td><td>Migrated a subset of backend services to Docker containers as part of a small-team initiative, standardising local and CI environments.</td><td><span class="rating rating-low">Low</span></td><td>"A subset" and "small-team initiative" hedge both scope and ownership; unclear what you personally did versus the team.
+<div class="rewrite"><b>Suggested rewrite (needs your confirmation):</b> "Migrated [N] backend services from [previous deployment method] to Docker containers, cutting environment-setup time by [X%] and standardising CI."</div></td></tr>
+<tr class="low"><td></td><td>Diagnosed and resolved performance issues on order-management endpoints serving the web and mobile teams.</td><td><span class="rating rating-low">Low</span></td><td>No specifics on the issue, the fix, or the outcome; reads as a placeholder for a real bullet.
+<div class="rewrite"><b>Suggested rewrite (needs your confirmation):</b> "Diagnosed and resolved [a specific issue, e.g. N+1 query / request timeout] on the [endpoint name], reducing response time by [X%]."</div></td></tr>
+<tr class="low"><td></td><td>Reviewed pull requests and contributed technical input during sprint planning for the order-management squad.</td><td><span class="rating rating-low">Low</span></td><td>Activity, not outcome. Every engineer on the team does this; it proves nothing about seniority. See Section 3b, gap 1.
+<div class="rewrite"><b>Suggested rewrite (needs your confirmation):</b> "Proposed [a specific technical change] during sprint planning that [outcome], and reviewed pull requests to catch [issue type] before release."</div></td></tr>
+<tr class="medium"><td>Finch Payments<br/>Software Engineer</td><td>Developed backend features for the payments-processing system in Python, including work on a third-party payment-provider integration.</td><td><span class="rating rating-medium">Medium</span></td><td>Concrete system and integration named; no scale or volume attached.
+<div class="rewrite"><b>Suggested rewrite (needs your confirmation):</b> "&hellip;including integrating [provider name], processing [N transactions/day or &pound;X in volume]."</div></td></tr>
+<tr class="medium"><td></td><td>Wrote unit tests and collaborated with the QA team to raise automated test coverage on the payments platform.</td><td><span class="rating rating-medium">Medium</span></td><td>Real, defensible activity with a clear upgrade path if the coverage numbers are known.
+<div class="rewrite"><b>Suggested rewrite (needs your confirmation):</b> "&hellip;raising automated test coverage on the payments platform from [X%] to [Y%]."</div></td></tr>
+<tr class="medium"><td></td><td>Provided production support for the payments platform as part of the on-call rotation.</td><td><span class="rating rating-medium">Medium</span></td><td>A real, concrete production-ownership signal, the strongest seniority-adjacent line on the whole CV, but no incident specifics.
+<div class="rewrite"><b>Suggested rewrite (needs your confirmation):</b> "&hellip;as part of the on-call rotation, resolving [N] incidents including [a specific example]."</div></td></tr>
+</table>
+</div>
+</details>
+
+<details id="skills">
+<summary>7. Skills audit</summary>
+<div class="dash-details-body">
+<div class="cols4">
+  <div class="skill-col"><h5>Validated</h5><ul>
+    <li>Java, Spring Boot: Brightwave bullet 1</li>
+    <li>Python: Finch bullet 1</li>
+    <li>REST APIs: Brightwave bullet 1</li>
+    <li>Docker: Brightwave bullet 2 (partial, "a subset")</li>
+    <li>PHP, MySQL: Karta bullet 2</li>
+  </ul></div>
+  <div class="skill-col"><h5>Listed but not demonstrated</h5><ul>
+    <li>Kubernetes: not referenced in any bullet, flagged in Section 3b as a major gap</li>
+    <li>GraphQL: not referenced in any bullet, same flag</li>
+    <li>Kafka: not referenced in any bullet, same flag</li>
+    <li>JavaScript, SQL, Redis, AWS, Jenkins, Agile: listed only, no supporting bullet</li>
+  </ul></div>
+  <div class="skill-col"><h5>Missing / worth watching</h5><ul>
+    <li>Infrastructure as code (Terraform or similar): absent entirely, a majority signal among the peer set in Section 8</li>
+    <li>Observability tooling (Prometheus, Grafana, OpenTelemetry, Datadog): absent entirely</li>
+    <li>Explicit system-design or distributed-systems language: absent</li>
+    <li>Mentoring or technical-leadership language: absent</li>
+  </ul></div>
+  <div class="skill-col"><h5>Rename opportunities</h5><p style="font-size:8.6pt;">None surfaced this run. The gaps found are about undemonstrated skills and missing modern practices, not mislabelled ones.</p></div>
+</div>
+<div class="kw-strip">
+  <span class="kw kw-yes">Kubernetes &#10003; (listed only)</span>
+  <span class="kw kw-yes">Kafka &#10003; (listed only)</span>
+  <span class="kw kw-yes">GraphQL &#10003; (listed only)</span>
+  <span class="kw kw-yes">Docker &#10003;</span>
+  <span class="kw kw-yes">REST APIs &#10003;</span>
+  <span class="kw kw-yes">AWS &#10003; (listed only)</span>
+  <span class="kw kw-no">Terraform / infrastructure as code &#10007;</span>
+  <span class="kw kw-no">Observability (Prometheus/Grafana/OpenTelemetry) &#10007;</span>
+  <span class="kw kw-no">System design / architecture ownership &#10007;</span>
+  <span class="kw kw-no">Mentoring / technical leadership &#10007;</span>
+</div>
+</div>
+</details>
+
+<details open id="peers">
+<summary>8. Peer benchmark <span class="pill">5 illustrative comparators &middot; demo data, not sourced from real profiles</span></summary>
+<div class="dash-details-body">
+<p style="font-size:9pt;color:var(--muted);"><b>This is illustrative demo data.</b> Per this run's explicit scope, no real people or real profiles were searched, fetched, or named. The five comparators below are fictional, constructed to be realistic and representative of what strong Senior Backend Engineer profiles typically look like, not sourced from any live LinkedIn, GitHub, or company page. Set is domain-weighted (2 logistics/supply-chain peers) and brand-weighted (2 prestige peers + 1 one-rung-above), matching the requested bias.</p>
+
+<div class="peer-grid">
+  <div class="peer-card">
+    <div class="name">Femi A. <span class="tier-pill">tier_3 (illustrative)</span></div>
+    <div class="role">Senior Backend Engineer &middot; Cargofy (fictional logistics/supply-chain SaaS)</div>
+    <span class="badge tag-domain">domain peer</span>
+    <div style="font-size:8.6pt;margin-top:6px;">Direct order-management/supply-chain SaaS peer at the target seniority.</div>
+    <ul><li>Owns the routing-service architecture document, cited as the reference other engineers follow</li><li>Led the migration to event-driven order updates over Kafka, described as a specific producer/consumer build, not a listed keyword</li><li>Formally mentors two junior engineers</li></ul>
+    <div class="lesson">Pattern to copy: one bullet per major decision, framed as "proposed X, because Y, resulting in Z".</div>
+  </div>
+  <div class="peer-card">
+    <div class="name">Priya S. <span class="tier-pill">tier_3 (illustrative)</span></div>
+    <div class="role">Senior Backend Engineer &middot; Fenwick Freight (fictional freight/logistics)</div>
+    <span class="badge tag-domain">domain peer</span>
+    <div style="font-size:8.6pt;margin-top:6px;">Second logistics-domain peer, strong on production ownership.</div>
+    <ul><li>Rebuilt the pricing-calculation service to cut a class of billing errors</li><li>Runs the team's on-call rotation and wrote the incident runbook still in use</li><li>Owns the Helm charts for six services, a demonstrated (not just listed) Kubernetes signal</li></ul>
+    <div class="lesson">Pattern to copy: owning a runbook or on-call process is a cheap, concrete Senior signal most CVs skip.</div>
+  </div>
+  <div class="peer-card">
+    <div class="name">Elena R. <span class="tier-pill">tier_2 (illustrative)</span></div>
+    <div class="role">Senior Backend Engineer &middot; Vantar Bank (fictional challenger bank)</div>
+    <span class="badge tag-prestige">prestige peer</span>
+    <div style="font-size:8.6pt;margin-top:6px;">Domain mismatch (fintech vs logistics) accepted for brand weight and rigour.</div>
+    <ul><li>Designed the idempotency-key strategy for payment retries, a named, defensible decision</li><li>Mentors three engineers through a formal buddy programme</li><li>One conference talk on event sourcing</li></ul>
+    <div class="lesson">Pattern to copy: a single well-scoped design decision beats five vague ownership claims.</div>
+  </div>
+  <div class="peer-card">
+    <div class="name">Tom H. <span class="tier-pill">tier_2 (illustrative)</span></div>
+    <div class="role">Senior Backend Engineer &middot; Nordholm Systems (fictional enterprise software company)</div>
+    <span class="badge tag-prestige">prestige peer</span>
+    <div style="font-size:8.6pt;margin-top:6px;">Prestige brand, included for the richest artefact-authorship footprint in the set.</div>
+    <ul><li>Led the move from a monolith to four bounded-context services</li><li>Owns the team's Terraform modules</li><li>Wrote the incident postmortem template still used company-wide</li></ul>
+    <div class="lesson">Pattern to copy: "wrote the template still used company-wide" is a durable-leverage signal, worth more than a one-off fix.</div>
+  </div>
+</div>
+<div class="peer-grid" style="grid-template-columns:1fr;max-width:49%;">
+  <div class="peer-card">
+    <div class="name">Dana K. <span class="tier-pill">tier_3 (illustrative)</span></div>
+    <div class="role">Staff Backend Engineer &middot; Cargofy (same company as Femi A.)</div>
+    <span class="badge tag-above">one rung above</span>
+    <div style="font-size:8.6pt;margin-top:6px;">One rung above target seniority, shows what the next step looks like.</div>
+    <ul><li>Sets the technical roadmap for the platform team</li><li>Mentors two Senior engineers, not just juniors</li><li>Frequent internal RFC author, the primary mechanism for cross-team influence at this level</li></ul>
+    <div class="lesson">Pattern to copy: the jump from Senior to Staff is almost entirely about RFCs and cross-team roadmap influence, worth knowing what's next.</div>
+  </div>
+</div>
+
+<div class="matrix-wrap">
+<table class="matrix">
+<tr><th>Signal</th><th>Femi A.</th><th>Priya S.</th><th>Elena R.</th><th>Tom H.</th><th>Dana K.</th><th class="you-col">You</th></tr>
+<tr><td>Bullet names a specific technical decision personally made and defended</td><td class="cell-yes">yes</td><td class="cell-yes">yes</td><td class="cell-yes">yes</td><td class="cell-yes">yes</td><td class="cell-yes">yes</td><td class="you-col cell-no">no</td></tr>
+<tr><td>Mentors or formally onboards other engineers</td><td class="cell-yes">yes</td><td class="cell-yes">yes &middot; onboards on-call</td><td class="cell-yes">yes</td><td class="cell-no">no</td><td class="cell-yes">yes</td><td class="you-col cell-no">no</td></tr>
+<tr><td>Owns on-call/incident process beyond passive participation</td><td class="cell-yes">yes</td><td class="cell-yes">yes &middot; runbook + rotation</td><td class="cell-no">no</td><td class="cell-yes">yes &middot; postmortem template</td><td class="cell-no">no</td><td class="you-col cell-partial">partial &middot; past-role participation only</td></tr>
+<tr><td>At least one infra/tooling skill demonstrated in a bullet, not just listed</td><td class="cell-yes">yes &middot; Kafka</td><td class="cell-yes">yes &middot; Kubernetes/Helm</td><td class="cell-no">no</td><td class="cell-yes">yes &middot; Terraform</td><td class="cell-no">no</td><td class="you-col cell-no">no &middot; 0 of 3 listed (K8s/GraphQL/Kafka)</td></tr>
+<tr><td>Authored a reusable artefact (template, runbook, RFC) used beyond their own work</td><td class="cell-no">no</td><td class="cell-yes">yes &middot; runbook</td><td class="cell-no">no</td><td class="cell-yes">yes &middot; postmortem template</td><td class="cell-yes">yes &middot; RFCs</td><td class="you-col cell-no">no</td></tr>
+<tr><td>Public technical writing or speaking</td><td class="cell-no">no</td><td class="cell-no">no</td><td class="cell-yes">yes &middot; 1 talk</td><td class="cell-no">no</td><td class="cell-no">no</td><td class="you-col cell-no">no</td></tr>
+</table>
+</div>
+
+<div style="margin-top:18px;">
+  <div class="pattern-row"><span class="lbl">Universal (5/5):</span> A bullet naming a specific technical decision the person personally made and defended.</div>
+  <div class="pattern-row"><span class="lbl">Majority (3-4/5):</span> Mentoring or formal onboarding (4/5); on-call/incident ownership beyond participation (3/5); at least one infra skill demonstrated in a bullet, not just listed (3/5); a reusable artefact authored (3/5).</div>
+  <div class="pattern-row"><span class="lbl">Divergent (1-2/5):</span> Public technical writing or speaking (1/5), lowest priority of this list.</div>
+  <div class="pattern-row"><span class="lbl">Your strengths:</span> none surfaced this run. Every signal in this comparison is one you are currently behind on; there is no 0/5 candidate-only advantage to report honestly.</div>
+</div>
+
+<table style="margin-top:14px;">
+<tr><th>Gap</th><th>Seen in</th><th>Type</th><th>Effort</th><th>Priority</th><th>Suggestion</th><th>Addable now</th></tr>
+<tr style="border-left:3px solid var(--red);"><td>No bullet names a specific technical decision you made and defended</td><td>5/5</td><td>addable</td><td>medium</td><td>high</td><td>Pick one real decision (schema change, API contract, retry strategy) and write it as decision, reason, outcome.</td><td>Needs your input</td></tr>
+<tr style="border-left:3px solid var(--red);"><td>No mentoring or onboarding responsibility shown</td><td>4/5</td><td>addable</td><td>medium</td><td>high</td><td>Add a bullet if you've onboarded or paired with anyone, even informally.</td><td>Needs your input</td></tr>
+<tr style="border-left:3px solid var(--red);"><td>Kubernetes, GraphQL and Kafka listed but never demonstrated in a bullet</td><td>3/5</td><td>surface_not_demonstrated</td><td>quick_win</td><td>high</td><td>Fold a real, specific use of each into an existing bullet, or drop the ones you can't back up.</td><td>Needs your confirmation</td></tr>
+<tr><td>No on-call/incident ownership beyond passive participation in the current role</td><td>3/5</td><td>surface_not_demonstrated</td><td>medium</td><td>medium</td><td>If you're on the Brightwave on-call rota, say so and name one incident you handled.</td><td>Needs your input</td></tr>
+<tr><td>No reusable artefact (template, runbook, RFC) authored</td><td>3/5</td><td>long_term</td><td>long_term</td><td>medium</td><td>Write one internal doc (runbook, onboarding guide) that outlives the immediate task; then it's a legitimate bullet.</td><td>No</td></tr>
+<tr><td>No public technical writing or speaking</td><td>1/5</td><td>long_term</td><td>long_term</td><td>low</td><td>Lowest priority of this list; only worth pursuing once the items above are closed.</td><td>No</td></tr>
+</table>
+</div>
+</details>
+
+<h2 class="section-heading page-break-before" id="timeline">9. Experience timeline &amp; market context</h2>
+<div class="two-col">
+<div id="timeline-block">
+<div class="timeline">
+  <div class="tseg amber" style="flex:2.3;">Karta Retail &middot; 2017&ndash;2019</div>
+  <div class="tseg amber" style="flex:1.7;">Finch Payments &middot; 2020&ndash;2021</div>
+  <div class="tseg" style="flex:0.8;background:#9ca3af;">? gap</div>
+  <div class="tseg amber" style="flex:4.1;">Brightwave Logistics &middot; 2022&ndash;present</div>
+</div>
+<p style="font-size:9pt;"><b>Trajectory:</b> linear: junior full-stack-leaning role, then two clean backend specialisations (payments, then logistics), interrupted by one unexplained gap.<br/>
+<b>Promotion velocity:</b> slow for a Senior claim. Title and scope have both stayed at the same level (Software Engineer / Backend Engineer) for the whole professional career; nothing in the record shows a step up in ownership.<br/>
+<b>Strongest role:</b> Finch Payments: the on-call bullet is the single most Senior-adjacent line on the CV.<br/>
+<b>Weakest role:</b> Brightwave Logistics, the current role and the one carrying the Senior application, is also the thinnest on ownership and impact signal.</p>
+</div>
+<div id="market">
+<p style="font-size:9pt;"><b>In demand (has):</b> Java, Spring Boot, Python, REST APIs, Docker; Kubernetes/GraphQL/Kafka present as keywords only.</p>
+<p style="font-size:9pt;"><b>Emerging signal:</b> infrastructure as code (Terraform) and observability tooling (Prometheus/Grafana/OpenTelemetry) are now standard expectations for Senior Backend roles; neither appears anywhere on this CV.</p>
+<p style="font-size:9pt;"><b>Declining:</b> monolith-only experience without modularisation awareness, and manual/ad-hoc deployment processes. Neither is leaned on here; correctly avoided.</p>
+<p style="font-size:9pt;"><b>Seniority expectations:</b> system-design ownership, demonstrated (not just listed) event-driven and cloud-native infrastructure experience, and mentoring or incident leadership are what separate a credible Senior application from a strong Mid-level one in 2026. This CV currently shows none of the three in a bullet.</p>
+<p style="font-size:9pt;"><b>Salary signal:</b> not asserted. No dedicated market-rate search was run this session; not fabricated rather than guessed.</p>
+</div>
+</div>
+
+<h2 class="section-heading page-break-before" id="actionplan">11. Action plan</h2>
+<div class="action-tiers">
+  <div class="tier-panel">
+    <h4>Today &middot; under 1 hour</h4>
+    <div class="action-item"><b>Decide whether to keep or drop Kubernetes, GraphQL and Kafka from Skills</b> if you cannot back any of them with a real sentence<div class="delta">removes an easy interview gotcha &middot; 15 min</div></div>
+    <div class="action-item"><b>Draft a one-line label for the Sep 2021 to Jun 2022 gap</b> (contracting, career break, study, job search, whatever is true)<div class="delta">closes the single most-cited red flag &middot; 15 min</div></div>
+    <div class="action-item"><b>List every repo on github.com/nadiaokonkwo and decide what, if anything, to pin</b><div class="delta">closes a Section 3b minor gap &middot; 20 min</div></div>
+  </div>
+  <div class="tier-panel">
+    <h4>This week &middot; under 7 hours</h4>
+    <div class="action-item confirm"><b>Write one bullet naming a real technical decision you made</b> (a schema change, an API contract, a retry or caching strategy)<div class="delta">+8 recruiter, +6 confidence &middot; needs your input &middot; 2 hrs</div></div>
+    <div class="action-item confirm"><b>Add a mentoring or onboarding bullet if one is honestly true</b>, even informal pairing or documentation<div class="delta">closes a Section 3b major gap &middot; needs your input &middot; 1 hr</div></div>
+    <div class="action-item confirm"><b>Fold one real use of Kubernetes, GraphQL or Kafka into an existing bullet</b>, or confirm you're dropping the ones you can't back up<div class="delta">+5 impact &middot; needs your confirmation &middot; 1&ndash;2 hrs</div></div>
+    <div class="action-item confirm"><b>Find one real number</b> for the Docker migration or performance-fix bullet (before/after latency, environment-setup time, or scope)<div class="delta">+4 impact &middot; needs your confirmation &middot; 1 hr</div></div>
+  </div>
+  <div class="tier-panel">
+    <h4>This month &middot; under 15 hours</h4>
+    <div class="action-item"><b>If Kubernetes, GraphQL or Kafka aren't genuinely hands-on yet, build one real thing with each</b> (a small side project is enough) so the Skills line becomes true<div class="delta">closes a major, market-wide gap &middot; 8&ndash;12 hrs</div></div>
+    <div class="action-item long"><b>Write one internal document</b> (runbook, onboarding guide, incident postmortem template) that outlives the task it was written for<div class="delta">long-term bet &middot; builds the "reusable artefact" signal from Section 8</div></div>
+  </div>
+</div>
+<p style="font-size:9pt;color:var(--muted);margin-top:16px;">Projected score after Today + This Week (assuming the confirmed items land): <b>~68/100</b> (ALMOST THERE). Genuine READY status also needs the This Month tier: this candidate is not yet competitive for a Senior req on the evidence available today.</p>
+
+<details id="interview">
+<summary>12. Interview defence prep</summary>
+<div class="dash-details-body">
+<p style="font-size:9pt;"><b>Claims that need evidence ready:</b></p>
+<ul style="font-size:9pt;">
+<li><b>"Migrated a subset of backend services to Docker containers"</b>: be ready to say which services, how many, and why not the rest.</li>
+<li><b>"Diagnosed and resolved performance issues"</b>: have the specific symptom and fix ready even without a hard number.</li>
+<li><b>"Reviewed pull requests and contributed technical input"</b>: be ready with one specific example of input that changed the outcome.</li>
+</ul>
+<p style="font-size:9pt;"><b>Stretch answers for bullets not yet quantified:</b></p>
+<ul style="font-size:9pt;">
+<li><b>REST APIs bullet:</b> verbally describe the scale (endpoint count, request volume) even without it on the page yet.</li>
+<li><b>On-call bullet:</b> have one specific incident ready to describe start to finish, even though the CV line stays general.</li>
+</ul>
+<p style="font-size:9pt;"><b>Kill questions from the hiring-manager verdict (Section 3b), have answers ready for all six before you apply:</b></p>
+<ul style="font-size:9pt;">
+<li>Walk me through the Kubernetes deployment you're most familiar with.</li>
+<li>Describe a Kafka producer or consumer you wrote, and what happens if a message fails.</li>
+<li>What's the one architectural decision at Brightwave you'd defend if I disagreed with it?</li>
+<li>What happened between September 2021 and June 2022?</li>
+<li>You migrated "a subset" of services to Docker. Which ones, and why not the rest?</li>
+<li>Name one engineer whose work got better because of something you specifically did.</li>
+</ul>
+</div>
+</details>
+
+<h2 class="section-heading" id="strategy">13. Application strategy</h2>
+<div class="two-col">
+<div>
+<p style="font-size:9pt;"><b>Apply now:</b> Mid-level and Mid-to-Senior backend roles at logistics, supply-chain, or payments companies; current profile is competitive today at that level.</p>
+<p style="font-size:9pt;"><b>Apply after quick wins:</b> Senior Backend roles at companies with a less rigorous technical screen, once the gap label and at least one decision bullet exist.</p>
+</div>
+<div>
+<p style="font-size:9pt;"><b>Stretch applications:</b> Senior Backend roles at companies with a heavy system-design interview stage; revisit after the This Month tier lands and the Kubernetes/Kafka/GraphQL claims are genuinely true.</p>
+<p style="font-size:9pt;"><b>Volume:</b> 2&ndash;4 well-targeted applications/week while the CV is at NEEDS WORK. <b>Mix:</b> 70% safe (Mid or Mid-to-Senior) / 30% stretch (Senior IC), shifting toward more stretch applications once ALMOST THERE is reached.</p>
+</div>
+</div>
+
+<h2 class="section-heading" id="linkedin">14. LinkedIn consistency check</h2>
+<p style="font-size:9pt;color:var(--muted);"><span class="badge" style="background:var(--bg-alt);color:var(--muted);border:1px solid var(--border);">NOT PROVIDED</span> No LinkedIn profile was supplied this run. If you have a real LinkedIn profile, provide it in a future session and run <code>linkedin-optimiser</code> to confirm it matches this CV; mismatched dates or titles read as a red flag to recruiters who cross-check.</p>
+
+<div class="footer-note">
+Generated 2026-07-30 by the cv-generator pipeline. FICTIONAL DEMO CANDIDATE: Nadia Okonkwo and all named employers are invented to illustrate the pipeline's output; the peer-benchmark comparators in Section 8 are explicitly illustrative and not sourced from real profiles. Composite readiness formula, verdict thresholds, and section structure per <code>skills/dashboard/SKILL.md</code>. Print to PDF: use your browser's print dialog (Cmd/Ctrl+P) with "Background graphics" enabled, or <code>chrome --headless --print-to-pdf</code>.
+</div>
+
+</main>
+</div>
+</body>
+</html>

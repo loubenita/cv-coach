@@ -1,4 +1,4 @@
-> **Bundled skill: `cv-tailor`** — reference doc for the cv-generator agent pipeline.
+> **Bundled skill: `cv-tailor`** - reference doc for the cv-generator agent pipeline.
 >
 > Generates multiple tailored CV variants for different jobs while keeping a canonical base CV intact. Called by the cv-generator agent when the user has multiple target roles or job applications.
 

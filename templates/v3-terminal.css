@@ -1,4 +1,4 @@
-/* V3 — iOS Terminal resume
+/* V3 - iOS Terminal resume
    Dark terminal paper, traffic lights, monospace everywhere,
    syntax-highlighting hue system.
 */
@@ -12,7 +12,7 @@
   display: grid;
   grid-template-rows: auto 1fr;
 
-  /* Terminal palette — iOS/macOS Terminal "Pro" inspired but original */
+  /* Terminal palette - iOS/macOS Terminal "Pro" inspired but original */
   --term-bg: #1b1d23;
   --term-fg: #e4e6ec;
   --term-mute: #7a818f;
@@ -235,7 +235,7 @@
 }
 .v3 .bullets li b { font-weight: 600; color: var(--c-string); }
 
-/* ────── Project block — as JSON object ────── */
+/* ────── Project block - as JSON object ────── */
 .v3 .project {
   padding: 2.5mm 4mm;
   background: var(--term-panel-2);
@@ -299,7 +299,7 @@
   padding: 3mm 3.5mm;
 }
 
-/* Skills — two columns */
+/* Skills - two columns */
 .v3 .skills-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;

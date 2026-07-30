@@ -1,4 +1,4 @@
-> **Bundled skill: `peer-benchmark`** — reference doc for the cv-generator agent pipeline.
+> **Bundled skill: `peer-benchmark`** - reference doc for the cv-generator agent pipeline.
 >
 > Does a deep read of 5 real LinkedIn profiles in the same role as the candidate, extracts what makes each one strong, runs cross-profile pattern recognition, and maps the gaps back to the candidate's CV. Produces a prioritised "they have, you don't" list for the dashboard with quick-wins and long-term investments separated. Called by the cv-generator agent after trend lookup.
 
@@ -30,10 +30,10 @@ The best way to know what a strong profile looks like is to read five of them, s
   - Deliveroo → `marketplace / on-demand logistics`
   - Depop → `marketplace / secondhand commerce`
 - `company_profile_tier` captures how recognisable the employer is to a non-specialist recruiter. Use this scale:
-  - `tier_1_global_brand` — universally recognised (Apple, Google, Meta, Amazon, Microsoft, Netflix, Spotify)
-  - `tier_2_prestige_local` — high-profile in-market (Monzo, Revolut, Starling, Deliveroo, Bumble, Trainline, ASOS, Northwind Fitness in the UK)
-  - `tier_3_strong_mid_market` — credible scale-ups and established companies (Depop, Huel, Castore, Perkbox, Onto, Trustpilot)
-  - `tier_4_niche_or_unknown` — domain specialists or regionally obscure (agencies, B2B SaaS with narrow reach, boutique studios)
+  - `tier_1_global_brand` - universally recognised (Apple, Google, Meta, Amazon, Microsoft, Netflix, Spotify)
+  - `tier_2_prestige_local` - high-profile in-market (Monzo, Revolut, Starling, Deliveroo, Bumble, Trainline, ASOS, Northwind Fitness in the UK)
+  - `tier_3_strong_mid_market` - credible scale-ups and established companies (Depop, Huel, Castore, Perkbox, Onto, Trustpilot)
+  - `tier_4_niche_or_unknown` - domain specialists or regionally obscure (agencies, B2B SaaS with narrow reach, boutique studios)
 - `location` scopes the search to the candidate's market (e.g. UK, Germany, remote-EU). If omitted, search globally and note the skew in the summary.
 
 ## Tooling note
@@ -74,9 +74,9 @@ Collect 15-25 candidate profiles. Record each one's employer, employer tier, and
 
 #### Filter to 5 using this mix
 
-- **2 domain peers** — same role, same seniority, same (or directly competing) domain. These are the fairest direct comparators. At Northwind Fitness: iOS engineers at ASOS, Nike, Lululemon, Castore, Huel, Depop, Vinted, HelloFresh. Required: **both must be at a recognisable employer (tier_1, tier_2, or a respected tier_3 scale-up)**.
-- **2 prestige peers** — same role, same seniority, at a tier_1 or tier_2 brand, **domain mismatch is acceptable and often preferred**. This is where Monzo, Apple, Google, Meta, Stripe, etc. enter the set. They show what "Senior iOS at a recognisable brand" looks like outside the candidate's industry.
-- **1 one-rung-above peer** — Staff / Principal / Lead iOS at either a domain peer or a prestige peer. Shows the next step on the ladder. Do **not** use this slot for a lateral comparator.
+- **2 domain peers** - same role, same seniority, same (or directly competing) domain. These are the fairest direct comparators. At Northwind Fitness: iOS engineers at ASOS, Nike, Lululemon, Castore, Huel, Depop, Vinted, HelloFresh. Required: **both must be at a recognisable employer (tier_1, tier_2, or a respected tier_3 scale-up)**.
+- **2 prestige peers** - same role, same seniority, at a tier_1 or tier_2 brand, **domain mismatch is acceptable and often preferred**. This is where Monzo, Apple, Google, Meta, Stripe, etc. enter the set. They show what "Senior iOS at a recognisable brand" looks like outside the candidate's industry.
+- **1 one-rung-above peer** - Staff / Principal / Lead iOS at either a domain peer or a prestige peer. Shows the next step on the ladder. Do **not** use this slot for a lateral comparator.
 
 If fewer than 5 profiles can be found, return what exists, note the count, and explicitly tell the user the pattern analysis is weaker.
 
@@ -88,7 +88,7 @@ Do not include a comparator whose employer is **more than one tier below** the c
 - Candidate at Apple (tier_1) → all 5 comparators should be tier_1 or tier_2. A tier_3 comparator is acceptable only if they bring a unique signal the tier_1/2 set lacks (e.g. they are the Staff+ comparator).
 - Candidate at a tier_3 scale-up → the peer set should span tier_2 and tier_3, with at least one tier_1/2 prestige peer to pull the bar up.
 
-Rule of thumb: **comparators should either share the candidate's domain or exceed them on employer brand.** Both is best. Neither is a failed peer slot — replace it.
+Rule of thumb: **comparators should either share the candidate's domain or exceed them on employer brand.** Both is best. Neither is a failed peer slot - replace it.
 
 ### Step 2: Deep read (every section of every profile)
 
@@ -252,13 +252,13 @@ Priority is a function of frequency in the peer set AND relevance to the target 
 
 ## Rules
 
-- **No fabrication. Every claim must be verifiable.** Every comparator must be a real, publicly visible profile. Every differentiator must be traceable to a specific, named artefact — a blog URL, a GitHub repo, a talk on SpeakerDeck or YouTube, an engineering-blog byline with a date, an App Store link. If the claim cannot be traced to a live URL or a dated public source, do not include it. Inferred or "likely has X" signals belong in the agent's internal notes, not in the output.
+- **No fabrication. Every claim must be verifiable.** Every comparator must be a real, publicly visible profile. Every differentiator must be traceable to a specific, named artefact - a blog URL, a GitHub repo, a talk on SpeakerDeck or YouTube, an engineering-blog byline with a date, an App Store link. If the claim cannot be traced to a live URL or a dated public source, do not include it. Inferred or "likely has X" signals belong in the agent's internal notes, not in the output.
 - **Cross-verify every web-sourced claim.** A LinkedIn title alone is not enough. Before asserting a comparator has a blog, OSS package, or conference talk, the agent must have visited (via `WebFetch` or Chrome MCP) a second source that corroborates it: the actual blog URL resolves, the repo page loads with commit activity, the talk has a video or slide deck link. If the second source fails, drop the claim or drop the comparator.
-- **Rich-footprint minimum bar.** Each comparator must have at least two verifiable public artefacts from this list: personal blog with iOS content, named OSS package, conference talk with video/slides, engineering-blog byline under their name, book/course/newsletter they run, shipped App Store app. A LinkedIn profile with no secondary public footprint fails the bar — replace the comparator rather than padding the matrix with "Not public" cells.
+- **Rich-footprint minimum bar.** Each comparator must have at least two verifiable public artefacts from this list: personal blog with iOS content, named OSS package, conference talk with video/slides, engineering-blog byline under their name, book/course/newsletter they run, shipped App Store app. A LinkedIn profile with no secondary public footprint fails the bar - replace the comparator rather than padding the matrix with "Not public" cells.
 - **Matrix integrity.** The side-by-side matrix must only contain rows where every comparator has a verifiable yes/no/partial answer. If a signal cannot be verified for one or more comparators, drop the row entirely. A matrix with "Not public" cells for half the rows is worse than a shorter matrix with honest, verifiable rows.
 - **Named peers in the dashboard.** The dashboard shows each comparator's real first name + last initial (or full name if already widely public, e.g. Donny Wals, Antoine van der Lee), company, and a link to the profile. This is explicitly requested by the user. Full profile URLs are included. Do not expose contact info, phone numbers, email addresses, or anything not publicly visible.
 - **Privacy first.** Pull only publicly visible profile data. No contact info, phone numbers, private posts, or anything behind a connection-only filter. Publicly visible headline, title, employer, recommendations count, Featured items, and public posts are fair game.
-- **Domain-first, brand-up.** The peer set is ordered by domain match first, then brand tier. Never fill a peer slot with someone who is both a domain mismatch and a tier_3 or tier_4 employer — that profile brings no useful signal.
+- **Domain-first, brand-up.** The peer set is ordered by domain match first, then brand tier. Never fill a peer slot with someone who is both a domain mismatch and a tier_3 or tier_4 employer - that profile brings no useful signal.
 - **Never compare down on brand.** Do not include a comparator whose employer is more than one tier below the candidate's. See the tier-floor rule in Step 1.
 - **Demonstrated beats surface.** A skill referenced in experience bullets counts more than a skill listed in the skills section. Reflect this weighting in the gap priority.
 - **Rename opportunities are the highest-leverage fixes.** If the candidate has the skill but labels it differently, that's a 5-minute CV fix that closes a real gap. Flag it as a quick win.

@@ -1,4 +1,4 @@
-> **Bundled skill: `trend-lookup`** — reference doc for the cv-generator agent pipeline.
+> **Bundled skill: `trend-lookup`** - reference doc for the cv-generator agent pipeline.
 >
 > Looks up current hiring trends, in-demand keywords, and role expectations for a given role and seniority level. Called by the cv-generator agent during the pipeline to ensure the CV reflects the current market.
 

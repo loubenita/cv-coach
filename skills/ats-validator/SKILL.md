@@ -1,4 +1,4 @@
-> **Bundled skill: `ats-validator`** — reference doc for the cv-generator agent pipeline.
+> **Bundled skill: `ats-validator`** - reference doc for the cv-generator agent pipeline.
 >
 > Validates a CV against ATS compliance rules and rewrites structure where needed. Called by the cv-generator agent after role detection and trend lookup.
 

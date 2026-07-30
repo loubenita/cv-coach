@@ -1,4 +1,4 @@
-> **Bundled skill: `dashboard`** — reference doc for the cv-generator agent pipeline.
+> **Bundled skill: `dashboard`** - reference doc for the cv-generator agent pipeline.
 >
 > Generates a comprehensive, self-contained HTML dashboard from all cv-generator pipeline outputs. Built to answer three questions for the candidate: "Am I ready to apply?", "What specifically should I focus on?", and "How much time do I need before I'm competitive?". Includes a readiness verdict, six score cards with current vs projected values, recruiter simulation, role fit analysis, JD match, bullet-by-bullet quality audit, skills audit, peer benchmark, experience timeline, market context, a tiered action plan (today / this week / this month / this quarter), interview defence prep, and application strategy. Designed to print cleanly to PDF across multiple pages. Called at the end of the cv-generator pipeline.
 
@@ -58,51 +58,51 @@ Requirements:
 - Works in any modern browser
 - Professional, clean, high information density without feeling cramped
 
-## Canonical template — start here, do NOT free-form the HTML
+## Canonical template - start here, do NOT free-form the HTML
 
-**The dashboard's structure is locked in `templates/dashboard.html` (i.e. `cv-generator/templates/dashboard.html`). Every run MUST start from that file and fill it in — never re-invent the layout, CSS, nav, or section set.** Free-forming the HTML each run is exactly what made past dashboards drift in structure and size; the template exists to stop that.
+**The dashboard's structure is locked in `templates/dashboard.html` (i.e. `cv-generator/templates/dashboard.html`). Every run MUST start from that file and fill it in - never re-invent the layout, CSS, nav, or section set.** Free-forming the HTML each run is exactly what made past dashboards drift in structure and size; the template exists to stop that.
 
 Fixed by the template (do not change per run):
-- the entire inline `<style>` block — the visual system is locked;
-- the **side nav**: four collapsible groups, in order — **(1) Overview & scores**, **(2) Findings**, **(3) Hiring manager**, **(4) Action plan** — each sub-link `href` matching a section `id`;
+- the entire inline `<style>` block - the visual system is locked;
+- the **side nav**: four collapsible groups, in order - **(1) Overview & scores**, **(2) Findings**, **(3) Hiring manager**, **(4) Action plan** - each sub-link `href` matching a section `id`;
 - the set, order, `id`s and headings of the `<section>`/`<h2>`/`<details>` blocks in `<main>`.
 
 Filled per run:
 - the `{{CANDIDATE_NAME}}` and `{{GENERATED_DATE}}` tokens (title, brand line, footer);
-- the `{{CV_PDF_FANCY}}`, `{{CV_PDF_ATS}}`, `{{CV_MD}}` hrefs in the **Download CV** nav block — the three CV files for this identity (relative, same folder);
-- the content inside each section, from the pipeline outputs. What is currently inside the template's sections is a worked example from a real run, kept to show the intended depth and formatting — replace it, keep the shells, repeat rows/cards as the data needs;
+- the `{{CV_PDF_FANCY}}`, `{{CV_PDF_ATS}}`, `{{CV_MD}}` hrefs in the **Download CV** nav block - the three CV files for this identity (relative, same folder);
+- the content inside each section, from the pipeline outputs. What is currently inside the template's sections is a worked example from a real run, kept to show the intended depth and formatting - replace it, keep the shells, repeat rows/cards as the data needs;
 - if a step did not run, KEEP its section and render a one-line "Not run for this session" note rather than deleting it.
 
 Save the filled copy to `versions/<identity>/<identity>-dashboard.html`.
 
-> **Precedence:** where anything below in this document conflicts with `templates/dashboard.html`, the template wins — follow the template. In particular the template is a **single-nav-rail, two-column** layout; the older "two side rails" / three-column skeleton described further down is **superseded** by the template.
+> **Precedence:** where anything below in this document conflicts with `templates/dashboard.html`, the template wins - follow the template. In particular the template is a **single-nav-rail, two-column** layout; the older "two side rails" / three-column skeleton described further down is **superseded** by the template.
 
 ## Sections (in order)
 
 ### Two side rails (persistent, one each side of the main column)
 
-> **⚠️ Superseded by `templates/dashboard.html`.** The locked template uses a single left **navigation** rail (the four collapsible groups), not the two content-rails described in this subsection. The *content* below — "Evidence used to build this CV" and "Hiring manager: what to add and how to get it" — is still valuable; render it inside the main column (within the Executive summary, Hiring-manager, and Action-plan sections) rather than as side rails, unless the template is later changed to reintroduce rails.
+> **⚠️ Superseded by `templates/dashboard.html`.** The locked template uses a single left **navigation** rail (the four collapsible groups), not the two content-rails described in this subsection. The *content* below - "Evidence used to build this CV" and "Hiring manager: what to add and how to get it" - is still valuable; render it inside the main column (within the Executive summary, Hiring-manager, and Action-plan sections) rather than as side rails, unless the template is later changed to reintroduce rails.
 
 Two rails frame the main content, each with **as many collapsible subsections as the data needs**. On web they are sticky so the user can scan sources and actions alongside any section; on print they drop below the main content as full-width sections. These are the two panels the candidate asked for.
 
-#### Side A (left rail) — "Evidence used to build this CV"
+#### Side A (left rail) - "Evidence used to build this CV"
 
 Every input that fed the CV, so the user sees exactly what it was built from. Driven by `evidence_index` and the Step 14c change report. One subsection per source, shown only when that source exists:
 
-- **Existing CV** — the base document.
-- **LinkedIn** — a sub-item per captured section that was used: Profile / About, Experience, Projects, Recommendations, Endorsed skills, Featured, Activity. For each, show what was pulled and which CV bullets it supported (e.g. "Projects: RentLoop full write-up + App Store link", "Recommendations: 4 verbatim", "Endorsed skills: 40-skill map").
-- **Performance review / appraisal**, **Metrics**, **GitHub / portfolio**, **Job description(s)**, **Other evidence** — one subsection each when present.
+- **Existing CV** - the base document.
+- **LinkedIn** - a sub-item per captured section that was used: Profile / About, Experience, Projects, Recommendations, Endorsed skills, Featured, Activity. For each, show what was pulled and which CV bullets it supported (e.g. "Projects: RentLoop full write-up + App Store link", "Recommendations: 4 verbatim", "Endorsed skills: 40-skill map").
+- **Performance review / appraisal**, **Metrics**, **GitHub / portfolio**, **Job description(s)**, **Other evidence** - one subsection each when present.
 
 Each item links to its `evidence/index.json` entry (type, coverage period, `claims_promoted`). Sources provided but not used appear greyed with a "provided, not yet used" note (mirrors `blockers[]`).
 
-#### Side B (right rail) — "Hiring manager: what to add and how to get it"
+#### Side B (right rail) - "Hiring manager: what to add and how to get it"
 
 The Step 14b adversarial verdict turned into an action list, with as many subsections as gap themes exist (e.g. Impact & metrics, Seniority & ownership, Modern stack for 2026, Thought leadership, Team leverage). Each gap card has four lines:
 
-1. **What's missing** — the `cv_quote` or the absent signal.
-2. **Why it matters now** — `why_it_matters_now`; items tagged `market_gap` get a "2026 expectation" chip.
-3. **How to improve** — the `do_differently` / `how_to_improve`.
-4. **How to get the data** — the `how_to_get_evidence`, verbatim and specific: speak to your manager in your next 1:1, pull GitHub PR/commit history, read Firebase Crashlytics crash-free rate, check analytics for conversion/retention, App Store Connect for downloads/ratings, incident postmortems / on-call logs, OKR or performance-review outcomes.
+1. **What's missing** - the `cv_quote` or the absent signal.
+2. **Why it matters now** - `why_it_matters_now`; items tagged `market_gap` get a "2026 expectation" chip.
+3. **How to improve** - the `do_differently` / `how_to_improve`.
+4. **How to get the data** - the `how_to_get_evidence`, verbatim and specific: speak to your manager in your next 1:1, pull GitHub PR/commit history, read Firebase Crashlytics crash-free rate, check analytics for conversion/retention, App Store Connect for downloads/ratings, incident postmortems / on-call logs, OKR or performance-review outcomes.
 
 Sort `market_gap` and dealbreaker items to the top. This rail is the direct answer to "what would a hiring manager want more of, and exactly where do I find it."
 
@@ -110,7 +110,7 @@ Sort `market_gap` and dealbreaker items to the top. This rail is the direct answ
 
 The most important section. A recruiter would skim it, and so will the candidate. The layout depends on whether a job description was supplied:
 
-#### Without a JD — single-score mode
+#### Without a JD - single-score mode
 
 Three blocks side by side:
 
@@ -134,17 +134,17 @@ Below the three blocks, a "Top 3 next actions" strip: the three highest-leverage
 A **JD callout** must appear at the bottom of the hero in this mode, styled as a muted card: "No job description provided. Paste a JD or a role URL to unlock JD-specific match scoring." The callout links to Section 5 so the user sees where match analysis will appear once a JD is supplied.
 
 The callout has two variants, distinguished by class:
-- `.jd-callout-empty` — dashed border, muted background, greyscale icon. Used when no JD is supplied. Copy invites the user to paste a JD and explains what the dashboard will unlock.
-- `.jd-callout-active` — solid border, green-soft background, tick icon. Used when a JD is supplied. Copy confirms the posting and shows a "Clear JD" affordance.
+- `.jd-callout-empty` - dashed border, muted background, greyscale icon. Used when no JD is supplied. Copy invites the user to paste a JD and explains what the dashboard will unlock.
+- `.jd-callout-active` - solid border, green-soft background, tick icon. Used when a JD is supplied. Copy confirms the posting and shows a "Clear JD" affordance.
 
 Both variants share the same internal structure (icon · title · short description · actions row) so the transition between states is visually continuous.
 
-#### With a JD — two-score mode
+#### With a JD - two-score mode
 
 The hero shows **two scores side by side**, clearly labelled so the user cannot confuse them:
 
-- **Overall readiness** — same composite score as above, same formula, same colour band. Label: "How you read for Senior iOS Engineer (IC) at role level."
-- **Role match** — the JD-specific score from `job-matcher`. Label: "How well you match THIS role: `{JD title}` at `{company}`." Shown in its own colour band (based on its own threshold, not the overall one).
+- **Overall readiness** - same composite score as above, same formula, same colour band. Label: "How you read for Senior iOS Engineer (IC) at role level."
+- **Role match** - the JD-specific score from `job-matcher`. Label: "How well you match THIS role: `{JD title}` at `{company}`." Shown in its own colour band (based on its own threshold, not the overall one).
 
 Under the two scores, a **two-line read** explicitly reconciling them for the user:
 - One line on the overall score and what it means in general (apply now / polish / fix structural).
@@ -199,7 +199,7 @@ Renders the `hiring_manager_verdict` output (Step 14b): a veteran hiring manager
 
 - **Verdict banner**: the verdict (`strong_yes` / `interview` / `weak_maybe` / `no`) as a large badge with the `verdict_one_liner` beside it. Colour: green / blue / amber / red respectively.
 - **The summary**, rendered as a quote block in the hiring manager's voice, verbatim from the skill output.
-- **"What would flip the verdict"** callout card: the single `would_flip_verdict` item, visually prominent — this is the one thing to do next.
+- **"What would flip the verdict"** callout card: the single `would_flip_verdict` item, visually prominent - this is the one thing to do next.
 - **Gap table**, one row per `gaps[]` entry, sorted dealbreakers first: severity chip · the verbatim `cv_quote` (rendered in monospace so it is recognisably lifted from the CV) · `location` · the `objection` · **Do differently** (the concrete action) · **Evidence needed** (where the real number/proof comes from). This is the "pointing out from the generated CV what should be done differently" view: quote on the left, fix on the right.
 - **Interview kill questions**: the `interview_kill_questions[]` as a checklist. Cross-link to Section 12 (interview defence prep), which must incorporate them.
 - **What survived**: `strengths_that_survive[]` as a short muted list. If empty, render "Nothing survived the adversarial read unchallenged" rather than omitting.
@@ -244,11 +244,11 @@ Columns:
 - **Role**: company and title (only shown on the first row of each role, then collapsed)
 - **Bullet**: the bullet text verbatim
 - **Rating**: high / medium / low, colour-coded badge
-- **Notes**: one sentence on what the bullet does well or what's missing. Avoid short tag-like text here — use complete sentences so the candidate can act on it without decoding shorthand.
+- **Notes**: one sentence on what the bullet does well or what's missing. Avoid short tag-like text here - use complete sentences so the candidate can act on it without decoding shorthand.
 
 **Suggested rewrite policy.** A `<div class="rewrite">` block sits inside the bullet cell when a rewrite is warranted:
 - **Low** bullets always get a rewrite (this is the primary fix the candidate came here for).
-- **Medium** bullets get a rewrite when the upgrade path is clear (e.g. a bounded number, named flow, or measurable outcome would lift it to High). Not every Medium needs one — only where the suggestion is concrete.
+- **Medium** bullets get a rewrite when the upgrade path is clear (e.g. a bounded number, named flow, or measurable outcome would lift it to High). Not every Medium needs one - only where the suggestion is concrete.
 - **High** bullets get a rewrite only when a single small addition (usually a numeric outcome) would move them to the strongest bullet on the CV. Use sparingly.
 - **Tense fixes** are also rendered as a rewrite block labelled `Tense fix only:` so the candidate sees it as a mechanical correction, not a content rewrite.
 
@@ -314,9 +314,9 @@ Render quick-wins with a thin green left border so the candidate can see what to
 
 The candidate has explicitly asked for the peer set to be biased toward their current domain plus high-profile brands. The `selection_reason` returned by `peer-benchmark` should already follow this bias, but the dashboard surfaces it visually so the candidate can see why each comparator made the cut:
 
-- **domain peer** — same industry/sub-sector as the candidate (e.g. iOS engineer at Depop or ASOS when the candidate is at Northwind Fitness). Shows the direct market.
-- **prestige peer** — high-brand employer regardless of domain match (Apple, Google, Meta, Monzo, Revolut, Deliveroo). Shows the aspirational bar even when domain differs.
-- **one rung above** — Staff/Principal/Lead at a peer company. Shows the next step on the ladder.
+- **domain peer** - same industry/sub-sector as the candidate (e.g. iOS engineer at Depop or ASOS when the candidate is at Northwind Fitness). Shows the direct market.
+- **prestige peer** - high-brand employer regardless of domain match (Apple, Google, Meta, Monzo, Revolut, Deliveroo). Shows the aspirational bar even when domain differs.
+- **one rung above** - Staff/Principal/Lead at a peer company. Shows the next step on the ladder.
 
 If the peer set skews too far in one direction (e.g. 4 prestige peers and no domain peer), flag that in the 8a intro line so the candidate knows to weight the signal accordingly.
 
@@ -369,7 +369,7 @@ A short section preparing the candidate for questions they'll be asked. Three bl
 
 **Stretch answers.** For each low-confidence bullet not yet rewritten, show a honest-but-strong way to talk about the work verbally, even if the CV text is weak.
 
-**Kill questions.** The `interview_kill_questions[]` from the hiring-manager verdict (Section 3b) — the probing questions the final CV invites from a skeptical interviewer. Each shows the question and which CV line triggers it. The candidate must have answers to these before applying.
+**Kill questions.** The `interview_kill_questions[]` from the hiring-manager verdict (Section 3b) - the probing questions the final CV invites from a skeptical interviewer. Each shows the question and which CV line triggers it. The candidate must have answers to these before applying.
 
 ### 13. Application strategy
 
@@ -467,7 +467,7 @@ Hard page breaks to aim for:
 
 ## Inline structure (skeleton)
 
-Matches `templates/dashboard.html`. Two columns on web: a fixed left `nav.rail` (grouped section nav) + a fluid `main.content`. The four nav groups **categorise** the sections; they do **not** reorder them — content order in `<main>` is exactly as listed below (the template's order, kept from the v2 layout, including its numbering which skips a standalone "10").
+Matches `templates/dashboard.html`. Two columns on web: a fixed left `nav.rail` (grouped section nav) + a fluid `main.content`. The four nav groups **categorise** the sections; they do **not** reorder them - content order in `<main>` is exactly as listed below (the template's order, kept from the v2 layout, including its numbering which skips a standalone "10").
 
 ```html
 <!doctype html>
@@ -475,10 +475,10 @@ Matches `templates/dashboard.html`. Two columns on web: a fixed left `nav.rail` 
 <head>
   <meta charset="utf-8">
   <title>{{CANDIDATE_NAME}}: CV Dashboard</title>
-  <style>/* locked inline CSS — see templates/dashboard.html, do not regenerate */</style>
+  <style>/* locked inline CSS - see templates/dashboard.html, do not regenerate */</style>
 </head>
 <body>
-<div class="layout">                                   <!-- display:flex — 2 columns on web -->
+<div class="layout">                                   <!-- display:flex - 2 columns on web -->
 
   <nav class="rail">                                  <!-- single left rail: grouped section nav -->
     <div class="brand">{{CANDIDATE_NAME}}</div>
@@ -537,7 +537,7 @@ Matches `templates/dashboard.html`. Two columns on web: a fixed left `nav.rail` 
 </html>
 ```
 
-Layout: `.layout` is `display:flex` — a fixed 200px `nav.rail` (sticky, full-height, dark `#111827`) + a fluid `main.content` (max-width 1760px). Nav groups are `<details class="navgroup" open>` so each collapses independently, no JavaScript. Below ~1100px the inner grids collapse to 2-up; in `@media print` the nav rail is hidden (`nav.rail{display:none}`) and content prints single-column across A4 pages via the `.page-break-before` hooks.
+Layout: `.layout` is `display:flex` - a fixed 200px `nav.rail` (sticky, full-height, dark `#111827`) + a fluid `main.content` (max-width 1760px). Nav groups are `<details class="navgroup" open>` so each collapses independently, no JavaScript. Below ~1100px the inner grids collapse to 2-up; in `@media print` the nav rail is hidden (`nav.rail{display:none}`) and content prints single-column across A4 pages via the `.page-break-before` hooks.
 
 ## How to compute the readiness verdict
 
@@ -576,14 +576,14 @@ Sum the time estimates from the Today + This Week action items for the applicant
 
 ## Rules
 
-- **Write for the candidate, not the pipeline. No process narration.** The dashboard is the candidate's decision tool, not a run log. It must read as a snapshot of where the CV stands *now* — never a diff against a previous version. Concretely, the rendered dashboard must NOT contain:
+- **Write for the candidate, not the pipeline. No process narration.** The dashboard is the candidate's decision tool, not a run log. It must read as a snapshot of where the CV stands *now* - never a diff against a previous version. Concretely, the rendered dashboard must NOT contain:
   - version-comparison narration ("up 1 from the stale v8 number", "unchanged this run", "carried forward, not re-fetched", "changed this run", "(updated in v8)", "regressed as of v7");
   - "how this was computed" preambles under section headings ("Freshly computed this run against the actual, current CV text", "Fresh adversarial read this run", "source: skills/benchmark");
   - an "update note" / "what triggered this run" block anywhere in the body.
   Provenance that genuinely matters (what did and didn't run, generation date, whether peer data is stale) lives in exactly one place: the footer note and the per-section "Not run for this session" line. Everywhere else, state the current fact plainly. If a score went up, the note says *why the CV is strong there now* ("Scope is unambiguous: 'defining the contracts, setting the architecture'"), not *what it used to say*.
 - **Keep notes to one sentence.** Score-card notes, bullet-audit notes, and gap-table objections are one plain sentence each. If a point needs two sentences, it belongs in the action plan or the hiring-manager verdict, not in a note cell. Cut hedging clauses ("all true and useful, but", "not a red flag on its own", "worth being deliberate about") down to the claim.
 - **Say each finding once.** The same gap must not be written out in full in more than one place. The interview kill questions live in Section 12 only; Section 3b references them by count and cross-links, it does not reprint the list. A gap named in the hiring-manager verdict (3b) is referenced from role fit (4), skills (7), and the action plan (11) as a short pointer ("see 3b"), never re-argued. When a bullet audit note and a gap-table row cover the same bullet, one carries the detail and the other points to it. Duplication is the main thing that makes this dashboard feel long; cut it.
-- **The template example is deliberately over-written — do not match its length.** The worked-example prose inside `templates/dashboard.html` predates these concision rules and runs long (multi-sentence notes, "this run" phrasing, re-verification asides). Copy its *structure, classes, and section set*, not its word count or tone. Where its example text conflicts with the Concision rules here, the rules win: compress every note and preamble you fill in to the budgets below.
+- **The template example is deliberately over-written - do not match its length.** The worked-example prose inside `templates/dashboard.html` predates these concision rules and runs long (multi-sentence notes, "this run" phrasing, re-verification asides). Copy its *structure, classes, and section set*, not its word count or tone. Where its example text conflicts with the Concision rules here, the rules win: compress every note and preamble you fill in to the budgets below.
 - **Length budget (hard caps per region).** Section-intro paragraphs: delete them unless a section literally did not run (then one "Not run" line). Score-card note: ≤ 20 words. Bullet-audit note: ≤ 25 words. Gap-table objection / do-differently / evidence cell: ≤ 25 words each. Role fit, market context, application strategy: ≤ 4 short lines total per block, no paragraph over 30 words. The hiring-manager quote block (3b) and the recruiter one-line takeaways are the *only* places longer prose is allowed, because that voice is the deliverable. Everywhere else, if it runs past the cap, cut it, don't wrap it.
 - **Every data point must be actionable or contextual.** If a number or table row doesn't help the candidate decide, remove it.
 - **No fabrication. No hallucinated scores.** Every score in the dashboard must trace back to a specific pipeline output or the documented composite formula above. If `recruiter_score` is missing from the pipeline, the Recruiter score card says "Not run" and does not display a number. The `readiness_score`, projected scores, and `time_to_ready` are the only derived values, and each derivation is defined in this document.
@@ -591,7 +591,7 @@ Sum the time estimates from the Today + This Week action items for the applicant
 - **Two scores when a JD is provided.** The hero must show both the overall readiness score (role-level) and the JD match score (role-specific), clearly labelled. Without a JD, the hero shows the overall score only, and a muted "No JD provided" callout invites the user to add one. Never display a JD match score for a JD that does not exist.
 - **Web-first layout, print-ready fallback.** The dashboard is used primarily in the browser. Use a sticky left-rail navigation, a wide content area (up to 1760px), multi-column grids (score cards 3 wide, action tiers 3 wide, verdict legend 4 wide, peer cards 2 wide), and generous whitespace. Keep the old single-column A4 layout available for `@media print` so PDF export still works.
 - **Equal-height columns across every grid.** All grid layouts (`action-plan`, `strategy`, `peer-comparator`, `scores`, `skills`, `recruiter-sim`, `role-fit`, `verdict-legend`, `hero-checklist`) must use `align-items: stretch` so cards in the same row have identical height. Cards inside must be `display: flex; flex-direction: column; height: 100%` so their accent content (lesson, takeaway, meta, delta, note) pins to the bottom via `margin-top: auto`. Ragged-bottom columns are a bug, not an accepted constraint.
-- **Consistent card padding, no double-card nesting.** Every "card" container on web uses the same inner padding (16-18px horizontal, 14-18px vertical). Inside `<details>` panels, the `dash-details-body` provides the outer padding; inner cards (sim panels, peer cards, skills columns) sit on top with their own padding and a flat background. Do not nest heavy-border cards inside heavy-border containers — pick one layer of visible framing per region. Tier panels (action plan) are soft-fill to distinguish them from the flat-white action items inside.
+- **Consistent card padding, no double-card nesting.** Every "card" container on web uses the same inner padding (16-18px horizontal, 14-18px vertical). Inside `<details>` panels, the `dash-details-body` provides the outer padding; inner cards (sim panels, peer cards, skills columns) sit on top with their own padding and a flat background. Do not nest heavy-border cards inside heavy-border containers - pick one layer of visible framing per region. Tier panels (action plan) are soft-fill to distinguish them from the flat-white action items inside.
 - **Progressive disclosure.** Always-visible sections are the verdict, the score breakdown (with formula), role fit, action plan, and strategy. Deeper audits (recruiter sim, JD match, bullets, skills, peers, timeline, market, interview prep, LinkedIn) go inside `<details>` elements that default closed except for the peer benchmark (the most visually rich) and the change report (the payoff of the evidence flow), which are always open.
 - **The two side rails are always present.** Side A ("Evidence used") and Side B ("Hiring manager: add & how to get it") render on every dashboard. Side A itemises every source that actually fed the CV, with provenance; Side B turns the Step 14b verdict into gap cards that each end with a concrete `how_to_get_evidence` action (speak to your manager, GitHub, Firebase, analytics, App Store Connect, postmortems, OKRs). Each rail carries as many `<details>` subsections as the data needs; omit a subsection entirely rather than render it empty. Gaps that a candidate is expected to show "in this day and age" are tagged `market_gap` and sorted to the top of Side B.
 - **Tone is direct and honest.** No hedging, no corporate softening. If the candidate is not ready, say so clearly and tell them what to do about it.

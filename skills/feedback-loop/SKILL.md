@@ -1,4 +1,4 @@
-> **Bundled skill: `feedback-loop`** — reference doc for the cv-generator agent pipeline.
+> **Bundled skill: `feedback-loop`** - reference doc for the cv-generator agent pipeline.
 >
 > Ingests application outcomes (rejection, screening, interview, offer) and adjusts CV wording, structure, and keyword strategy based on what's working. Called by the cv-generator agent when the user wants to iterate on an existing CV after real-world use.
 

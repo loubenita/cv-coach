@@ -1,0 +1,99 @@
+{
+  "verdict": "weak_maybe",
+  "verdict_one_liner": "Seven years of legitimate backend experience with clean, honest bullets, but not one line shows an architecture decision, a mentee, or a number, and there's a nine-month gap nobody's addressed.",
+  "summary": "You've got seven years in backend roles across two real domains, logistics and payments, and the CV is honest: nothing here overclaims. That's actually rare and I'll give you credit for it. But honesty isn't the same as readiness, and this reads as a solid Mid-level engineer applying for a Senior seat on hope rather than evidence. Every bullet under Brightwave Logistics describes work you did, not a decision you made: you built APIs someone else's design likely specified, you migrated 'a subset' of services (whose subset, and why only a subset), you fixed performance issues without saying what the baseline or the fix was, and you 'contributed technical input' in sprint planning, which tells me nothing about what that input was or whether anyone acted on it. Three skills sit in your Skills block, Kubernetes, GraphQL, Kafka, that never once show up in a sentence describing what you did with them. If I ask you in an interview to walk me through a Kafka consumer you built and you can't, that's a worse outcome than if you'd left it off the CV. Then there's the nine-month hole between Finch Payments ending in September 2021 and Brightwave starting in June 2022. I don't assume the worst about gaps, but I do assume the worst about candidates who leave them completely unaddressed on a CV that's asking for more trust, not less. Fix what you can fix honestly. The rest, ownership, mentoring, one real number, needs to come from your actual work, not from this pipeline.",
+  "would_flip_verdict": "One bullet, anywhere, that names a technical decision you made and defended, even without a metric attached, would do more for this CV than every other fix combined.",
+  "gaps": [
+    {
+      "severity": "major",
+      "theme": "seniority_ownership",
+      "cv_quote": "Reviewed pull requests and contributed technical input during sprint planning for the order-management squad.",
+      "location": "Experience > Brightwave Logistics, bullet 4",
+      "objection": "Reviewing PRs and 'contributing input' is what every engineer on the team does. For a Senior application this needed to be the bullet that shows you making a call, not attending a meeting.",
+      "do_differently": "Replace with a bullet describing one specific technical decision you drove: an API contract you defined, a schema change you proposed, an incident you led the response to.",
+      "evidence_needed": "A specific decision, disagreement, or proposal from the last 12 months at Brightwave that you personally drove.",
+      "how_to_get_evidence": "Check your own PR history and sprint retro notes for a design discussion you led, or ask your tech lead in your next 1:1 which decision they'd credit you with.",
+      "market_gap": false,
+      "why_it_matters_now": "",
+      "how_to_improve": ""
+    },
+    {
+      "severity": "major",
+      "theme": "team_leverage",
+      "cv_quote": "(no bullet anywhere in the CV)",
+      "location": "Experience, all three roles",
+      "objection": "Seven years in and there's no mentee, no onboarding doc you wrote, no junior you unblocked. For a Senior title that's not a nice-to-have, it's one of the first things I check.",
+      "do_differently": "Add a bullet describing any mentoring, onboarding, or knowledge-sharing you've actually done, even informally.",
+      "evidence_needed": "Any real instance of helping a junior or new-starter get productive.",
+      "how_to_get_evidence": "Think back over onboarding buddies, pairing sessions, or internal documentation you wrote, and ask a former teammate if they remember specifics you don't.",
+      "market_gap": false,
+      "why_it_matters_now": "",
+      "how_to_improve": ""
+    },
+    {
+      "severity": "major",
+      "theme": "modern_stack",
+      "cv_quote": "Cloud & DevOps: AWS, Docker, Kubernetes, Jenkins ... APIs & Messaging: REST APIs, GraphQL, Kafka",
+      "location": "Skills",
+      "objection": "Kubernetes, GraphQL and Kafka are exactly the three keywords a Senior Backend screen is built around in 2026, and none of them appear in a single bullet. Either you've used them enough to write a sentence about it, or they shouldn't be on the page.",
+      "do_differently": "Fold one real, specific use of each into a bullet (a Kafka consumer or producer you wrote, a GraphQL resolver you shipped, a Kubernetes deployment you configured), or remove the ones you can't back up.",
+      "evidence_needed": "A specific PR, ticket, or deployment where you personally used Kubernetes, GraphQL, or Kafka.",
+      "how_to_get_evidence": "Search your own commit history, or the team's Kubernetes manifests / Helm charts repo, for your name; check Kafka topic-ownership docs if your team keeps them.",
+      "market_gap": true,
+      "why_it_matters_now": "Event-driven and cloud-native infrastructure fluency is now assumed at Senior level, not a bonus; an unbacked keyword reads worse than an absent one.",
+      "how_to_improve": "One sentence per tool, tied to something you actually shipped."
+    },
+    {
+      "severity": "major",
+      "theme": "other",
+      "cv_quote": "Software Engineer, Finch Payments ... Jan 2020 - Sep 2021 / Backend Engineer, Brightwave Logistics ... Jun 2022 - present",
+      "location": "Experience, between Finch Payments and Brightwave Logistics",
+      "objection": "Nine months between roles with nothing said. I don't need a paragraph, but silence here reads worse than almost any honest one-liner would.",
+      "do_differently": "Add a short, honest label if there's a legitimate one: contracting, a career break, further study, caregiving, a long job search. If there genuinely isn't one, be ready to explain it in under ten seconds at interview.",
+      "evidence_needed": "The real reason for the Sep 2021 to Jun 2022 gap.",
+      "how_to_get_evidence": "This one only you have; decide the one-line version you're comfortable putting on the page.",
+      "market_gap": false,
+      "why_it_matters_now": "",
+      "how_to_improve": ""
+    },
+    {
+      "severity": "minor",
+      "theme": "impact_metrics",
+      "cv_quote": "Diagnosed and resolved performance issues on order-management endpoints serving the web and mobile teams.",
+      "location": "Experience > Brightwave Logistics, bullet 3",
+      "objection": "'Performance issues' resolved by how much, on what, measured how? This is a placeholder for a real bullet, not one yet.",
+      "do_differently": "Add the before/after number if you have it (latency, error rate, throughput); if you genuinely don't know it, name the specific symptom (timeouts, N+1 queries, memory growth) instead of leaving it generic.",
+      "evidence_needed": "A before/after number, or at minimum the specific symptom.",
+      "how_to_get_evidence": "Check your APM or monitoring tool history around the dates you remember fixing this, or ask in your team's incident channel.",
+      "market_gap": false,
+      "why_it_matters_now": "",
+      "how_to_improve": ""
+    },
+    {
+      "severity": "minor",
+      "theme": "thought_leadership",
+      "cv_quote": "(no Projects section; GitHub link with nothing cited)",
+      "location": "Whole CV",
+      "objection": "A bare GitHub link with nothing behind it doesn't help you and doesn't hurt you much either, but every peer comparator in this space has at least one concrete, checkable technical artefact.",
+      "do_differently": "Either pin one or two real repos on the GitHub profile with a short README, or drop the link if there's genuinely nothing there yet.",
+      "evidence_needed": "Any personal project, however small, that demonstrates backend work outside a job.",
+      "how_to_get_evidence": "Check your own GitHub for anything pinnable; if there's nothing, this is a longer-term investment, not a CV fix.",
+      "market_gap": false,
+      "why_it_matters_now": "",
+      "how_to_improve": ""
+    }
+  ],
+  "interview_kill_questions": [
+    "Walk me through the Kubernetes deployment you're most familiar with. What does the manifest look like?",
+    "You list Kafka. Describe a producer or consumer you wrote, and what happens if a message fails to process.",
+    "What's the one architectural decision at Brightwave you'd defend if I disagreed with it?",
+    "What happened between September 2021 and June 2022?",
+    "You migrated 'a subset' of services to Docker. Which ones, and why not the rest?",
+    "Name one engineer whose work got better because of something you specifically did."
+  ],
+  "strengths_that_survive": [
+    "Nothing here overclaims. Every bullet describes real, plausible IC-level work with no scope inflation, no invented ownership language, and honest titles throughout.",
+    "The career line is coherent: a junior full-stack-leaning role, then backend specialisation in payments, then backend specialisation in logistics. No unexplained title jumps, no lateral confusion.",
+    "The Finch Payments on-call bullet is a real, if small, production-ownership signal that most CVs at this length don't even have."
+  ]
+}

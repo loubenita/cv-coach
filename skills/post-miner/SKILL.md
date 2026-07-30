@@ -1,4 +1,4 @@
-> **Bundled skill: `post-miner`** — reference doc for the cv-generator agent pipeline.
+> **Bundled skill: `post-miner`** - reference doc for the cv-generator agent pipeline.
 >
 > Reads a candidate's public posts (LinkedIn, X/Twitter, personal blog) and extracts CV-worthy claims: deal values, project outcomes, events attended, talks given, awards, publications. Returns structured data with confidence levels and suggested CV bullet wording. Never promotes post content to the CV without explicit user confirmation. Called by the cv-generator agent when the candidate has a public activity feed worth mining.
 

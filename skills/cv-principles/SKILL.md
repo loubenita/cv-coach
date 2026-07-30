@@ -1,4 +1,4 @@
-> **Bundled skill: `cv-principles`** — reference doc for the cv-generator agent pipeline.
+> **Bundled skill: `cv-principles`** - reference doc for the cv-generator agent pipeline.
 >
 > Codified, source-cited rules for what makes a top-notch tech CV in 2025/2026. Reference codex used by ats-validator, content-improvement, recruiter-simulator, benchmark, and cv-tailor. Synthesises Pragmatic Engineer (Gergely Orosz), Google's X-Y-Z formula (Laszlo Bock), Will Larson, Gayle Laakmann McDowell, Levels.fyi top samples, FAANG resume guides, and UK National Careers Service. Every rule carries a citation so downstream skills can justify decisions to the user.
 

@@ -1,4 +1,4 @@
-> **Bundled skill: `job-matcher`** — reference doc for the cv-generator agent pipeline.
+> **Bundled skill: `job-matcher`** - reference doc for the cv-generator agent pipeline.
 >
 > Semantically matches a CV against a job description. Returns a match score, gap analysis, and rewrite suggestions. Called by the cv-generator agent when a job description is provided.
 

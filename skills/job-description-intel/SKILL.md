@@ -1,4 +1,4 @@
-> **Bundled skill: `job-description-intel`** — reference doc for the cv-generator agent pipeline.
+> **Bundled skill: `job-description-intel`** - reference doc for the cv-generator agent pipeline.
 >
 > Parses a job description and extracts must-have vs nice-to-have requirements, hidden signals (seniority, ownership level, culture), and red flags. Called by the cv-generator agent when a job description is provided.
 

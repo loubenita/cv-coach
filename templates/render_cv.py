@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-render_cv.py — deterministic CV renderer (PROOF OF CONCEPT).
+render_cv.py - deterministic CV renderer (PROOF OF CONCEPT).
 
 Reads the canonical profile data model (base.json, the pipeline's declared
 "single source of truth") and emits a canonical CV in Markdown. Layout is a
@@ -9,7 +9,7 @@ structure/order/formatting lives here.
 
 Layer note: base.json holds the RAW extracted experience. In the full design
 the pipeline's improved/tailored bullets live in a `cv.json` content layer with
-the same shape as the `experience[].bullets` used here — this same renderer
+the same shape as the `experience[].bullets` used here - this same renderer
 consumes that instead, so the polished CV renders through the identical path.
 
 Usage:

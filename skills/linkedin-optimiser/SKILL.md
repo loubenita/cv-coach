@@ -1,4 +1,4 @@
-> **Bundled skill: `linkedin-optimiser`** — reference doc for the cv-generator agent pipeline.
+> **Bundled skill: `linkedin-optimiser`** - reference doc for the cv-generator agent pipeline.
 >
 > Converts a finalised CV into LinkedIn profile content, keeping the two consistent. Generates headline, About section, per-role descriptions, skills list, and featured section suggestions. Called by the cv-generator agent when the user wants their LinkedIn to mirror their CV.
 

@@ -1,4 +1,4 @@
-> **Bundled skill: `recruiter-simulator`** — reference doc for the cv-generator agent pipeline.
+> **Bundled skill: `recruiter-simulator`** - reference doc for the cv-generator agent pipeline.
 >
 > Simulates recruiter behaviour at three depths: 6-second scan, 30-second skim, and hiring-manager deep-read. Produces a shortlist decision with specific reasons. Called by the cv-generator agent near the end of the pipeline.
 

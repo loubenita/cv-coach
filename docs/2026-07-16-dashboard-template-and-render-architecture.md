@@ -8,10 +8,10 @@ This change locks the structure, introduces the rendering discipline that preven
 
 User decisions captured this session:
 1. **Base template = the v2 dashboard** (`versions/2026-07-15-0005-sam-rivera-dashboard-v2.html`), 2-column, cleaner than the 3-column variant. The two side rails are **dropped**, not preserved.
-2. **Side nav restructured** into collapsible groups. Final grouping (user-specified): findings / the agent's scores & decisions / the hiring manager — realised as **four** groups (see below), user having said "more groups if required".
-3. **Content order is NOT reordered** to match the nav groups this pass — the nav groups categorise; they don't move sections. (Revisit once sections render from JSON, where reordering is free.)
+2. **Side nav restructured** into collapsible groups. Final grouping (user-specified): findings / the agent's scores & decisions / the hiring manager - realised as **four** groups (see below), user having said "more groups if required".
+3. **Content order is NOT reordered** to match the nav groups this pass - the nav groups categorise; they don't move sections. (Revisit once sections render from JSON, where reordering is free.)
 4. **JSON-first rendering** is the direction. `base.json` is already the declared source of truth; the gap is the *rendering* discipline.
-5. **Output naming/grouping by identity** — generic runs version up (`-v1`, `-v2`); JD runs key on the company (`-apple`, then `-apple-v2`).
+5. **Output naming/grouping by identity** - generic runs version up (`-v1`, `-v2`); JD runs key on the company (`-apple`, then `-apple-v2`).
 6. Dashboard nav carries a **Download CV** block linking the three CV formats.
 
 All edits target the authoritative bundle (`~/.claude/agents/cv-generator/`). Persisted per-user data lives under `~/.cv-generator/<user>/`.
@@ -42,7 +42,7 @@ Both `cv.json` and `dashboard.json` derive from `base.json` → one source of tr
 
 ### Deliberate CV/dashboard split
 
-The two artifacts are **not** treated identically — matched to each artifact's nature:
+The two artifacts are **not** treated identically - matched to each artifact's nature:
 
 | Artifact | Approach | Why |
 | --- | --- | --- |
@@ -53,11 +53,11 @@ So the CV goes fully deterministic; the dashboard keeps the locked template but 
 
 ---
 
-## Locked dashboard template — `templates/dashboard.html`
+## Locked dashboard template - `templates/dashboard.html`
 
 Built from the v2 dashboard. The inline `<style>` block, the section set/order/ids, and the nav are fixed; the agent fills content and tokens.
 
-### Side nav — four collapsible groups (`<details class="navgroup">`, no JS)
+### Side nav - four collapsible groups (`<details class="navgroup">`, no JS)
 
 | Group | Sections (ids) |
 | --- | --- |
@@ -75,7 +75,7 @@ Three tokenized links to the identity's CV files (relative paths, same folder):
 | Label | Token | Style |
 | --- | --- | --- |
 | Designed PDF | `{{CV_PDF_FANCY}}` | green accent (the "fancy" one) |
-| ATS PDF (basic) | `{{CV_PDF_ATS}}` | plain — for applying via portals |
+| ATS PDF (basic) | `{{CV_PDF_ATS}}` | plain - for applying via portals |
 | Markdown source | `{{CV_MD}}` | plain |
 
 ### Tokens the agent fills per run
@@ -91,8 +91,8 @@ The two side rails in the old `SKILL.md` prose ("Evidence used", "Hiring manager
 Group every run's outputs into one folder per **identity** under `versions/`.
 
 - **Identity** = `<candidate-slug>-<line>`, where `<line>` is:
-  - **generic** (no JD): a version — `v1`, `v2`, `v3`, … (N = prior generic runs + 1). → `sam-rivera-v3`
-  - **JD-targeted**: the company/JD slug — first run `<company>`, repeats add `-v2`, `-v3`. → `sam-rivera-apple`, then `sam-rivera-apple-v2`
+  - **generic** (no JD): a version - `v1`, `v2`, `v3`, … (N = prior generic runs + 1). → `sam-rivera-v3`
+  - **JD-targeted**: the company/JD slug - first run `<company>`, repeats add `-v2`, `-v3`. → `sam-rivera-apple`, then `sam-rivera-apple-v2`
 - Folder `versions/<identity>/` contains, all named with the identity (self-describing when shared individually):
 
 ```
@@ -113,18 +113,18 @@ versions/sam-rivera-v3/
 ## Status
 
 **Built this session**
-- `templates/dashboard.html` — locked template: 4-group collapsible nav + Download CV block + tokens.
-- `templates/render_cv.py` — deterministic CV → Markdown renderer (stdlib only). Proven end-to-end on Sam's `base.json`, reposition framing preserved (header "Senior iOS Engineer", Northwind Fitness entry honest "iOS Engineer").
-- `skills/dashboard/SKILL.md` — "Canonical template — start here" section, precedence rule, 3-column skeleton replaced with the 2-column grouped-nav skeleton, Download block + save path documented.
-- `cv-generator.md` — output naming/grouping convention; change-report and dashboard paths point at `versions/<identity>/`.
-- `versions/sam-rivera-v3/` — first grouped identity folder, assembled from the 2026-07-16 real outputs. Dashboard opened for review. (Its body is the last full analysis; its download links point at the real v3 files. Next full run renders a fresh body through the template.)
+- `templates/dashboard.html` - locked template: 4-group collapsible nav + Download CV block + tokens.
+- `templates/render_cv.py` - deterministic CV → Markdown renderer (stdlib only). Proven end-to-end on Sam's `base.json`, reposition framing preserved (header "Senior iOS Engineer", Northwind Fitness entry honest "iOS Engineer").
+- `skills/dashboard/SKILL.md` - "Canonical template - start here" section, precedence rule, 3-column skeleton replaced with the 2-column grouped-nav skeleton, Download block + save path documented.
+- `cv-generator.md` - output naming/grouping convention; change-report and dashboard paths point at `versions/<identity>/`.
+- `versions/sam-rivera-v3/` - first grouped identity folder, assembled from the 2026-07-16 real outputs. Dashboard opened for review. (Its body is the last full analysis; its download links point at the real v3 files. Next full run renders a fresh body through the template.)
 
 **Pending (recommended next, in order)**
-1. **Wire `render_cv.py` into the pipeline** — Step 14 emits `cv.json`; the script renders `<identity>.md` (+ HTML/PDF via `Terminal Resume.html`). Validates the `cv.json` contract before touching the dashboard. *(Highest value, lowest risk.)*
+1. **Wire `render_cv.py` into the pipeline** - Step 14 emits `cv.json`; the script renders `<identity>.md` (+ HTML/PDF via `Terminal Resume.html`). Validates the `cv.json` contract before touching the dashboard. *(Highest value, lowest risk.)*
 2. **Define `dashboard.json`** and have Step 16 fill `templates/dashboard.html` from it (rather than free-forming content).
 3. Optionally reorder the dashboard `<main>` sections to match the four nav groups (renumbering) once sections render from `dashboard.json`.
 
 ## Open questions
 - Do we want a `cv.json` schema versioned like `intake.json`/`base.json` (`schema_version`), and validated before render?
-- CV HTML/PDF: reuse `Terminal Resume.html` as the render target for `render_cv.py`, or keep the current PDF path? (Recommend reuse — one CV template, one renderer.)
+- CV HTML/PDF: reuse `Terminal Resume.html` as the render target for `render_cv.py`, or keep the current PDF path? (Recommend reuse - one CV template, one renderer.)
 - Should the "Evidence used" provenance become a compact main-column dashboard section, or stay solely in the change-report?

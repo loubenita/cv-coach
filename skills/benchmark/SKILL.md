@@ -1,4 +1,4 @@
-> **Bundled skill: `benchmark`** — reference doc for the cv-generator agent pipeline.
+> **Bundled skill: `benchmark`** - reference doc for the cv-generator agent pipeline.
 >
 > Scores CV bullets and structure against industry standards for the target role and seniority. Returns a competitiveness score and specific improvements. Called by the cv-generator agent after content improvement.
 
@@ -52,7 +52,7 @@ For each bullet, assign a confidence level based on how defensible it would be i
 Not every bullet gets a rewrite. Offer one only when it's actionable:
 
 - **Low bullets always get a rewrite.** This is the primary fix; return it populated, never empty.
-- **Medium bullets get a rewrite when the upgrade path is clear** — a bounded number, a named flow, or a measurable outcome that would lift the rating to High. If the Medium bullet is simply short but defensible, leave `suggested_rewrite` empty rather than padding.
+- **Medium bullets get a rewrite when the upgrade path is clear** - a bounded number, a named flow, or a measurable outcome that would lift the rating to High. If the Medium bullet is simply short but defensible, leave `suggested_rewrite` empty rather than padding.
 - **High bullets rarely get a rewrite.** Only when a single small addition (usually one honest numeric outcome) would move the bullet to the strongest on the CV. Use sparingly; the point of the rewrite field is to fix weakness, not polish already-strong bullets.
 
 Every rewrite uses placeholder brackets where the real number is unknown (`[X% lift in Y]`, `[named flow]`, `[N endpoints consolidated]`). Never invent a metric to fill the rewrite.
@@ -90,7 +90,7 @@ When a mismatch is found, flag it on the offending bullet using the `issues` arr
 ## Rules
 
 - Score each bullet 0-100.
-- Apply the **Suggested rewrite policy** above: rewrites are mandatory for Low bullets, conditional for Medium, rare for High. Never invent a metric to fill a rewrite — use placeholder brackets for unknown numbers.
+- Apply the **Suggested rewrite policy** above: rewrites are mandatory for Low bullets, conditional for Medium, rare for High. Never invent a metric to fill a rewrite - use placeholder brackets for unknown numbers.
 - Run the **Tense consistency check** above before finalising. Add `tense_inconsistent` to the `issues` array of any offending bullet and populate `suggested_rewrite` with the past-tense rewrite.
 - `competitiveness_score` is the average bullet score, weighted by role recency.
 - `seniority_alignment` should be one of: "strong", "adequate", "weak", with a one-line explanation.

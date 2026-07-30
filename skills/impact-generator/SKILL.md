@@ -1,4 +1,4 @@
-> **Bundled skill: `impact-generator`** — reference doc for the cv-generator agent pipeline.
+> **Bundled skill: `impact-generator`** - reference doc for the cv-generator agent pipeline.
 >
 > Suggests safe, honest impact ranges for bullets that lack measurable outcomes. Never fabricates numbers. Called by the cv-generator agent after content improvement when bullets are flagged as missing impact.
 

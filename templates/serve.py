@@ -145,8 +145,10 @@ def main():
     httpd = ThreadingHTTPServer(("127.0.0.1", args.port), make_handler(version_dir, identity))
     port = httpd.server_address[1]
     url = f"http://127.0.0.1:{port}/{identity}-dashboard.html"
-    print(f"serve: CV Coach dashboard for '{identity}' at {url}")
-    print("serve: press Ctrl+C to stop.")
+    # flush so a backgrounded launcher can read the URL immediately (stdout is
+    # block-buffered when redirected to a file).
+    print(f"serve: CV Coach dashboard for '{identity}' at {url}", flush=True)
+    print("serve: press Ctrl+C to stop.", flush=True)
     if not args.no_open:
         threading.Timer(0.4, lambda: webbrowser.open(url)).start()
     try:

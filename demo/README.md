@@ -12,6 +12,24 @@ This folder is a complete, real run of CV Coach on a **fictional** candidate, so
 - skills listed but never demonstrated in a bullet (Kubernetes, GraphQL, Kafka)
 - a generic summary that could belong to anyone
 
+## What it looks like
+
+The dashboard, top of page: verdict, score, time to ready, and the three highest-leverage fixes.
+
+![CV Coach dashboard: sidebar navigation, NEEDS WORK verdict, 63/100 score, time-to-ready estimate, next actions, the six score cards, and the recruiter simulation](../docs/images/dashboard-hero.png)
+
+The hiring manager's adversarial read, with every objection filed against the line it attaches to.
+
+![Hiring-manager verdict: WEAK MAYBE banner, a long unedited quote, what would flip the verdict, a table of six objections with severity, CV quote, location, objection, what to do differently and evidence needed, then interview kill questions](../docs/images/dashboard-verdict.png)
+
+The rewritten CV, designed and ATS-safe.
+
+| Designed PDF | ATS-safe PDF |
+|---|---|
+| [![Designed CV: a terminal-window styled one-page A4 layout with shell-prompt section headers, syntax-highlighted role titles, and a skills sidebar](../docs/images/cv-designed.png)](../docs/images/cv-designed.png) | [![ATS-safe CV: plain one-page A4 layout, system fonts, standard Summary / Experience / Skills / Education headings and simple bullet lists](../docs/images/cv-ats.png)](../docs/images/cv-ats.png) |
+
+More screenshots, including the bullet audit, peer benchmark and action plan, are in the [main README](../README.md#what-it-looks-like).
+
 ## What is in this folder
 
 | File | What it is |
@@ -36,4 +54,4 @@ CV Coach scored this candidate honestly rather than flattering her:
 
 That is the point of the tool: it tells you where you actually stand for the role you are targeting, and exactly what to fix first.
 
-> To open the HTML files, download them and open in a browser. To regenerate the PDFs or make your own, see the main [README](../README.md).
+> The screenshots above cover the output, so there is nothing you need to download to see it. The HTML files are here if you want the interactive version: download them and open in a browser. To regenerate the PDFs or make your own, see the main [README](../README.md).

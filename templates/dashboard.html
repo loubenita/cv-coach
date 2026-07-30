@@ -67,6 +67,15 @@ nav.rail a.dl .dl-name{white-space:nowrap;overflow:hidden;text-overflow:ellipsis
 nav.rail a.dl .dl-tag{flex-shrink:0;font-size:7.5pt;font-weight:700;color:#9ca3af;background:#111827;border-radius:4px;padding:1px 6px;}
 nav.rail a.dl.dl-primary{border-color:#16a34a;}
 nav.rail a.dl.dl-primary .dl-tag{color:#22c55e;}
+nav.rail .dl-card{position:relative;margin-bottom:6px;}
+nav.rail .dl-card a.dl{margin-bottom:0;}
+nav.rail .dl-card.missing a.dl{opacity:0.4;pointer-events:none;filter:grayscale(1);}
+nav.rail .dl-card .dl-play{display:none;position:absolute;top:9px;right:8px;background:#16a34a;color:#fff;border:none;border-radius:5px;width:26px;height:20px;font-size:8pt;line-height:1;cursor:pointer;}
+nav.rail .dl-card.missing .dl-play{display:inline-block;}
+nav.rail .dl-card .dl-play:hover{background:#22c55e;}
+nav.rail .dl-card .dl-play:disabled{background:#4b5563;cursor:default;}
+nav.rail .dl-card .dl-msg{color:#9ca3af;font-size:7.5pt;margin:2px 0 0 2px;}
+nav.rail .dl-card .dl-msg:empty{display:none;}
 main.content{flex:1;max-width:1760px;padding:28px 40px 80px;}
 h2.section-heading{font-size:10.5pt;font-weight:700;text-transform:uppercase;letter-spacing:0.07em;border-bottom:1px solid var(--border);padding-bottom:5px;margin:34px 0 14px;color:#111827;}
 h2.section-heading:first-of-type{margin-top:0;}
@@ -177,11 +186,21 @@ details>summary::-webkit-details-marker{display:none;}
   <div class="brand">{{CANDIDATE_NAME}}</div>
   <div class="brand-sub">CV Dashboard &middot; generated {{GENERATED_DATE}}</div>
 
-  <div class="dlgroup">
-    <div class="dl-label">Download CV</div>
-    <a class="dl dl-primary" href="{{CV_PDF_FANCY}}"><span class="dl-name">Designed PDF</span><span class="dl-tag">.pdf</span></a>
-    <a class="dl" href="{{CV_PDF_ATS}}"><span class="dl-name">ATS PDF (basic)</span><span class="dl-tag">.pdf</span></a>
-    <a class="dl" href="{{CV_MD}}"><span class="dl-name">Markdown source</span><span class="dl-tag">.md</span></a>
+  <div class="dlgroup" id="dlgroup">
+    <div class="dl-label">Your CV</div>
+    <div class="dl-card {{FANCY_STATE}}" data-type="designed">
+      <a class="dl dl-primary" href="{{CV_PDF_FANCY}}"><span class="dl-name">Designed PDF</span><span class="dl-tag">.pdf</span></a>
+      <button class="dl-play" type="button" aria-label="Generate designed PDF" title="Generate this PDF">&#9654;</button>
+      <span class="dl-msg"></span>
+    </div>
+    <div class="dl-card {{ATS_STATE}}" data-type="ats">
+      <a class="dl" href="{{CV_PDF_ATS}}"><span class="dl-name">ATS PDF (basic)</span><span class="dl-tag">.pdf</span></a>
+      <button class="dl-play" type="button" aria-label="Generate ATS PDF" title="Generate this PDF">&#9654;</button>
+      <span class="dl-msg"></span>
+    </div>
+    <div class="dl-card valid" data-type="md">
+      <a class="dl" href="{{CV_MD}}"><span class="dl-name">Markdown source</span><span class="dl-tag">.md</span></a>
+    </div>
   </div>
 
   <details class="navgroup" open>
@@ -566,5 +585,36 @@ Generated {{GENERATED_DATE}} by the cv-generator pipeline. Composite readiness f
 
 </main>
 </div>
+<script>
+/* CV download cards: when the dashboard is served by templates/serve.py (via
+   /cv-open or auto-open), greyed "not yet generated" PDF cards get a working
+   play button that runs render_pdf.py on the server and flips the card to
+   valid. Opened as a bare file, the buttons show a hint instead. */
+(function(){
+  var group=document.getElementById('dlgroup'); if(!group) return;
+  var served=/^https?:$/.test(location.protocol);
+  var KEY={ats:'ats_pdf',designed:'designed_pdf'};
+  function paint(st){
+    group.querySelectorAll('.dl-card[data-type]').forEach(function(c){
+      var t=c.getAttribute('data-type'); if(t==='md') return;
+      var ok=st?!!st[KEY[t]]:c.classList.contains('valid');
+      c.classList.toggle('valid',ok); c.classList.toggle('missing',!ok);
+    });
+  }
+  function msg(c,m){var e=c.querySelector('.dl-msg'); if(e) e.textContent=m||'';}
+  if(served){ fetch('/api/status').then(function(r){return r.json();}).then(paint).catch(function(){}); }
+  group.querySelectorAll('.dl-play').forEach(function(b){
+    b.addEventListener('click',function(){
+      var c=b.closest('.dl-card'), t=c.getAttribute('data-type');
+      if(!served){ msg(c,'Open via /cv-open to generate'); return; }
+      b.disabled=true; msg(c,'Rendering...');
+      fetch('/api/render?type='+encodeURIComponent(t)).then(function(r){return r.json();}).then(function(res){
+        b.disabled=false;
+        if(res.ok){ msg(c,''); paint(res.status); } else { msg(c,'Render failed'); }
+      }).catch(function(){ b.disabled=false; msg(c,'Render failed'); });
+    });
+  });
+})();
+</script>
 </body>
 </html>

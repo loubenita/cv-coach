@@ -53,7 +53,7 @@ Every pipeline output is optional. If a step did not run, render its section wit
 A single HTML file saved to `versions/<identity>/<identity>-dashboard.html`.
 
 Requirements:
-- Self-contained: all CSS inlined, no external fonts, no JavaScript
+- Self-contained: all CSS inlined, no external fonts. The only JavaScript is the small inline block already in the template that drives the CV download cards (see "The CV download cards" below); do not add any other scripts.
 - Print-ready across multiple pages (A4, correct margins, explicit page-break rules)
 - Works in any modern browser
 - Professional, clean, high information density without feeling cramped
@@ -69,11 +69,22 @@ Fixed by the template (do not change per run):
 
 Filled per run:
 - the `{{CANDIDATE_NAME}}` and `{{GENERATED_DATE}}` tokens (title, brand line, footer);
-- the `{{CV_PDF_FANCY}}`, `{{CV_PDF_ATS}}`, `{{CV_MD}}` hrefs in the **Download CV** nav block - the three CV files for this identity (relative, same folder);
+- the `{{CV_PDF_FANCY}}`, `{{CV_PDF_ATS}}`, `{{CV_MD}}` hrefs in the **Your CV** nav block - the CV files for this identity (relative filenames, same folder);
+- the `{{FANCY_STATE}}` and `{{ATS_STATE}}` tokens on the two PDF cards - each is either `valid` (the PDF file was rendered this run and exists) or `missing` (deferred, not rendered yet). See "The CV download cards" below;
 - the content inside each section, from the pipeline outputs. What is currently inside the template's sections is a worked example from a real run, kept to show the intended depth and formatting - replace it, keep the shells, repeat rows/cards as the data needs;
 - if a step did not run, KEEP its section and render a one-line "Not run for this session" note rather than deleting it.
 
 Save the filled copy to `versions/<identity>/<identity>-dashboard.html`.
+
+### The CV download cards
+
+PDF rendering is deferred by default (see the cv-generator output step: every run writes the Markdown CV and both HTML variants, but does NOT render the two PDFs). The dashboard's **Your CV** block reflects this:
+
+- The **Markdown** card is always `valid` (the file always exists).
+- The **Designed PDF** and **ATS PDF** cards carry `{{FANCY_STATE}}` / `{{ATS_STATE}}`. On a normal deferred run both are `missing`: the card renders greyed with a green play button. If a run did render a PDF, set that card to `valid`.
+- A `missing` card's play button generates the PDF on demand. This only works when the dashboard is opened through the companion server (`templates/serve.py`, launched by `/cv-open` or auto-opened at the end of a run): the button calls the server's `/api/render` endpoint, which runs `templates/render_pdf.py` for that format, then flips the card to `valid`. Opened as a bare file, the button shows a hint to open via `/cv-open` instead.
+
+Do not remove or rewrite the inline `<script>` at the end of the template; it is what wires these cards. Leave the two HTML source files in the folder (they are what the play button renders from).
 
 > **Precedence:** where anything below in this document conflicts with `templates/dashboard.html`, the template wins - follow the template. In particular the template is a **single-nav-rail, two-column** layout; the older "two side rails" / three-column skeleton described further down is **superseded** by the template.
 

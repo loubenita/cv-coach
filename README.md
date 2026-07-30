@@ -14,6 +14,61 @@ CV Coach scored that candidate **63 / 100 (NEEDS WORK)** and returned a hiring-m
 
 ---
 
+## What it looks like
+
+Everything below is a screenshot of that demo run, so you can see the real output without downloading or opening anything. The candidate, employers, numbers, and peer comparators are all fictional.
+
+### The dashboard
+
+One self-contained HTML page. The rail on the left jumps between sections and holds the CV downloads; the top of the page answers *am I ready to apply?* before you scroll: a verdict, a score, a time-to-ready estimate, and the three highest-leverage things to fix.
+
+![CV Coach dashboard: sidebar navigation, NEEDS WORK verdict, 63/100 score, time-to-ready estimate, next actions, the six score cards, and the recruiter simulation](docs/images/dashboard-hero.png)
+
+Six sub-scores, each with a projected value if you do the action plan, and a note on what is dragging it down:
+
+![Score breakdown cards: ATS 86, Recruiter 58, Impact 46, Clarity 76, Confidence 46, Match N/A, each with a projected score](docs/images/dashboard-scores.png)
+
+Your CV read three times at the speed real people read it:
+
+![Recruiter simulation: 6-second scan (pass), 30-second skim (pass), hiring-manager deep read (maybe), each with what was caught and a verbatim reaction quote](docs/images/dashboard-recruiter.png)
+
+Then the adversarial pass. A veteran hiring manager is told to reject you, talks it through unedited, names the one change that would flip the decision, and files every objection against the exact line it attaches to, with the evidence needed to answer it, plus the interview questions the CV invites and what survived the read:
+
+![Hiring-manager verdict: WEAK MAYBE banner, a long unedited quote, what would flip the verdict, a table of six objections with severity, CV quote, location, objection, what to do differently and evidence needed, then interview kill questions](docs/images/dashboard-verdict.png)
+
+<details>
+<summary><b>More dashboard sections</b> - bullet audit, peer benchmark, timeline and market, action plan</summary>
+
+Every bullet rated, with a suggested rewrite that leaves the numbers as blanks for you to fill rather than inventing them:
+
+![Bullet-by-bullet quality audit table: each bullet rated Medium or Low with notes and a suggested rewrite containing bracketed placeholders](docs/images/dashboard-bullets.png)
+
+Five engineers at the seniority you are targeting, what each one has that you do not, a signal-by-signal comparison grid, and the gaps sorted by effort and priority:
+
+![Peer benchmark: five comparator cards with a pattern to copy, a signal comparison grid scoring you against all five, and a gap table with effort, priority and suggestion columns](docs/images/dashboard-peers.png)
+
+Career shape and what the market currently rewards for the role:
+
+![Experience timeline showing three roles and a visible gap segment, alongside market context: in-demand skills you have, emerging signals, declining ones, and seniority expectations](docs/images/dashboard-timeline.png)
+
+The fixes, tiered by how long they take, each tagged with the score it moves and whether it needs input only you have:
+
+![Action plan in three tiers - today under 1 hour, this week under 7 hours, this month under 15 hours - each item tagged with its score delta and time cost](docs/images/dashboard-actionplan.png)
+
+</details>
+
+The whole page in one image: [full-page dashboard screenshot](docs/images/dashboard-full.png) (long).
+
+### The CV itself
+
+The same CV rendered two ways. The ATS-safe version is what you upload to an applicant-tracking system; the designed version is what you send to a person.
+
+| Designed PDF | ATS-safe PDF |
+|---|---|
+| [![Designed CV: a terminal-window styled one-page A4 layout with shell-prompt section headers, syntax-highlighted role titles, and a skills sidebar](docs/images/cv-designed.png)](docs/images/cv-designed.png) | [![ATS-safe CV: plain one-page A4 layout, system fonts, standard Summary / Experience / Skills / Education headings and simple bullet lists](docs/images/cv-ats.png)](docs/images/cv-ats.png) |
+
+---
+
 ## What it produces
 
 Every run writes, per candidate:
@@ -137,6 +192,8 @@ The browser window stays visible and pauses for you on CAPTCHAs or re-logins. Wi
 cv-generator/
 ├── cv-generator.md     ← the agent definition (the ONLY file with agent frontmatter)
 ├── README.md           ← this file
+├── demo/               ← a complete example run on a fictional candidate
+├── docs/images/        ← the screenshots used in this README
 ├── skills/             ← 15 bundled pipeline skills, read on demand
 │   ├── ats-validator/SKILL.md
 │   ├── benchmark/SKILL.md

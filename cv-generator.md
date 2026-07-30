@@ -380,14 +380,16 @@ Produce:
 - Never overwrite a prior identity's folder; a new generic run or a repeat JD run takes the next `-vN`.
 - Put the absolute path of every file written into `files_written`.
 
-**Rendering the two PDFs (use the bundled renderer, never hand-roll Chrome).** Do NOT call Chrome directly. An ad-hoc `chrome --headless --print-to-pdf` writes the file and then frequently fails to exit (it waits on remote web fonts, or conflicts with the user's running Chrome), so the shell call blocks with no output until the run's watchdog kills the whole pipeline. Render each PDF from its HTML with the bundled helper, which uses a throwaway Chrome profile, a bounded virtual-time budget for web fonts, and polls for the finished file so it returns in ~2s and can never hang:
+**What to write, and PDF deferral.** Every run writes the Markdown CV (`<identity>.md`), BOTH HTML variants (`<identity>-ats.html` and `<identity>.html`), and the dashboard. Do NOT render the two PDFs by default: PDF rendering is deferred and happens on demand from the dashboard's download cards (or `/cv-render`). Reflect this in the dashboard by setting both PDF cards' state tokens (`{{FANCY_STATE}}`, `{{ATS_STATE}}`) to `missing` (see `skills/dashboard`). The HTML must still be written every run because it is the source the on-demand renderer turns into a PDF.
+
+**If you ever do render a PDF (never hand-roll Chrome).** When a PDF is generated (on demand, or if a run is explicitly asked to produce them), always use the bundled helper, never a direct `chrome --headless --print-to-pdf` (that writes the file then frequently fails to exit, blocking with no output until the run's watchdog kills the pipeline). The helper uses a throwaway Chrome profile, a bounded virtual-time budget for web fonts, and polls for the finished file so it returns in ~2s and can never hang:
 
 ```
 python3 ~/.claude/agents/cv-generator/templates/render_pdf.py <identity>-ats.html <identity>-ats.pdf
 python3 ~/.claude/agents/cv-generator/templates/render_pdf.py <identity>.html     <identity>.pdf --fancy
 ```
 
-The `--fancy` flag is REQUIRED for the designed template because it loads remote web fonts. The helper prints the output path and exits 0 when the PDF is on disk (even if Chrome had to be killed after writing it), and exits non-zero only if no PDF was produced; trust its exit status instead of waiting on Chrome yourself.
+The `--fancy` flag is REQUIRED for the designed template because it loads remote web fonts. When a PDF has been rendered, set its dashboard card state to `valid`.
 
 ---
 

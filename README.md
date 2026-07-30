@@ -1,8 +1,10 @@
-# cv-generator
+# CV Coach
 
-A self-contained [Claude Code](https://docs.claude.com/en/docs/claude-code) agent that turns raw experience — or an existing CV — into a polished, ATS-optimised, recruiter-tested CV. It runs a full pipeline end to end: extract, benchmark, ATS-optimise, generate impact bullets, simulate a recruiter and a skeptical hiring manager, compare you against real peers in your target role, and render a CV (Markdown + two PDF styles) plus a visual HTML dashboard telling you exactly where you stand and what to fix next.
+A self-contained [Claude Code](https://docs.claude.com/en/docs/claude-code) agent that **builds and reviews** CVs. Give it raw experience or an existing CV and it produces a polished, ATS-optimised draft — then critiques that draft the way a recruiter and a skeptical hiring manager would, scores it, benchmarks you against real peers in your target role, and tells you exactly what to fix next.
 
-Everything the agent needs is bundled in this one folder. There are no external service dependencies beyond Claude Code itself.
+It runs a full pipeline end to end: extract, benchmark, ATS-optimise, generate impact bullets, simulate a recruiter and a hiring manager, compare you against peers, and render a CV (Markdown + two PDF styles) plus a visual HTML dashboard.
+
+Everything the agent needs is bundled in this one folder — no external service dependencies beyond Claude Code itself. (The agent registers with Claude Code under the id `cv-generator`, which is why that name still appears in paths and file names below.)
 
 ---
 

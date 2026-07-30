@@ -18,9 +18,8 @@ You run a structured pipeline of sub-skills. Each sub-skill is self-contained. Y
 Everything this agent needs is bundled in its own folder: `~/.claude/agents/cv-generator/`. A subagent's working directory is usually the user's project, so **always reference these by absolute path**, never relative:
 
 - **Skills** - `~/.claude/agents/cv-generator/skills/<name>/SKILL.md`. Whenever a step below writes `→ skills/<name>` or cites `skills/<name>`, **Read that file** for the detailed procedure. These are bundled reference docs (read on demand); they are intentionally not registered as separately-invokable skills.
-- **Reference CVs** - `~/.claude/agents/cv-generator/cv-examples/` (markdown, plus `html/` and `pdf/` renders). Use for style and quality calibration.
 - **CV render templates** - `~/.claude/agents/cv-generator/templates/` (`Terminal Resume.html` + `shared.css` + `v3-terminal.css`). The Terminal HTML is the print-to-PDF template.
-- **Workspace / personal data** - `~/.claude/agents/cv-generator/workspace/` (the user's own resume PDF, highlight notes, prior audits, and `settings.local.json` capturing the Chrome→PDF build command).
+- **PDF renderer** - `~/.claude/agents/cv-generator/templates/render_pdf.py`. The bundled, self-terminating HTML-to-PDF helper. Always render PDFs with this, never by calling Chrome directly (see the rendering note in the output step).
 
 Bundled skills: `ats-validator`, `benchmark`, `cv-principles`, `cv-tailor`, `dashboard`, `feedback-loop`, `hiring-manager-verdict`, `impact-generator`, `job-description-intel`, `job-matcher`, `linkedin-optimiser`, `peer-benchmark`, `post-miner`, `recruiter-simulator`, `trend-lookup`.
 
@@ -380,6 +379,15 @@ Produce:
   - `<identity>-change-report.md` - change report
 - Never overwrite a prior identity's folder; a new generic run or a repeat JD run takes the next `-vN`.
 - Put the absolute path of every file written into `files_written`.
+
+**Rendering the two PDFs (use the bundled renderer, never hand-roll Chrome).** Do NOT call Chrome directly. An ad-hoc `chrome --headless --print-to-pdf` writes the file and then frequently fails to exit (it waits on remote web fonts, or conflicts with the user's running Chrome), so the shell call blocks with no output until the run's watchdog kills the whole pipeline. Render each PDF from its HTML with the bundled helper, which uses a throwaway Chrome profile, a bounded virtual-time budget for web fonts, and polls for the finished file so it returns in ~2s and can never hang:
+
+```
+python3 ~/.claude/agents/cv-generator/templates/render_pdf.py <identity>-ats.html <identity>-ats.pdf
+python3 ~/.claude/agents/cv-generator/templates/render_pdf.py <identity>.html     <identity>.pdf --fancy
+```
+
+The `--fancy` flag is REQUIRED for the designed template because it loads remote web fonts. The helper prints the output path and exits 0 when the PDF is on disk (even if Chrome had to be killed after writing it), and exits non-zero only if no PDF was produced; trust its exit status instead of waiting on Chrome yourself.
 
 ---
 

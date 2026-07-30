@@ -153,8 +153,7 @@ cv-generator/
 │   ├── post-miner/SKILL.md
 │   ├── recruiter-simulator/SKILL.md
 │   └── trend-lookup/SKILL.md
-├── docs/               ← design docs / architecture notes
-└── templates/          ← CV + dashboard HTML templates, shared CSS, and render_cv.py
+└── templates/          ← CV + dashboard HTML templates, shared CSS, and render_pdf.py (the self-terminating HTML-to-PDF renderer)
 ```
 
 Generated CVs (`~/.cv-generator/`) live outside the repo and are never committed.
